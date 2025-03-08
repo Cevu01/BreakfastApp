@@ -5,10 +5,8 @@ export default function Index() {
   return (
     <View className="flex-1 justify-center items-center">
       <Text className="text-5xl text-blue-600">Welcome Vuk</Text>
-      <Link href="/onboarding">OnBoarding</Link>
-      <Link href={{ pathname: "/movies/[id]", params: { id: "avangers" } }}>
-        Avengers Movie
-      </Link>
+      <Link href="(tabs)/home">Home</Link>
+      <Link href="onboarding">Onboarding</Link>
     </View>
   );
 }
