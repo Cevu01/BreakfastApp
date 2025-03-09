@@ -5,3 +5,5 @@ export const icon = {
   progress: (props: any) => <Feather name="activity" size={24} {...props} />,
   profile: (props: any) => <Feather name="user" size={24} {...props} />,
 };
+
+export default icon;
