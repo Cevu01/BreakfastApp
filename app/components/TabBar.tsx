@@ -1,4 +1,4 @@
-import { View, StyleSheet, LayoutChangeEvent } from "react-native";
+import { View, LayoutChangeEvent } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import TabBarButton from "./TabBarButton";
 import { useState } from "react";
@@ -27,7 +27,10 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   }));
 
   return (
-    <View onLayout={onTabbarLayout} style={styles.tabbar}>
+    <View
+      onLayout={onTabbarLayout}
+      className="absolute bottom-12 flex-row justify-between items-center bg-white mx-10 py-4 rounded-full shadow-lg shadow-black/100"
+    >
       <Animated.View
         style={[
           animatedStyle,
@@ -64,7 +67,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name as never); // Type assertion to satisfy TypeScript
+            navigation.navigate(route.name as never);
           }
         };
 
@@ -81,7 +84,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             onPress={onPress}
             onLongPress={onLongPress}
             isFocused={isFocused}
-            routeName={route.name as "home" | "progress" | "profile"} // Type assertion for valid routes
+            routeName={route.name as "home" | "progress" | "profile"}
             color={isFocused ? "#FFF" : "#222"}
             label={label as string}
           />
@@ -90,24 +93,5 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  tabbar: {
-    position: "absolute",
-    bottom: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    marginHorizontal: 40,
-    paddingVertical: 15,
-    borderRadius: 35,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
-    shadowRadius: 10,
-    shadowOpacity: 0.1,
-    elevation: 10,
-  },
-});
 
 export default TabBar;

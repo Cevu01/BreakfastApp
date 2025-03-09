@@ -3,7 +3,12 @@ module.exports = {
   content: ["./app/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        bdogroteskRegular: ["BDOGroteskRegular", "sans-serif"],
+        bdogroteskDemiBold: ["BDOGroteskDemiBold", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

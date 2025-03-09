@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, GestureResponderEvent } from "react-native";
+import { Pressable, GestureResponderEvent } from "react-native";
 import React, { useEffect } from "react";
 import { icon } from "../constants/icon";
 import Animated, {
@@ -7,8 +7,8 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import { Text, View } from "react-native";
 
-// Define valid route names
 type RouteName = "home" | "progress" | "profile";
 
 const TabBarButton = ({
@@ -22,7 +22,7 @@ const TabBarButton = ({
   onPress: (event: GestureResponderEvent) => void;
   onLongPress: (event: GestureResponderEvent) => void;
   isFocused: boolean;
-  routeName: RouteName; // Ensure routeName is only one of these
+  routeName: RouteName;
   color: string;
   label: string;
 }) => {
@@ -35,7 +35,6 @@ const TabBarButton = ({
   const animatedIconStyle = useAnimatedStyle(() => {
     const scaleValue = interpolate(scale.value, [0, 1], [1, 1.2]);
     const top = interpolate(scale.value, [0, 1], [0, 9]);
-
     return {
       transform: [{ scale: scaleValue }],
       top,
@@ -51,31 +50,23 @@ const TabBarButton = ({
     <Pressable
       onPress={onPress}
       onLongPress={onLongPress}
-      style={styles.tabbarItem}
+      className="flex-1 items-center justify-center gap-1"
     >
       <Animated.View style={animatedIconStyle}>
-        {/* Explicitly type `icon[routeName]` to prevent indexing error */}
         {icon[routeName]({ color: isFocused ? "#FFF" : "#222" })}
       </Animated.View>
       <Animated.Text
-        style={[
-          { color: isFocused ? "#673ab7" : "#222", fontSize: 12 },
-          animatedTextStyle,
-        ]}
+        className={`${
+          isFocused
+            ? "text-purple-700 font-bdogroteskDemiBold"
+            : "text-gray-900 font-bdogroteskRegular"
+        } text-xs`}
+        style={animatedTextStyle}
       >
         {label}
       </Animated.Text>
     </Pressable>
   );
 };
-
-const styles = StyleSheet.create({
-  tabbarItem: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 5,
-  },
-});
 
 export default TabBarButton;
