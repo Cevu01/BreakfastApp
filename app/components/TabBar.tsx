@@ -29,7 +29,8 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <View
       onLayout={onTabbarLayout}
-      className="absolute bottom-12 flex-row justify-between items-center bg-white mx-10 py-4 rounded-full shadow-lg shadow-black/100"
+      className="absolute bottom-12 flex-row justify-between items-center bg-white mx-10 py-4 rounded-full shadow-lg shadow-black/2 0
+  "
     >
       <Animated.View
         style={[

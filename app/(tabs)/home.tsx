@@ -1,9 +1,14 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+import { getBreakfasts } from "../services/apiBreakfast";
 
 const home = () => {
+  useEffect(function () {
+    getBreakfasts().then((data) => console.log(data));
+  }, []);
+
   return (
-    <View>
+    <View className="flex-1 justify-center items-center">
       <Text>home</Text>
     </View>
   );
