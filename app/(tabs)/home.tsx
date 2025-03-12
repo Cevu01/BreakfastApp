@@ -47,11 +47,8 @@ const Home = () => {
         />
       )}
 
-      <TouchableOpacity
-        onPress={() => router.push("/onboarding")}
-        className=" flex items-center justify-center bg-black w-20 h-8 mt-6"
-      >
-        <Text className="text-white flex items-center">Click</Text>
+      <TouchableOpacity className=" flex items-center justify-center bg-black w-20 h-8 mt-6">
+        <Text className="text-white flex items-center">Log out</Text>
       </TouchableOpacity>
     </View>
   );

@@ -9,13 +9,15 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.breakfast.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.breakfast.app"
     },
     "web": {
       "bundler": "metro",
@@ -34,8 +36,14 @@
         }
       ]
     ],
-    "experiments": {
-      "typed  Routes": true
-    }
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "22a1e5d3-c658-4f72-8d55-c44df68f7a1c"
+      }
+    },
+    "owner": "vuk2001"
   }
 }
