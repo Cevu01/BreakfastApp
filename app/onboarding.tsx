@@ -1,12 +1,32 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
+import Animated from "react-native-reanimated";
 
+import data from "../data/data";
+import RenderItem from "./components/RenderItem";
 const onboarding = () => {
   return (
-    <View className="flex-1 justify-center items-center">
-      <Text className="text-xl font-bold mb-4">Onboarding</Text>
+    <View style={styles.container}>
+      <Animated.FlatList
+        data={data}
+        renderItem={({ item, index }) => {
+          return <RenderItem item={item} index={index} />;
+        }}
+        keyExtractor={(item) => item.id.toString()}
+        scrollEventThrottle={16}
+        horizontal={true}
+        bounces={false}
+        pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };
 
 export default onboarding;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
