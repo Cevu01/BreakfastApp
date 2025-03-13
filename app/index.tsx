@@ -22,7 +22,7 @@ export default function Index() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      console.log("Session on reload:", session);
+      // console.log("Session on reload:", session);
       if (session) {
         router.push("/(tabs)/home");
       }
@@ -35,12 +35,6 @@ export default function Index() {
   const handleSignIn = async () => {
     setIsLoading(true);
     await signInWithGoogle();
-    setIsLoading(false);
-  };
-
-  const handleSignOut = async () => {
-    setIsLoading(true);
-    await signOutFromGoogle();
     setIsLoading(false);
   };
 
@@ -70,7 +64,7 @@ export default function Index() {
             <TouchableOpacity onPress={handleSignIn}>
               <GoogleButton width={300} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleSignOut}>
+            <TouchableOpacity>
               <AppleButton width={300} />
             </TouchableOpacity>
           </>

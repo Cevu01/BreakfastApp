@@ -44,7 +44,7 @@ export const configureGoogleSignIn = () => {
       "738582966255-1k74bv4iknqll67um74ujetahee0m4bi.apps.googleusercontent.com",
     offlineAccess: true,
   });
-  console.log("GoogleSignin configured");
+  // console.log("GoogleSignin configured");
 };
 
 /** Signs in with Google and authenticates with Supabase */
@@ -126,7 +126,7 @@ export const signOutFromGoogle = async () => {
     await GoogleSignin.signOut();
     await supabase.auth.signOut();
     console.log("✅ User signed out");
-    router.push("/onboarding");
+    router.push("/");
   } catch (error: any) {
     console.error("❌ Google Sign-Out Error:", error);
   }

@@ -9,6 +9,7 @@ import React from "react";
 import { getBreakfasts } from "../services/apiBreakfast";
 import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
+import { signOutFromGoogle } from "../services/GoogleAuth";
 
 type ingredient = {
   name: string;
@@ -47,8 +48,17 @@ const Home = () => {
         />
       )}
 
-      <TouchableOpacity className=" flex items-center justify-center bg-black w-20 h-8 mt-6">
-        <Text className="text-white flex items-center">Log out</Text>
+      <TouchableOpacity
+        onPress={() => router.push("/")}
+        className=" flex items-center justify-center bg-black w-20 h-8 mt-6"
+      >
+        <Text className="text-white flex items-center">Go on index</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={signOutFromGoogle}
+        className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
+      >
+        <Text className="text-white flex items-center">Sign out out</Text>
       </TouchableOpacity>
     </View>
   );
