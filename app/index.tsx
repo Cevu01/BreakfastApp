@@ -1,110 +1,57 @@
 import AppleButton from "@/assets/svg/AppleButton";
 import GoogleButton from "@/assets/svg/GoogleButton";
-import { Link } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Link, router } from "expo-router";
+import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  configureGoogleSignIn,
+  signInWithGoogle,
+  signOutFromGoogle,
+} from "./services/GoogleAuth";
 import { supabase } from "./services/supabase";
-import { router } from "expo-router";
-import Constants from "expo-constants";
-import { useEffect } from "react";
 
 export default function Index() {
-  // Check if running in Expo Go
-  const isExpoGo = Constants.appOwnership === "expo";
-  console.log(isExpoGo);
+  const [isLoading, setIsLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
 
-  // Conditionally load Google Sign-In module
-  let GoogleSignin, statusCodes;
-  if (!isExpoGo) {
-    // Running in a dev client (or production build), so load the module normally
-    ({
-      GoogleSignin,
-      statusCodes,
-    } = require("@react-native-google-signin/google-signin"));
-  } else {
-    // Running in Expo Go: provide stub implementations so the app doesn't crash
-    console.warn(
-      "Google Sign-In is not available in Expo Go. Build a development client to test this feature."
-    );
-    GoogleSignin = {
-      configure: () => {},
-      hasPlayServices: () => Promise.resolve(true),
-      signIn: () =>
-        Promise.reject(
-          new Error(
-            "Google Sign-In not available in Expo Go. Use a dev client build."
-          )
-        ),
-      signOut: () => Promise.resolve(), // Provide a stub for signOut if needed
-    };
-    statusCodes = {
-      SIGN_IN_CANCELLED: "SIGN_IN_CANCELLED",
-      IN_PROGRESS: "IN_PROGRESS",
-      PLAY_SERVICES_NOT_AVAILABLE: "PLAY_SERVICES_NOT_AVAILABLE",
-    };
-  }
-
+  // Configure Google Sign-In when the component mounts
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        "738582966255-1k74bv4iknqll67um74ujetahee0m4bi.apps.googleusercontent.com",
-      offlineAccess: true,
-    });
-    console.log("GoogleSignin configured");
+    configureGoogleSignIn();
+    // Check if a user session exists
+    const checkSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      console.log("Session on reload:", session);
+      if (session) {
+        router.push("/(tabs)/home");
+      }
+      setCheckingSession(false);
+    };
+
+    checkSession();
   }, []);
 
-  const signInWithGoogle = async () => {
-    try {
-      // Check that Google Play Services are available (Android only)
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
-
-      // Start the sign-in process
-      const userInfo = await GoogleSignin.signIn();
-      console.log("Google Sign-In Response:", userInfo);
-
-      // Extract idToken from the response
-      const { idToken } = userInfo.data;
-
-      if (!idToken) {
-        throw new Error("Google Sign-In failed. No ID token returned.");
-      }
-
-      const { data, error } = await supabase.auth.signInWithIdToken({
-        provider: "google",
-        token: idToken,
-      });
-
-      if (error) throw error;
-
-      console.log("✅ User signed in!");
-      router.push("/(tabs)/home");
-    } catch (error: any) {
-      console.error("Google Sign-In Error:", error);
-
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.warn("User cancelled the sign-in process.");
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.warn("Sign in operation already in progress.");
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.warn("Google Play services not available or outdated.");
-      } else {
-        console.warn("An unknown error occurred during Google Sign-In.");
-      }
-    }
+  const handleSignIn = async () => {
+    setIsLoading(true);
+    await signInWithGoogle();
+    setIsLoading(false);
   };
 
-  // Sign out function that logs the user out from Google and Supabase.
-  const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      await supabase.auth.signOut();
-      console.log("✅ User signed out");
-      router.push("/onboarding");
-    } catch (error: any) {
-      console.error("❌ Google Sign-Out Error:", error);
-    }
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    await signOutFromGoogle();
+    setIsLoading(false);
   };
+
+  // While checking session, display a spinner (or splash screen)
+  if (checkingSession) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color="#2563eb" />
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 justify-center items-center">
@@ -116,13 +63,18 @@ export default function Index() {
         Onboarding
       </Link>
       <View className="gap-[8px] items-center justify-center mt-6">
-        <TouchableOpacity onPress={signInWithGoogle}>
-          <GoogleButton width={300} />
-        </TouchableOpacity>
-        {/* Sign-out button */}
-        <TouchableOpacity onPress={signOut}>
-          <AppleButton width={300} />
-        </TouchableOpacity>
+        {isLoading ? (
+          <ActivityIndicator size="large" color="#2563eb" />
+        ) : (
+          <>
+            <TouchableOpacity onPress={handleSignIn}>
+              <GoogleButton width={300} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleSignOut}>
+              <AppleButton width={300} />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );
