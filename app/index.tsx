@@ -53,7 +53,7 @@ export default function Index() {
       <Link className="font-bdogroteskDemiBold mb-4" href="(tabs)/home">
         Home
       </Link>
-      <Link className="font-bdogroteskRegular" href="onboarding">
+      <Link className="font-bdogroteskRegular" href="onboardingScreen">
         Onboarding
       </Link>
       <View className="gap-[8px] items-center justify-center mt-6">

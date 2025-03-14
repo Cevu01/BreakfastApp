@@ -1,19 +1,19 @@
-import { FlatList, StyleSheet, View, ViewToken } from "react-native";
+import { StyleSheet, View, FlatList, ViewToken } from "react-native";
 import React from "react";
 import Animated, {
-  useAnimatedRef,
-  useAnimatedScrollHandler,
   useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedRef,
 } from "react-native-reanimated";
 import data, { OnboardingData } from "../data/data";
-import RenderItem from "./components/RenderItem";
 import Pagination from "./components/Pagination";
+import CustomButton from "./components/CustomButton";
+import RenderItem from "./components/RenderItem";
 
-const onboarding = () => {
-  const flatlistRef = useAnimatedRef<FlatList<OnboardingData>>();
+const OnboardingScreen = () => {
+  const flatListRef = useAnimatedRef<FlatList<OnboardingData>>();
   const x = useSharedValue(0);
-
-  const flatlistIndex = useSharedValue(0);
+  const flatListIndex = useSharedValue(0);
 
   const onViewableItemsChanged = ({
     viewableItems,
@@ -21,7 +21,7 @@ const onboarding = () => {
     viewableItems: ViewToken[];
   }) => {
     if (viewableItems[0].index !== null) {
-      flatlistIndex.value = viewableItems[0].index;
+      flatListIndex.value = viewableItems[0].index;
     }
   };
 
@@ -30,15 +30,17 @@ const onboarding = () => {
       x.value = event.contentOffset.x;
     },
   });
+
   return (
     <View style={styles.container}>
       <Animated.FlatList
+        ref={flatListRef}
+        onScroll={onScroll}
         data={data}
         renderItem={({ item, index }) => {
           return <RenderItem item={item} index={index} x={x} />;
         }}
         keyExtractor={(item) => item.id.toString()}
-        onScroll={onScroll}
         scrollEventThrottle={16}
         horizontal={true}
         bounces={false}
@@ -52,23 +54,32 @@ const onboarding = () => {
       />
       <View style={styles.bottomContainer}>
         <Pagination data={data} x={x} />
+        <CustomButton
+          flatListRef={flatListRef}
+          flatListIndex={flatListIndex}
+          dataLength={data.length}
+          x={x}
+        />
       </View>
     </View>
   );
 };
 
-export default onboarding;
+export default OnboardingScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   bottomContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 30,
+    paddingVertical: 30,
     position: "absolute",
     bottom: 20,
     left: 0,
     right: 0,
-    marginHorizontal: 30,
-    paddingVertical: 30,
   },
 });
