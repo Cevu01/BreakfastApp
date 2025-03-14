@@ -23,7 +23,7 @@ export default function RootLayout() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <StatusBar backgroundColor={"#fff"} />
+        {/* <StatusBar backgroundColor={"#fff"} /> */}
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="onboarding" options={{ headerShown: false }} />
