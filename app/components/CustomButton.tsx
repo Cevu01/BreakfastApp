@@ -14,12 +14,12 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
-import { OnboardingData } from "../../data/data";
+import data, { OnboardingScreenData } from "../../data/data";
 
 type Props = {
   dataLength: number;
   flatListIndex: SharedValue<number>;
-  flatListRef: AnimatedRef<FlatList<OnboardingData>>;
+  flatListRef: AnimatedRef<FlatList<OnboardingScreenData>>;
   x: SharedValue<number>;
 };
 

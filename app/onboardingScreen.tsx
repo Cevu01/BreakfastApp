@@ -1,26 +1,39 @@
 import { StyleSheet, View, FlatList, ViewToken } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
   useAnimatedRef,
 } from "react-native-reanimated";
-import data, { OnboardingData } from "../data/data";
-import Pagination from "./components/Pagination";
+import data, { OnboardingScreenData } from "../data/data";
 import CustomButton from "./components/CustomButton";
 import RenderItem from "./components/RenderItem";
+import ProgressBar from "./components/ProgressBar";
 
 const OnboardingScreen = () => {
-  const flatListRef = useAnimatedRef<FlatList<OnboardingData>>();
+  const flatListRef = useAnimatedRef<FlatList<OnboardingScreenData>>();
   const x = useSharedValue(0);
   const flatListIndex = useSharedValue(0);
+
+  // State to store selected answers keyed by question id
+  const [selectedAnswers, setSelectedAnswers] = useState<{
+    [key: number]: number | null;
+  }>({});
+
+  const handleSelectAnswer = (questionId: number, answerId: number) => {
+    setSelectedAnswers((prev) => ({ ...prev, [questionId]: answerId }));
+  };
 
   const onViewableItemsChanged = ({
     viewableItems,
   }: {
     viewableItems: ViewToken[];
   }) => {
-    if (viewableItems[0].index !== null) {
+    if (
+      viewableItems &&
+      viewableItems.length > 0 &&
+      viewableItems[0].index !== null
+    ) {
       flatListIndex.value = viewableItems[0].index;
     }
   };
@@ -37,14 +50,20 @@ const OnboardingScreen = () => {
         ref={flatListRef}
         onScroll={onScroll}
         data={data}
-        renderItem={({ item, index }) => {
-          return <RenderItem item={item} index={index} x={x} />;
-        }}
+        renderItem={({ item, index }) => (
+          <RenderItem
+            item={item}
+            index={index}
+            x={x}
+            onSelectAnswer={handleSelectAnswer}
+            selectedAnswers={selectedAnswers}
+          />
+        )}
         keyExtractor={(item) => item.id.toString()}
         scrollEventThrottle={16}
-        horizontal={true}
+        horizontal
         bounces={false}
-        pagingEnabled={true}
+        pagingEnabled
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={{
@@ -52,8 +71,9 @@ const OnboardingScreen = () => {
           viewAreaCoveragePercentThreshold: 10,
         }}
       />
+      <ProgressBar dataLength={data.length} x={x} />
+
       <View style={styles.bottomContainer}>
-        <Pagination data={data} x={x} />
         <CustomButton
           flatListRef={flatListRef}
           flatListIndex={flatListIndex}
@@ -73,7 +93,7 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     alignItems: "center",
     marginHorizontal: 30,
     paddingVertical: 30,
