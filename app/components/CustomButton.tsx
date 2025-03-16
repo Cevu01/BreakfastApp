@@ -87,7 +87,7 @@ const CustomButton = ({ flatListRef, flatListIndex, dataLength, x }: Props) => {
             index: flatListIndex.value + 1,
           });
         } else {
-          router.push("/(tabs)/home");
+          router.replace("/(tabs)/home");
         }
       }}
     >
