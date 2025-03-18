@@ -3,16 +3,20 @@ import GoogleButton from "@/assets/svg/GoogleButton";
 import { Link, router } from "expo-router";
 import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
-import {
-  configureGoogleSignIn,
-  signInWithGoogle,
-  signOutFromGoogle,
-} from "./services/GoogleAuth";
+import { configureGoogleSignIn, signInWithGoogle } from "./services/GoogleAuth";
 import { supabase } from "./services/supabase";
+import { useUpdateGoal, useUsers } from "@/queries/usersQueries";
+import { updateUserGoal } from "./services/apiUsers";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
+  const { isUpdatingGoal, updateGoal } = useUpdateGoal();
+  const { users } = useUsers();
+
+  const handleUpdateGoal = () => {
+    updateGoal("80kg misica");
+  };
 
   // Configure Google Sign-In when the component mounts
   useEffect(() => {
@@ -22,7 +26,6 @@ export default function Index() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-      // console.log("Session on reload:", session);
       if (session) {
         router.push("/(tabs)/home");
       }
@@ -64,7 +67,7 @@ export default function Index() {
             <TouchableOpacity onPress={handleSignIn}>
               <GoogleButton width={300} />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleUpdateGoal}>
               <AppleButton width={300} />
             </TouchableOpacity>
           </>

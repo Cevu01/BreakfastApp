@@ -6,10 +6,9 @@ import {
   Text,
 } from "react-native";
 import React from "react";
-import { getBreakfasts } from "../services/apiBreakfast";
-import { useQuery } from "@tanstack/react-query";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
+import { useBreakfasts } from "@/queries/breakfastQueries";
 
 type ingredient = {
   name: string;
@@ -30,10 +29,7 @@ type breakfast = {
 };
 
 const Home = () => {
-  const { isLoading: isBreakfastsLoading, data: breakfasts = [] } = useQuery({
-    queryKey: ["breakfasts"],
-    queryFn: getBreakfasts,
-  });
+  const { isBreakfastsLoading, breakfasts } = useBreakfasts();
 
   return (
     <View className="flex-1 items-center">
