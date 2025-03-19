@@ -9,6 +9,7 @@ import React from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
 import { useBreakfasts } from "@/queries/breakfastQueries";
+import { useUpdateGoal } from "@/queries/usersQueries";
 
 type ingredient = {
   name: string;
@@ -30,6 +31,12 @@ type breakfast = {
 
 const Home = () => {
   const { isBreakfastsLoading, breakfasts } = useBreakfasts();
+
+  const { isUpdatingGoal, updateGoal } = useUpdateGoal();
+
+  const handleUpdateGoal = () => {
+    updateGoal("Milion");
+  };
 
   return (
     <View className="flex-1 items-center">
@@ -55,6 +62,13 @@ const Home = () => {
         className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
       >
         <Text className="text-white flex items-center">Sign out out</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleUpdateGoal}
+        className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
+      >
+        <Text className="text-white flex items-center">Update goal</Text>
       </TouchableOpacity>
     </View>
   );

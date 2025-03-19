@@ -2,6 +2,7 @@
 import Constants from "expo-constants";
 import { router } from "expo-router";
 import { supabase } from "./supabase";
+import { checkUserSession } from "@/helpers/checkUserSession";
 
 // Determine if running in Expo Go
 const isExpoGo = Constants.appOwnership === "expo";
@@ -109,16 +110,12 @@ export const signInWithGoogle = async () => {
 /** Signs out the user from Google and Supabase */
 export const signOutFromGoogle = async () => {
   try {
-    // Get the current session from Supabase
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    // If there's no session, show a message and do not navigate
-    if (!session) {
-      console.warn("User is not signed in.");
-      // Optionally, you can show an alert or use a Snackbar here
-      alert("You are not logged in.");
+    // Proveri da li korisnik već ima aktivnu sesiju
+    // Ista je provera kao na splah screenu, ali ovo osigurava da aplikacija ne pokusa duplo da uloguje korisnika
+    const hasSession = await checkUserSession();
+    if (hasSession) {
+      console.log("User is already signed in");
+      router.push("/(tabs)/home");
       return;
     }
 

@@ -17,14 +17,16 @@ export function useUpdateGoal() {
   return { isUpdatingGoal, updateGoal };
 }
 
-export function useUsers() {
+//Sa ovom funkcijom supabase mi automatiski vraca trenutno ulogovanog korisnika
+//Ovo je korisno jer ne moramo da koristimo getAuthenticatedUser funkciju
+export function useGetCurrentUserData() {
   const {
-    isLoading: isGettingUsers,
-    data: users,
+    isLoading: isGettingCurrentUser,
+    data: user,
     error,
   } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["user"],
     queryFn: getUsers,
   });
-  return { isGettingUsers, users, error };
+  return { isGettingCurrentUser, user, error };
 }

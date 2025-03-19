@@ -4,35 +4,25 @@ import { Link, router } from "expo-router";
 import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
 import { configureGoogleSignIn, signInWithGoogle } from "./services/GoogleAuth";
-import { supabase } from "./services/supabase";
-import { useUpdateGoal, useUsers } from "@/queries/usersQueries";
-import { updateUserGoal } from "./services/apiUsers";
+import { checkUserSession } from "@/helpers/checkUserSession";
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
-  const { isUpdatingGoal, updateGoal } = useUpdateGoal();
-  const { users } = useUsers();
-
-  const handleUpdateGoal = () => {
-    updateGoal("80kg misica");
-  };
 
   // Configure Google Sign-In when the component mounts
   useEffect(() => {
     configureGoogleSignIn();
-    // Check if a user session exists
-    const checkSession = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) {
+
+    const verifySession = async () => {
+      const hasSession = await checkUserSession();
+      if (hasSession) {
         router.push("/(tabs)/home");
       }
       setCheckingSession(false);
     };
 
-    checkSession();
+    verifySession();
   }, []);
 
   const handleSignIn = async () => {
@@ -67,7 +57,7 @@ export default function Index() {
             <TouchableOpacity onPress={handleSignIn}>
               <GoogleButton width={300} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleUpdateGoal}>
+            <TouchableOpacity>
               <AppleButton width={300} />
             </TouchableOpacity>
           </>

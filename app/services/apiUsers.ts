@@ -1,50 +1,15 @@
+import { getAuthenticatedUser } from "@/helpers/getAuthenticatedUser";
 import { supabase } from "./supabase";
-
-// const getUserUid = async (): Promise<string> => {
-//   try {
-//     const { data, error } = await supabase.auth.getSession();
-//     if (error || !data.session?.user?.id) {
-//       throw new Error("User not authenticated");
-//     }
-//     console.log("User ID:", data.session.user.id);
-//     return data.session.user.id;
-//   } catch (err) {
-//     console.error("Error fetching user ID:", err);
-//     throw err; // Propagiramo grešku dalje
-//   }
-// };
-const getUserUid = async (): Promise<string> => {
-  try {
-    const { data, error } = await supabase.auth.getSession();
-    if (error || !data.session?.user?.id) {
-      throw new Error("User not authenticated");
-    }
-    console.log("User id:", data.session.user.id);
-    console.log("Session ID length:", data.session.user.id.length);
-    return data.session.user.id;
-  } catch (err) {
-    console.error("Error fetching user ID:", err);
-    throw err; // Propagiramo grešku dalje
-  }
-};
 
 export async function updateUserGoal(
   newGoal: string
 ): Promise<any[] | undefined> {
-  const id = await getUserUid();
-
-  if (!id) {
-    console.error("User not authenticated");
-    throw new Error("User not authenticated");
-  }
-
+  const user = await getAuthenticatedUser();
   const { data, error } = await supabase
     .from("users")
     .update({ goal: newGoal })
-    .eq("uid", id)
+    .eq("uid", user.id)
     .select();
-
-  console.log("Supabase response:", { data, error });
 
   if (error) {
     console.error(error);
@@ -63,4 +28,18 @@ export async function getUsers() {
   }
 
   return data;
+}
+
+export async function getCurrentUserData() {
+  const { data: user, error } = await supabase
+    .from("users")
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Error fetching user data:", error);
+    throw new Error("User data could not be loaded");
+  }
+
+  return user;
 }
