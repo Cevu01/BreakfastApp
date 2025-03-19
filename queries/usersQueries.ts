@@ -10,7 +10,7 @@ export function useUpdateGoal() {
       console.log("User goal updated");
     },
     onError: (err) => {
-      console.error("Mutation error:", err);
+      console.log("Verovatno nisi ulogavan pa ne mozes da updatujes goal");
     },
   });
 

@@ -35,7 +35,7 @@ const Home = () => {
   const { isUpdatingGoal, updateGoal } = useUpdateGoal();
 
   const handleUpdateGoal = () => {
-    updateGoal("Milion");
+    updateGoal("Sinee");
   };
 
   return (
@@ -53,7 +53,7 @@ const Home = () => {
 
       <TouchableOpacity
         onPress={() => router.push("/")}
-        className=" flex items-center justify-center bg-black w-20 h-8 mt-6"
+        className=" flex items-center justify-center bg-black w-20 h-12 mt-6"
       >
         <Text className="text-white flex items-center">Go on index</Text>
       </TouchableOpacity>
