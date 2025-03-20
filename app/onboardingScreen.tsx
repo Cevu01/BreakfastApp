@@ -5,10 +5,15 @@ import Animated, {
   useAnimatedScrollHandler,
   useAnimatedRef,
 } from "react-native-reanimated";
-import data, { OnboardingScreenData } from "../data/data";
+import data, {
+  OnboardingScreenData,
+  OnboardingQuestionData,
+  AnswerOption,
+} from "../data/data";
 import CustomButton from "./components/CustomButton";
 import RenderItem from "./components/RenderItem";
 import ProgressBar from "./components/ProgressBar";
+import { updateUserDietType } from "./services/apiUsers";
 
 const OnboardingScreen = () => {
   const flatListRef = useAnimatedRef<FlatList<OnboardingScreenData>>();
@@ -19,6 +24,48 @@ const OnboardingScreen = () => {
   const [selectedAnswers, setSelectedAnswers] = useState<{
     [key: number]: number | null;
   }>({});
+
+  console.log(selectedAnswers);
+
+  //Videte sta cu sa ovom funkcijom da uradim?
+  const submitAnswers = async () => {
+    try {
+      // Get the selected answer ID for question 4
+      const answerId = selectedAnswers[4];
+
+      if (answerId === null || answerId === undefined) {
+        console.error("No answer selected for page 4.");
+        return;
+      }
+
+      // Type guard: suzi data na OnboardingQuestionData
+      const question = data.find(
+        (item): item is OnboardingQuestionData =>
+          item.id === 4 && item.type === "question"
+      );
+
+      if (!question) {
+        console.error("Question data for page 4 not found.");
+        return;
+      }
+
+      // Find the selected answer's text (explicitno anotiran tip parametra)
+      const selectedOption = question.answers.find(
+        (answer: AnswerOption) => answer.id === answerId
+      );
+
+      if (!selectedOption) {
+        console.error("Selected answer not found in question data.");
+        return;
+      }
+
+      // Send the text (not the number)
+      await updateUserDietType(selectedOption.text);
+      console.log(`Updated diet type: ${selectedOption.text}`);
+    } catch (error) {
+      console.error("Error updating user diet type:", error);
+    }
+  };
 
   const handleSelectAnswer = (questionId: number, answerId: number) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: answerId }));
@@ -79,6 +126,7 @@ const OnboardingScreen = () => {
           flatListIndex={flatListIndex}
           dataLength={data.length}
           x={x}
+          onSubmit={submitAnswers} // submitAnswers je funkcija koja šalje sve odgovore
         />
       </View>
     </View>

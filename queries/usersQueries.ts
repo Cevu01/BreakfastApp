@@ -1,6 +1,7 @@
 import {
   getUsers,
   updateUserActivity,
+  updateUserDietType,
   updateUserGoal,
 } from "@/app/services/apiUsers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -30,6 +31,22 @@ export function useUpdateGoal() {
     },
     onError: (err) => {
       console.log("Verovatno nisi ulogavan pa ne mozes da updatujes goal");
+    },
+  });
+
+  return { isUpdatingGoal, updateGoal };
+}
+export function useUpdateDietType() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateGoal, isPending: isUpdatingGoal } = useMutation({
+    mutationFn: (newDietType: string) => updateUserDietType(newDietType),
+    onSuccess: () => {
+      console.log("User diet type updated");
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: (err) => {
+      console.log("Verovatno nisi ulogavan pa ne mozes da updatujes diet type");
     },
   });
 

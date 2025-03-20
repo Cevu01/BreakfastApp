@@ -18,6 +18,24 @@ export async function updateUserGoal(
 
   return data;
 }
+
+export async function updateUserDietType(
+  newDietType: string
+): Promise<any[] | undefined> {
+  const user = await getAuthenticatedUser();
+  const { data, error } = await supabase
+    .from("users")
+    .update({ diet_type: newDietType })
+    .eq("uid", user.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("User goal could not be updated");
+  }
+
+  return data;
+}
 export async function updateUserActivity(): Promise<void> {
   const user = await getAuthenticatedUser();
   if (!user || !user.id) {

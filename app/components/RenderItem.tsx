@@ -31,8 +31,6 @@ const RenderItem = ({
   onSelectAnswer,
   selectedAnswers,
 }: Props) => {
-  const { isUpdatingGoal, updateGoal } = useUpdateGoal();
-
   const { width: SCREEN_WIDTH } = useWindowDimensions();
 
   // Shared animated styles for circle and optional animation
@@ -63,10 +61,6 @@ const RenderItem = ({
     );
     return { transform: [{ scale: scale }] };
   });
-
-  // if (item.type === "question") {
-  //   console.log(item.answers);
-  // }
 
   return (
     <View
@@ -123,8 +117,6 @@ const RenderItem = ({
                     isSelected && styles.answerButtonSelected,
                   ]}
                   onPress={() => {
-                    console.log(answer.text);
-                    updateGoal(answer.text);
                     onSelectAnswer && onSelectAnswer(item.id, answer.id);
                   }}
                 >

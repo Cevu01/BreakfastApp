@@ -14,16 +14,23 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
-import data, { OnboardingScreenData } from "../../data/data";
+import { OnboardingScreenData } from "../../data/data";
 
 type Props = {
   dataLength: number;
   flatListIndex: SharedValue<number>;
   flatListRef: AnimatedRef<FlatList<OnboardingScreenData>>;
   x: SharedValue<number>;
+  onSubmit?: () => void;
 };
 
-const CustomButton = ({ flatListRef, flatListIndex, dataLength, x }: Props) => {
+const CustomButton = ({
+  flatListRef,
+  flatListIndex,
+  dataLength,
+  x,
+  onSubmit,
+}: Props) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   const router = useRouter();
 
@@ -81,13 +88,24 @@ const CustomButton = ({ flatListRef, flatListIndex, dataLength, x }: Props) => {
 
   return (
     <TouchableWithoutFeedback
-      onPress={() => {
+      onPress={async () => {
         if (flatListIndex.value < dataLength - 1) {
           flatListRef.current?.scrollToIndex({
             index: flatListIndex.value + 1,
           });
         } else {
-          router.replace("/(tabs)/home");
+          // Ako postoji funkcija za slanje odgovora, prvo je izvrši
+          if (onSubmit) {
+            try {
+              await onSubmit(); // Sačekaj da se odgovori pošalju
+              router.replace("/(tabs)/home"); // Tek onda preusmeri korisnika
+            } catch (error) {
+              console.error("Greška pri slanju odgovora:", error);
+              // Možeš prikazati poruku korisniku ako je potrebno
+            }
+          } else {
+            router.replace("/(tabs)/home"); // Ako nema onSubmit, odmah navigacija
+          }
         }
       }}
     >
