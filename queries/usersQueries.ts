@@ -1,21 +1,9 @@
-import { getUsers, updateUserGoal } from "@/app/services/apiUsers";
+import {
+  getUsers,
+  updateUserActivity,
+  updateUserGoal,
+} from "@/app/services/apiUsers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-
-export function useUpdateGoal() {
-  const queryClient = useQueryClient();
-
-  const { mutate: updateGoal, isPending: isUpdatingGoal } = useMutation({
-    mutationFn: (newGoal: string) => updateUserGoal(newGoal),
-    onSuccess: () => {
-      console.log("User goal updated");
-    },
-    onError: (err) => {
-      console.log("Verovatno nisi ulogavan pa ne mozes da updatujes goal");
-    },
-  });
-
-  return { isUpdatingGoal, updateGoal };
-}
 
 //Sa ovom funkcijom supabase mi automatiski vraca trenutno ulogovanog korisnika
 //Ovo je korisno jer ne moramo da koristimo getAuthenticatedUser funkciju
@@ -29,4 +17,39 @@ export function useGetCurrentUserData() {
     queryFn: getUsers,
   });
   return { isGettingCurrentUser, user, error };
+}
+
+export function useUpdateGoal() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateGoal, isPending: isUpdatingGoal } = useMutation({
+    mutationFn: (newGoal: string) => updateUserGoal(newGoal),
+    onSuccess: () => {
+      console.log("User goal updated");
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: (err) => {
+      console.log("Verovatno nisi ulogavan pa ne mozes da updatujes goal");
+    },
+  });
+
+  return { isUpdatingGoal, updateGoal };
+}
+
+export function useUpdateUserActivity() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateUserStreak, isPending: isUpdatingUserStreak } =
+    useMutation({
+      mutationFn: () => updateUserActivity(),
+      onSuccess: () => {
+        console.log("User streak updated");
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      },
+      onError: (err) => {
+        console.log("Verovatno nisi ulogavan pa ne mozes da updatujes streak");
+      },
+    });
+
+  return { updateUserStreak, isUpdatingUserStreak };
 }

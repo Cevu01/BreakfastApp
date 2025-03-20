@@ -9,7 +9,7 @@ import React from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
 import { useBreakfasts } from "@/queries/breakfastQueries";
-import { useUpdateGoal } from "@/queries/usersQueries";
+import { useUpdateGoal, useUpdateUserActivity } from "@/queries/usersQueries";
 
 type ingredient = {
   name: string;
@@ -33,9 +33,14 @@ const Home = () => {
   const { isBreakfastsLoading, breakfasts } = useBreakfasts();
 
   const { isUpdatingGoal, updateGoal } = useUpdateGoal();
+  const { updateUserStreak, isUpdatingUserStreak } = useUpdateUserActivity();
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
+  };
+
+  const handleUpdateStreak = () => {
+    updateUserStreak();
   };
 
   return (
@@ -69,6 +74,13 @@ const Home = () => {
         className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
       >
         <Text className="text-white flex items-center">Update goal</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleUpdateStreak}
+        className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
+      >
+        <Text className="text-white flex items-center">Update strek</Text>
       </TouchableOpacity>
     </View>
   );

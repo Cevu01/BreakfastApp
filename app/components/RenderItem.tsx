@@ -14,6 +14,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import { useUpdateGoal } from "@/queries/usersQueries";
 
 type Props = {
   item: OnboardingScreenData;
@@ -30,6 +31,8 @@ const RenderItem = ({
   onSelectAnswer,
   selectedAnswers,
 }: Props) => {
+  const { isUpdatingGoal, updateGoal } = useUpdateGoal();
+
   const { width: SCREEN_WIDTH } = useWindowDimensions();
 
   // Shared animated styles for circle and optional animation
@@ -60,6 +63,10 @@ const RenderItem = ({
     );
     return { transform: [{ scale: scale }] };
   });
+
+  // if (item.type === "question") {
+  //   console.log(item.answers);
+  // }
 
   return (
     <View
@@ -115,9 +122,11 @@ const RenderItem = ({
                     styles.answerButton,
                     isSelected && styles.answerButtonSelected,
                   ]}
-                  onPress={() =>
-                    onSelectAnswer && onSelectAnswer(item.id, answer.id)
-                  }
+                  onPress={() => {
+                    console.log(answer.text);
+                    updateGoal(answer.text);
+                    onSelectAnswer && onSelectAnswer(item.id, answer.id);
+                  }}
                 >
                   <Text style={[styles.answerText, { color: item.textColor }]}>
                     {answer.text}
@@ -172,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   answerButtonSelected: {
-    backgroundColor: "#303030",
+    backgroundColor: "#c24f25",
   },
   answerText: {
     fontSize: 18,
