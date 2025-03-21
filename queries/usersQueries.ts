@@ -39,18 +39,22 @@ export function useUpdateGoal() {
 export function useUpdateDietType() {
   const queryClient = useQueryClient();
 
-  const { mutate: updateGoal, isPending: isUpdatingGoal } = useMutation({
-    mutationFn: (newDietType: string) => updateUserDietType(newDietType),
-    onSuccess: () => {
-      console.log("User diet type updated");
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-    },
-    onError: (err) => {
-      console.log("Verovatno nisi ulogavan pa ne mozes da updatujes diet type");
-    },
-  });
+  const { mutate: updateDietType, isPending: isUpdatingDietType } = useMutation(
+    {
+      mutationFn: (newDietType: string) => updateUserDietType(newDietType),
+      onSuccess: () => {
+        console.log("User diet type updated");
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      },
+      onError: (err) => {
+        console.log(
+          "Verovatno nisi ulogavan pa ne mozes da updatujes diet type"
+        );
+      },
+    }
+  );
 
-  return { isUpdatingGoal, updateGoal };
+  return { isUpdatingDietType, updateDietType };
 }
 
 export function useUpdateUserActivity() {

@@ -13,12 +13,13 @@ import data, {
 import CustomButton from "./components/CustomButton";
 import RenderItem from "./components/RenderItem";
 import ProgressBar from "./components/ProgressBar";
-import { updateUserDietType } from "./services/apiUsers";
+import { useUpdateDietType } from "@/queries/usersQueries";
 
 const OnboardingScreen = () => {
   const flatListRef = useAnimatedRef<FlatList<OnboardingScreenData>>();
   const x = useSharedValue(0);
   const flatListIndex = useSharedValue(0);
+  const { updateDietType } = useUpdateDietType();
 
   // State to store selected answers keyed by question id
   const [selectedAnswers, setSelectedAnswers] = useState<{
@@ -60,7 +61,8 @@ const OnboardingScreen = () => {
       }
 
       // Send the text (not the number)
-      await updateUserDietType(selectedOption.text);
+      // await updateUserDietType(selectedOption.text);
+      updateDietType(selectedOption.text);
       console.log(`Updated diet type: ${selectedOption.text}`);
     } catch (error) {
       console.error("Error updating user diet type:", error);
