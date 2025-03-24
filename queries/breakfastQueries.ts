@@ -1,5 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBreakfasts } from "../app/services/apiBreakfast";
+import {
+  getBreakfasts,
+  getBreakfastWithDietType,
+} from "../app/services/apiBreakfast";
 
 export function useBreakfasts() {
   const {
@@ -11,4 +14,17 @@ export function useBreakfasts() {
     queryFn: getBreakfasts,
   });
   return { isBreakfastsLoading, breakfasts, error };
+}
+
+export function useBreakfastDietType(diet_type: string) {
+  const {
+    isLoading: isBreakfastsDietTypeLoading,
+    data: breakfastDietType,
+    error,
+  } = useQuery({
+    queryKey: ["breakfastDietType", diet_type],
+    queryFn: () => getBreakfastWithDietType(diet_type),
+    enabled: !!diet_type, // samo pokreće ako postoji diet_type
+  });
+  return { isBreakfastsDietTypeLoading, breakfastDietType, error };
 }

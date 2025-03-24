@@ -5,11 +5,18 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
-import { useBreakfasts } from "@/queries/breakfastQueries";
-import { useUpdateGoal, useUpdateUserActivity } from "@/queries/usersQueries";
+import {
+  useBreakfastDietType,
+  useBreakfasts,
+} from "@/queries/breakfastQueries";
+import {
+  useGetCurrentUserData,
+  useUpdateGoal,
+  useUpdateUserActivity,
+} from "@/queries/usersQueries";
 
 type ingredient = {
   name: string;
@@ -30,10 +37,16 @@ type breakfast = {
 };
 
 const Home = () => {
-  const { isBreakfastsLoading, breakfasts } = useBreakfasts();
-
   const { isUpdatingGoal, updateGoal } = useUpdateGoal();
   const { updateUserStreak, isUpdatingUserStreak } = useUpdateUserActivity();
+  const { user, isGettingCurrentUser } = useGetCurrentUserData();
+
+  const userName = user?.[0].display_name?.split(" ")[0];
+  const userStreak = user?.[0].streak_count;
+  const userDiet = user?.[0].diet_type;
+
+  const { breakfastDietType, isBreakfastsDietTypeLoading } =
+    useBreakfastDietType(userDiet ?? "");
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
@@ -43,18 +56,32 @@ const Home = () => {
     updateUserStreak();
   };
 
+  // useEffect(() => {
+  //   updateUserStreak();
+  // }, []);
+
   return (
     <View className="flex-1 items-center">
-      {isBreakfastsLoading ? (
-        <ActivityIndicator size="small" color={"#333"} />
-      ) : (
-        <Image
-          source={{
-            uri: breakfasts?.[0]?.image,
-          }}
-          style={{ width: "100%", height: 280 }}
-        />
-      )}
+      <View
+        style={{
+          width: "100%",
+          height: 280,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {isBreakfastsDietTypeLoading ? (
+          <ActivityIndicator size="small" color={"#333"} />
+        ) : (
+          <Image
+            source={{
+              uri: breakfastDietType?.[0]?.image,
+            }}
+            style={{ width: "100%", height: "100%" }}
+            resizeMode="cover"
+          />
+        )}
+      </View>
 
       <TouchableOpacity
         onPress={() => router.push("/")}
@@ -82,6 +109,22 @@ const Home = () => {
       >
         <Text className="text-white flex items-center">Update strek</Text>
       </TouchableOpacity>
+
+      {isGettingCurrentUser ? (
+        <ActivityIndicator size="small" color={"#333"} />
+      ) : (
+        <View className="flex-row gap-8 mt-6 items-center justify-center">
+          <Text className="mt-4 text-xl font-bdogroteskRegular">
+            Name: {userName}
+          </Text>
+          <Text className="mt-4 text-xl font-bdogroteskRegular">
+            Streak: {userStreak}
+          </Text>
+          <Text className="mt-4 text-xl font-bdogroteskRegular">
+            Diet: {userDiet}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

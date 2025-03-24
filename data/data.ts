@@ -60,7 +60,7 @@ export const data: OnboardingScreenData[] = [
     type: "question",
     // Uncomment the line below if you want an animation for the question screen:
     // animation: require("../assets/animations/Lottie4.json"),
-    question: "What is your favorite color?",
+    question: "What is your diet type?",
     answers: [
       { id: 1, text: "Vegan" },
       { id: 2, text: "Vegetarian" },
