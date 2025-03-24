@@ -18,6 +18,24 @@ export async function updateUserGoal(
 
   return data;
 }
+export async function updateUserStartDate(): Promise<any[] | undefined> {
+  const user = await getAuthenticatedUser();
+
+  const today = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ start_date: today })
+    .eq("uid", user.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("User start date could not be updated");
+  }
+
+  return data;
+}
 
 export async function updateUserDietType(
   newDietType: string

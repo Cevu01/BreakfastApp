@@ -3,6 +3,7 @@ import {
   updateUserActivity,
   updateUserDietType,
   updateUserGoal,
+  updateUserStartDate,
 } from "@/app/services/apiUsers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -35,6 +36,26 @@ export function useUpdateGoal() {
   });
 
   return { isUpdatingGoal, updateGoal };
+}
+
+export function useUpdateStartDate() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateStartDate, isPending: isUpdatingStartDate } =
+    useMutation({
+      mutationFn: () => updateUserStartDate(),
+      onSuccess: () => {
+        console.log("User start date updated");
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      },
+      onError: (err) => {
+        console.log(
+          "Verovatno nisi ulogavan pa ne mozes da updatujes start date"
+        );
+      },
+    });
+
+  return { updateStartDate, isUpdatingStartDate };
 }
 export function useUpdateDietType() {
   const queryClient = useQueryClient();

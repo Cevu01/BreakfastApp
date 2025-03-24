@@ -5,13 +5,13 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import React, { useEffect } from "react";
+import React from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
-import { useBreakfastDietType } from "@/queries/breakfastQueries";
+import { useGetTodaysBreakfastForUser } from "@/queries/breakfastQueries";
 import {
-  useGetCurrentUserData,
   useUpdateGoal,
+  useUpdateStartDate,
   useUpdateUserActivity,
 } from "@/queries/usersQueries";
 
@@ -34,16 +34,18 @@ type breakfast = {
 };
 
 const Home = () => {
-  const { isUpdatingGoal, updateGoal } = useUpdateGoal();
+  const { updateGoal, isUpdatingGoal } = useUpdateGoal();
   const { updateUserStreak, isUpdatingUserStreak } = useUpdateUserActivity();
-  const { user, isGettingCurrentUser } = useGetCurrentUserData();
-  const userDiet = user?.[0].diet_type;
-
-  const { breakfastDietType, isBreakfastsDietTypeLoading } =
-    useBreakfastDietType(userDiet ?? "");
+  const { updateStartDate, isUpdatingStartDate } = useUpdateStartDate();
+  const { todaysBreakfastForUser, isTodaysBreakfastForUserLoading } =
+    useGetTodaysBreakfastForUser();
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
+  };
+
+  const handleUpdateStartDate = () => {
+    updateStartDate();
   };
 
   const handleUpdateStreak = () => {
@@ -64,12 +66,12 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        {isBreakfastsDietTypeLoading ? (
+        {isTodaysBreakfastForUserLoading ? (
           <ActivityIndicator size="small" color={"#333"} />
         ) : (
           <Image
             source={{
-              uri: breakfastDietType?.[0]?.image,
+              uri: todaysBreakfastForUser?.image,
             }}
             style={{ width: "100%", height: "100%" }}
             resizeMode="cover"
@@ -101,7 +103,13 @@ const Home = () => {
         onPress={handleUpdateStreak}
         className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
       >
-        <Text className="text-white flex items-center">Update strek</Text>
+        <Text className="text-white flex items-center">Update streak</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleUpdateStartDate}
+        className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
+      >
+        <Text className="text-white flex items-center">Set start date</Text>
       </TouchableOpacity>
     </View>
   );
