@@ -8,10 +8,7 @@ import {
 import React, { useEffect } from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
-import {
-  useBreakfastDietType,
-  useBreakfasts,
-} from "@/queries/breakfastQueries";
+import { useBreakfastDietType } from "@/queries/breakfastQueries";
 import {
   useGetCurrentUserData,
   useUpdateGoal,
@@ -40,9 +37,6 @@ const Home = () => {
   const { isUpdatingGoal, updateGoal } = useUpdateGoal();
   const { updateUserStreak, isUpdatingUserStreak } = useUpdateUserActivity();
   const { user, isGettingCurrentUser } = useGetCurrentUserData();
-
-  const userName = user?.[0].display_name?.split(" ")[0];
-  const userStreak = user?.[0].streak_count;
   const userDiet = user?.[0].diet_type;
 
   const { breakfastDietType, isBreakfastsDietTypeLoading } =
@@ -109,22 +103,6 @@ const Home = () => {
       >
         <Text className="text-white flex items-center">Update strek</Text>
       </TouchableOpacity>
-
-      {isGettingCurrentUser ? (
-        <ActivityIndicator size="small" color={"#333"} />
-      ) : (
-        <View className="flex-row gap-8 mt-6 items-center justify-center">
-          <Text className="mt-4 text-xl font-bdogroteskRegular">
-            Name: {userName}
-          </Text>
-          <Text className="mt-4 text-xl font-bdogroteskRegular">
-            Streak: {userStreak}
-          </Text>
-          <Text className="mt-4 text-xl font-bdogroteskRegular">
-            Diet: {userDiet}
-          </Text>
-        </View>
-      )}
     </View>
   );
 };
