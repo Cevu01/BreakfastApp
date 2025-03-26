@@ -1,9 +1,9 @@
 import {
   getUsers,
-  updateUserActivity,
   updateUserDietType,
   updateUserGoal,
   updateUserStartDate,
+  updateUserStreak,
 } from "@/app/services/apiUsers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -78,20 +78,19 @@ export function useUpdateDietType() {
   return { isUpdatingDietType, updateDietType };
 }
 
-export function useUpdateUserActivity() {
+export function useUpdateUserStreak() {
   const queryClient = useQueryClient();
 
-  const { mutate: updateUserStreak, isPending: isUpdatingUserStreak } =
-    useMutation({
-      mutationFn: () => updateUserActivity(),
-      onSuccess: () => {
-        console.log("User streak updated");
-        queryClient.invalidateQueries({ queryKey: ["user"] });
-      },
-      onError: (err) => {
-        console.log("Verovatno nisi ulogavan pa ne mozes da updatujes streak");
-      },
-    });
+  const { mutate: updateStreak, isPending: isUpdatingStreak } = useMutation({
+    mutationFn: () => updateUserStreak(),
+    onSuccess: () => {
+      console.log("User streak updated");
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: (err) => {
+      console.log("Verovatno nisi ulogavan pa ne mozes da updatujes streak");
+    },
+  });
 
-  return { updateUserStreak, isUpdatingUserStreak };
+  return { updateStreak, isUpdatingStreak };
 }

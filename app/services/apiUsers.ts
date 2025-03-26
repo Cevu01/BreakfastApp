@@ -1,6 +1,7 @@
 import { getAuthenticatedUser } from "@/helpers/getAuthenticatedUser";
 import { supabase } from "./supabase";
 
+//UPDATE USER GOAL
 export async function updateUserGoal(
   newGoal: string
 ): Promise<any[] | undefined> {
@@ -18,6 +19,8 @@ export async function updateUserGoal(
 
   return data;
 }
+
+//UPDATE USER START DATE
 export async function updateUserStartDate(): Promise<any[] | undefined> {
   const user = await getAuthenticatedUser();
 
@@ -37,6 +40,7 @@ export async function updateUserStartDate(): Promise<any[] | undefined> {
   return data;
 }
 
+//UPDATE USER DIET TYPE
 export async function updateUserDietType(
   newDietType: string
 ): Promise<any[] | undefined> {
@@ -54,7 +58,9 @@ export async function updateUserDietType(
 
   return data;
 }
-export async function updateUserActivity(): Promise<void> {
+
+//UPDATE USER ACTIVITY
+export async function updateUserStreak(): Promise<void> {
   const user = await getAuthenticatedUser();
   if (!user || !user.id) {
     throw new Error("User is not authenticated");

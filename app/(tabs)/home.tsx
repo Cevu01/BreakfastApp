@@ -8,37 +8,44 @@ import {
 import React from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
-import { useGetTodaysBreakfastForUser } from "@/queries/breakfastQueries";
+import { useGetBreakfast } from "@/queries/breakfastQueries";
 import {
   useUpdateGoal,
   useUpdateStartDate,
-  useUpdateUserActivity,
+  useUpdateUserStreak,
 } from "@/queries/usersQueries";
 
-type ingredient = {
-  name: string;
-  unit: string;
-  quantity: number;
-};
+// type Ingredient = {
+//   name: string;
+//   unit: string;
+//   quantity: number;
+// };
+// type Nutrition = {
+//   calories: number;
+//   protein: number;
+//   carbs: number;
+//   fat: number;
+// };
 
-type breakfast = {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
-  ingredients: ingredient[];
-};
+// type Breakfast = {
+//   id: number;
+//   name: string;
+//   image: string;
+//   description: string;
+//   nutritions: Nutrition[];
+//   recipe: string;
+//   diet_type: string;
+//   day_number: number;
+//   ingredients: Ingredient[];
+// };
 
 const Home = () => {
   const { updateGoal, isUpdatingGoal } = useUpdateGoal();
-  const { updateUserStreak, isUpdatingUserStreak } = useUpdateUserActivity();
+  const { updateStreak, isUpdatingStreak } = useUpdateUserStreak();
   const { updateStartDate, isUpdatingStartDate } = useUpdateStartDate();
-  const { todaysBreakfastForUser, isTodaysBreakfastForUserLoading } =
-    useGetTodaysBreakfastForUser();
+
+  // Typing the response from the useGetBreakfast hook
+  const { breakfast, isBreakfastLoading } = useGetBreakfast();
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
@@ -49,12 +56,8 @@ const Home = () => {
   };
 
   const handleUpdateStreak = () => {
-    updateUserStreak();
+    updateStreak();
   };
-
-  // useEffect(() => {
-  //   updateUserStreak();
-  // }, []);
 
   return (
     <View className="flex-1 items-center">
@@ -66,16 +69,18 @@ const Home = () => {
           alignItems: "center",
         }}
       >
-        {isTodaysBreakfastForUserLoading ? (
+        {isBreakfastLoading ? (
           <ActivityIndicator size="small" color={"#333"} />
         ) : (
-          <Image
-            source={{
-              uri: todaysBreakfastForUser?.image,
-            }}
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="cover"
-          />
+          breakfast && (
+            <Image
+              source={{
+                uri: breakfast.image,
+              }}
+              style={{ width: "100%", height: "100%" }}
+              resizeMode="cover"
+            />
+          )
         )}
       </View>
 

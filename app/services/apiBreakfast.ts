@@ -2,34 +2,7 @@ import { getUserDay } from "@/helpers/getUserDate";
 import { supabase } from "./supabase";
 import { getAuthenticatedUser } from "@/helpers/getAuthenticatedUser";
 
-export async function getBreakfasts() {
-  const { data, error } = await supabase.from("breakfasts").select("*");
-
-  if (error) {
-    console.error(error);
-    throw new Error("Breakfasts could not be loaded");
-  }
-
-  return data;
-}
-
-export async function getBreakfastWithDietType(
-  diet_type: string
-): Promise<any[] | undefined> {
-  const { data, error } = await supabase
-    .from("breakfasts")
-    .select()
-    .eq("diet_type", diet_type);
-
-  if (error) {
-    console.error(error);
-    throw new Error("Breakfast could not be fetched");
-  }
-
-  return data;
-}
-
-export async function getTodaysBreakfastForUser() {
+export async function getBreakfast() {
   const user = await getAuthenticatedUser();
   // 1. Fetch user info
   const { data: userData, error: userError } = await supabase
