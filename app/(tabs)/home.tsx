@@ -8,7 +8,7 @@ import {
 import React from "react";
 import { router } from "expo-router";
 import { signOutFromGoogle } from "../services/GoogleAuth";
-import { useGetBreakfast } from "@/queries/breakfastQueries";
+import { useGetFilteredBreakfast } from "@/queries/breakfastQueries";
 import {
   useUpdateGoal,
   useUpdateStartDate,
@@ -45,7 +45,9 @@ const Home = () => {
   const { updateStartDate, isUpdatingStartDate } = useUpdateStartDate();
 
   // Typing the response from the useGetBreakfast hook
-  const { breakfast, isBreakfastLoading } = useGetBreakfast();
+  // const { breakfast, isBreakfastLoading } = useGetBreakfast();
+  const { breakfast, isBreakfastLoading, error } = useGetFilteredBreakfast();
+  console.log(breakfast);
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");

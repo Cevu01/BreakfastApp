@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBreakfast } from "../app/services/apiBreakfast";
+import { getFilteredBreakfast } from "../app/services/apiBreakfast";
 
-export function useGetBreakfast() {
+export function useGetFilteredBreakfast() {
   const {
     data: breakfast,
     isLoading: isBreakfastLoading,
     error,
   } = useQuery({
-    queryKey: ["breakfast"],
-    queryFn: () => getBreakfast(),
+    queryKey: ["filtered-breakfast"],
+    queryFn: getFilteredBreakfast,
+    retry: false,
   });
-  return { breakfast, isBreakfastLoading };
+
+  return { breakfast, isBreakfastLoading, error };
 }
