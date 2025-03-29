@@ -1,6 +1,7 @@
 import { getUserDay } from "@/helpers/getUserDate";
 import { supabase } from "./supabase";
 import { getAuthenticatedUser } from "@/helpers/getAuthenticatedUser";
+import { UserInterfaceIdiom } from "expo-constants";
 
 // export async function getBreakfast() {
 //   const user = await getAuthenticatedUser();
@@ -79,27 +80,31 @@ export async function getFilteredBreakfast() {
 
   // 3. Fetch user's food preferences
   const { data: preferences, error: prefError } = await supabase
-    .from("user_food_preferences")
-    .select("ingredient")
-    .eq("user_id", user.id);
+    .from("user_preferences")
+    .select("preferences")
+    .eq("users_id", user.id);
 
   if (prefError) {
     throw new Error("Unable to fetch user preferences");
   }
 
-  const dislikedIngredients = preferences?.map((p) => p.ingredient) || [];
+  const dislikedIngredients = preferences?.flatMap((p) => p.preferences) || [];
 
-  // 4. For each breakfast, check if it contains any disliked ingredients
+  // 4. Filter breakfasts
   for (const breakfast of breakfasts) {
-    const { data: ingredients, error: ingError } = await supabase
+    const { data: ingredientsData, error: ingError } = await supabase
       .from("breakfast_ingredients")
-      .select("ingredient")
+      .select("ingredients")
       .eq("breakfast_id", breakfast.id);
 
-    if (ingError) continue;
+    if (ingError || !ingredientsData || ingredientsData.length === 0) continue;
 
-    const hasDisliked = ingredients?.some((ing) =>
-      dislikedIngredients.includes(ing.ingredient)
+    const ingredientsArray = ingredientsData[0].ingredients || [];
+
+    const hasDisliked = ingredientsArray.some((ing: any) =>
+      dislikedIngredients.some(
+        (disliked) => disliked.toLowerCase() === ing.name.toLowerCase()
+      )
     );
 
     if (!hasDisliked && breakfast.day_number >= currentDay) {
@@ -107,17 +112,21 @@ export async function getFilteredBreakfast() {
     }
   }
 
-  // 5. Fallback: if no valid breakfast for currentDay+, return first available without disliked ingredients
+  // 5. Fallback
   for (const breakfast of breakfasts) {
-    const { data: ingredients, error: ingError } = await supabase
+    const { data: ingredientsData, error: ingError } = await supabase
       .from("breakfast_ingredients")
-      .select("ingredient")
+      .select("ingredients")
       .eq("breakfast_id", breakfast.id);
 
-    if (ingError) continue;
+    if (ingError || !ingredientsData || ingredientsData.length === 0) continue;
 
-    const hasDisliked = ingredients?.some((ing) =>
-      dislikedIngredients.includes(ing.ingredient)
+    const ingredientsArray = ingredientsData[0].ingredients || [];
+
+    const hasDisliked = ingredientsArray.some((ing: any) =>
+      dislikedIngredients.some(
+        (disliked) => disliked.toLowerCase() === ing.name.toLowerCase()
+      )
     );
 
     if (!hasDisliked) {

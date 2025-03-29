@@ -47,7 +47,7 @@ const Home = () => {
   // Typing the response from the useGetBreakfast hook
   // const { breakfast, isBreakfastLoading } = useGetBreakfast();
   const { breakfast, isBreakfastLoading, error } = useGetFilteredBreakfast();
-  console.log(breakfast);
+  // console.log(breakfast);
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
