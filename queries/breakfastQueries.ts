@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getFilteredBreakfast } from "../app/services/apiBreakfast";
+import { getFilteredBreakfast } from "../services/apiBreakfast";
 
 export function useGetFilteredBreakfast() {
   const {

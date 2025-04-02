@@ -8,6 +8,9 @@ const progress = () => {
   return (
     <View className="flex-1 justify-center items-center">
       <Text>progress</Text>
+      {data?.map((item) => (
+        <Text key={item.name}>{item.name}</Text>
+      ))}
     </View>
   );
 };

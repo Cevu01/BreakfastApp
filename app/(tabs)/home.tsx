@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import { router } from "expo-router";
-import { signOutFromGoogle } from "../services/GoogleAuth";
+import { signOutFromGoogle } from "../../services/GoogleAuth";
 import { useGetFilteredBreakfast } from "@/queries/breakfastQueries";
 import {
   useUpdateGoal,

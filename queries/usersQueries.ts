@@ -4,7 +4,7 @@ import {
   updateUserGoal,
   updateUserStartDate,
   updateUserStreak,
-} from "@/app/services/apiUsers";
+} from "@/services/apiUsers";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 //Sa ovom funkcijom supabase mi automatiski vraca trenutno ulogovanog korisnika

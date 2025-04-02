@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
-import { OnboardingScreenData } from "../../data/data";
+import { OnboardingScreenData } from "../data/data";
 
 type Props = {
   dataLength: number;
@@ -116,7 +116,7 @@ const CustomButton = ({
           Get Started
         </Animated.Text>
         <Animated.Image
-          source={require("../../assets/images/Vector.png")}
+          source={require("../assets/images/Vector.png")}
           style={[styles.arrow, arrowAnimationStyle]}
         />
       </Animated.View>

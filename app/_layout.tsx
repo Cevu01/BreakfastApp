@@ -1,6 +1,5 @@
 import { SplashScreen, Stack } from "expo-router";
 import "./globals.css";
-import { StatusBar } from "react-native";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

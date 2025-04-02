@@ -10,9 +10,9 @@ import data, {
   OnboardingQuestionData,
   AnswerOption,
 } from "../data/data";
-import CustomButton from "./components/CustomButton";
-import RenderItem from "./components/RenderItem";
-import ProgressBar from "./components/ProgressBar";
+import CustomButton from "../components/CustomButton";
+import RenderItem from "../components/RenderItem";
+import ProgressBar from "../components/ProgressBar";
 import { useUpdateDietType } from "@/queries/usersQueries";
 
 const OnboardingScreen = () => {
