@@ -1,4 +1,4 @@
-import { supabase } from "@/services/supabase";
+import { supabase } from "@/app/services/supabase";
 
 export async function checkUserSession(): Promise<boolean> {
   try {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getShoppingListForNext7Days } from "../services/apiShoppingList";
+import { getShoppingListForNext7Days } from "../app/services/apiShoppingList";
 
 export const useShoppingListQuery = () => {
   return useQuery({

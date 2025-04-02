@@ -3,10 +3,7 @@ import GoogleButton from "@/assets/svg/GoogleButton";
 import { Link, router } from "expo-router";
 import { Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { useEffect, useState } from "react";
-import {
-  configureGoogleSignIn,
-  signInWithGoogle,
-} from "../services/GoogleAuth";
+import { configureGoogleSignIn, signInWithGoogle } from "./services/GoogleAuth";
 import { checkUserSession } from "@/helpers/checkUserSession";
 
 export default function Index() {
