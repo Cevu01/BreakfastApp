@@ -11,6 +11,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.breakfast.app",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.738582966255-j09iro69a27ofbujtaqojv98cr9u49n6"
+        }
+      },
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -37,8 +42,15 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.738582966255-j09iro69a27ofbujtaqojv98cr9u49n6"
+        }
       ]
     ],
+
     "extra": {
       "router": {
         "origin": false

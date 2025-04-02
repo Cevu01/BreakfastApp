@@ -44,6 +44,8 @@ export const configureGoogleSignIn = () => {
   GoogleSignin.configure({
     webClientId:
       "738582966255-1k74bv4iknqll67um74ujetahee0m4bi.apps.googleusercontent.com",
+    iosClientId:
+      "738582966255-j09iro69a27ofbujtaqojv98cr9u49n6.apps.googleusercontent.com",
     offlineAccess: true,
   });
   // console.log("GoogleSignin configured");
