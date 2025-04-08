@@ -124,7 +124,7 @@ export const signOutFromGoogle = async () => {
     await GoogleSignin.signOut();
     await supabase.auth.signOut();
     console.log("✅ User signed out");
-    router.push("/");
+    router.replace("/");
   } catch (error: any) {
     console.error("❌ Google Sign-Out Error:", error);
   }
