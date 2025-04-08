@@ -14,6 +14,7 @@ import {
   useUpdateStartDate,
   useUpdateUserStreak,
 } from "@/queries/usersQueries";
+import { signOutFromApple } from "../services/AppleAuth";
 
 // type Ingredient = {
 //   name: string;
@@ -94,9 +95,9 @@ const Home = () => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={signOutFromGoogle}
-        className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
+        className=" flex items-center justify-center bg-black  w-42 h-8 mt-6"
       >
-        <Text className="text-white flex items-center">Sign out out</Text>
+        <Text className="text-white flex items-center">Sign out google</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -117,6 +118,12 @@ const Home = () => {
         className=" flex items-center justify-center bg-black  w-28 h-8 mt-6"
       >
         <Text className="text-white flex items-center">Set start date</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={signOutFromApple}
+        className=" flex items-center justify-center bg-black  w-42 h-8 mt-6"
+      >
+        <Text className="text-white flex items-center">Sign out apple</Text>
       </TouchableOpacity>
     </View>
   );
