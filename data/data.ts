@@ -1,5 +1,12 @@
 import { AnimationObject } from "lottie-react-native";
 
+import { introSlides } from "./introSlides";
+import { questionSlides } from "./questionSlides";
+import { resultSlides } from "./resultSlides";
+import { inputSlides } from "./inputSlides";
+import { badSlides } from "./badSlides";
+import { goodSlides } from "./goodSlides";
+
 export interface OnboardingAnimationData {
   id: number;
   type: "animation";
@@ -30,74 +37,12 @@ export type OnboardingScreenData =
   | OnboardingQuestionData;
 
 export const data: OnboardingScreenData[] = [
-  {
-    id: 1,
-    type: "animation",
-    animation: require("../assets/animations/Lottie1.json"),
-    text: "Prva slika na onboarding ekranu",
-    textColor: "#005b4f",
-    backgroundColor: "#ffa3ce",
-  },
-  {
-    id: 2,
-    type: "animation",
-    animation: require("../assets/animations/Lottie2.json"),
-    text: "Druga slika na onboarding ekranu",
-    textColor: "#1e2169",
-    backgroundColor: "#bae4fd",
-  },
-  {
-    id: 3,
-    type: "animation",
-    animation: require("../assets/animations/Lottie3.json"),
-    text: "Treca slika na onboarding ekranu",
-    textColor: "#F7EE7F",
-    backgroundColor: "#F1A66A",
-  },
-  // New question screens (with an optional animation if desired)
-  {
-    id: 4,
-    type: "question",
-    // Uncomment the line below if you want an animation for the question screen:
-    // animation: require("../assets/animations/Lottie4.json"),
-    question: "What is your diet type?",
-    answers: [
-      { id: 1, text: "Vegan" },
-      { id: 2, text: "Vegetarian" },
-      { id: 3, text: "Keto" },
-      { id: 4, text: "Meat" },
-    ],
-    textColor: "#ffffff",
-    backgroundColor: "#000000",
-  },
-  {
-    id: 5,
-    type: "question",
-    // animation: require("../assets/animations/Lottie5.json"),
-    question: "What is your favorite food?",
-    answers: [
-      { id: 1, text: "Pizza" },
-      { id: 2, text: "Sushi" },
-      { id: 3, text: "Burger" },
-      { id: 4, text: "Pasta" },
-    ],
-    textColor: "#ffffff",
-    backgroundColor: "#000000",
-  },
-  {
-    id: 6,
-    type: "question",
-    // animation: require("../assets/animations/Lottie6.json"),
-    question: "What is your goal?",
-    answers: [
-      { id: 1, text: "Better cardio" },
-      { id: 2, text: "Lose weight" },
-      { id: 3, text: "Gain weitht" },
-      { id: 4, text: "Strength" },
-    ],
-    textColor: "#ffffff",
-    backgroundColor: "#000",
-  },
+  ...introSlides,
+  ...questionSlides,
+  ...resultSlides,
+  ...inputSlides,
+  ...badSlides,
+  ...goodSlides,
 ];
 
 export default data;

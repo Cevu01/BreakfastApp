@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     textAlign: "center",
-    fontSize: 44,
+    fontSize: 34,
     fontWeight: "bold",
     marginBottom: 10,
   },

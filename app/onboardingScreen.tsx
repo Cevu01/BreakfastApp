@@ -31,22 +31,22 @@ const OnboardingScreen = () => {
   //Videte sta cu sa ovom funkcijom da uradim?
   const submitAnswers = async () => {
     try {
-      // Get the selected answer ID for question 4
-      const answerId = selectedAnswers[4];
+      // Get the selected answer ID for question 11
+      const answerId = selectedAnswers[11];
 
       if (answerId === null || answerId === undefined) {
-        console.error("No answer selected for page 4.");
+        console.error("No answer selected for page 11.");
         return;
       }
 
       // Type guard: suzi data na OnboardingQuestionData
       const question = data.find(
         (item): item is OnboardingQuestionData =>
-          item.id === 4 && item.type === "question"
+          item.id === 11 && item.type === "question"
       );
 
       if (!question) {
-        console.error("Question data for page 4 not found.");
+        console.error("Question data for page 11 not found.");
         return;
       }
 
