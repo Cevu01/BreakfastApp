@@ -48,7 +48,7 @@ const RenderItem = ({
 }: Props) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
 
-  // Circle scale effect in background
+  // Animated style for the circular background effect.
   const circleStyle = useAnimatedStyle(() => {
     const scale = interpolate(
       x.value,
@@ -85,11 +85,9 @@ const RenderItem = ({
             ]}
           />
         </View>
-
         <Text style={[styles.bigText, { color: item.textColor }]}>
           Finally, a little more about you:
         </Text>
-
         <View style={{ width: "80%" }}>
           <TextInput
             style={styles.input}
@@ -105,7 +103,6 @@ const RenderItem = ({
             onChangeText={setAge}
           />
         </View>
-
         <TouchableOpacity style={styles.customButton} onPress={onNameAgeSubmit}>
           <Text style={styles.customButtonText}>Submit</Text>
         </TouchableOpacity>
@@ -114,7 +111,6 @@ const RenderItem = ({
   }
 
   // ----- Normal Slides (Animation or Question) -----
-  // Lottie animation style for a subtle vertical movement
   const lottieStyle = useAnimatedStyle(() => {
     const translateY = interpolate(
       x.value,
@@ -149,8 +145,6 @@ const RenderItem = ({
           ]}
         />
       </View>
-
-      {/* If there's an animation, show Lottie */}
       {item.animation && (
         <Animated.View style={lottieStyle}>
           <LottieView
@@ -161,15 +155,11 @@ const RenderItem = ({
           />
         </Animated.View>
       )}
-
-      {/* If type="animation" => show big text */}
       {item.type === "animation" && (
         <Text style={[styles.bigText, { color: item.textColor }]}>
           {item.text}
         </Text>
       )}
-
-      {/* If type="question" => show question & answers, auto-swipe on answer */}
       {item.type === "question" && (
         <>
           <Text style={[styles.questionText, { color: item.textColor }]}>
@@ -187,12 +177,9 @@ const RenderItem = ({
                     isSelected && styles.answerButtonSelected,
                   ]}
                   onPress={() => {
-                    // 1) Mark the selected answer => highlight
                     onSelectAnswer?.(item.id, answer.id);
-
-                    // 2) Wait ~300ms so user sees highlight
+                    // Wait 300 ms for the highlight, then auto-scroll to next slide.
                     setTimeout(() => {
-                      // 3) Scroll to next slide if in range
                       if (flatListRef && dataLength) {
                         const nextIndex = index + 1;
                         if (nextIndex < dataLength) {
@@ -262,8 +249,6 @@ const styles = StyleSheet.create({
   answerText: {
     fontSize: 18,
   },
-
-  // Input-specific
   input: {
     backgroundColor: "white",
     borderRadius: 8,
