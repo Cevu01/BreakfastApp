@@ -2,6 +2,7 @@ import {
   getUsers,
   updateUserDietType,
   updateUserGoal,
+  updateUserNameAndAge,
   updateUserStartDate,
   updateUserStreak,
 } from "@/app/services/apiUsers";
@@ -36,6 +37,29 @@ export function useUpdateGoal() {
   });
 
   return { isUpdatingGoal, updateGoal };
+}
+
+export function useUpdateNameAndAge() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateNameAndAge, isPending: isUpdatingNameAndAge } =
+    useMutation({
+      mutationFn: ({ name, age }: { name: string; age: number }) =>
+        updateUserNameAndAge(name, age),
+
+      onSuccess: () => {
+        console.log("User name and age updated");
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      },
+
+      onError: (err) => {
+        console.log(
+          "Verovatno nisi ulogovan pa ne mozes da updatujes ime i godine"
+        );
+      },
+    });
+
+  return { updateNameAndAge, isUpdatingNameAndAge };
 }
 
 export function useUpdateStartDate() {

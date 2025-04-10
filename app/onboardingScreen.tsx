@@ -20,12 +20,13 @@ import data, {
 import CustomButton from "./components/CustomButton";
 import RenderItem from "./components/RenderItem";
 import ProgressBar from "./components/ProgressBar";
-import { useUpdateDietType } from "@/queries/usersQueries";
+import { useUpdateDietType, useUpdateNameAndAge } from "@/queries/usersQueries";
 
 const OnboardingScreen = () => {
   const flatListRef = useAnimatedRef<FlatList<OnboardingScreenData>>();
   const x = useSharedValue(0);
   const flatListIndex = useSharedValue(0);
+  const { updateNameAndAge, isUpdatingNameAndAge } = useUpdateNameAndAge();
 
   // Track the currently visible slide index
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -143,6 +144,7 @@ const OnboardingScreen = () => {
       console.warn("Please fill in both Name & Age");
       return;
     }
+    updateNameAndAge({ name, age: Number(age) });
     flatListRef.current?.scrollToIndex({
       index: currentIndex + 1,
       animated: true,

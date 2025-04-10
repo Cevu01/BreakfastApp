@@ -19,6 +19,26 @@ export async function updateUserGoal(
 
   return data;
 }
+//UPDATE USER NAME AND AGE
+export async function updateUserNameAndAge(
+  name: string,
+  age: number
+): Promise<any[] | undefined> {
+  const user = await getAuthenticatedUser();
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ name, age })
+    .eq("uid", user.id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("User name and age could not be updated");
+  }
+
+  return data;
+}
 
 //UPDATE USER START DATE
 export async function updateUserStartDate(): Promise<any[] | undefined> {
