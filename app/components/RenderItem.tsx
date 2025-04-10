@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  StyleSheet,
   Text,
   useWindowDimensions,
   View,
@@ -67,12 +66,10 @@ const RenderItem = ({
   if (item.id === 14) {
     return (
       <View
-        style={[
-          styles.slideContainer,
-          { width: SCREEN_WIDTH, backgroundColor: item.backgroundColor },
-        ]}
+        className="flex-1 justify-around items-center px-5"
+        style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
       >
-        <View style={styles.circleContainer}>
+        <View className="absolute inset-0 justify-end items-center">
           <Animated.View
             style={[
               {
@@ -85,26 +82,32 @@ const RenderItem = ({
             ]}
           />
         </View>
-        <Text style={[styles.bigText, { color: item.textColor }]}>
+        <Text
+          className="text-center text-[34px] font-bold mb-2.5"
+          style={{ color: item.textColor }}
+        >
           Finally, a little more about you:
         </Text>
-        <View style={{ width: "80%" }}>
+        <View className="w-4/5">
           <TextInput
-            style={styles.input}
+            className="bg-white rounded-md px-3 py-2.5 mb-2.5 text-base"
             placeholder="Enter your name"
             value={name}
             onChangeText={setName}
           />
           <TextInput
-            style={styles.input}
+            className="bg-white rounded-md px-3 py-2.5 mb-2.5 text-base"
             placeholder="Enter your age"
             keyboardType="numeric"
             value={age}
             onChangeText={setAge}
           />
         </View>
-        <TouchableOpacity style={styles.customButton} onPress={onNameAgeSubmit}>
-          <Text style={styles.customButtonText}>Submit</Text>
+        <TouchableOpacity
+          className="p-4 bg-[#005b4f] rounded-lg mt-2.5"
+          onPress={onNameAgeSubmit}
+        >
+          <Text className="text-white text-base font-semibold">Submit</Text>
         </TouchableOpacity>
       </View>
     );
@@ -127,12 +130,10 @@ const RenderItem = ({
 
   return (
     <View
-      style={[
-        styles.slideContainer,
-        { width: SCREEN_WIDTH, backgroundColor: item.backgroundColor },
-      ]}
+      className="flex-1 justify-around items-center px-5"
+      style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
     >
-      <View style={styles.circleContainer}>
+      <View className="absolute inset-0 justify-end items-center">
         <Animated.View
           style={[
             {
@@ -149,33 +150,41 @@ const RenderItem = ({
         <Animated.View style={lottieStyle}>
           <LottieView
             source={item.animation}
-            style={{ width: SCREEN_WIDTH * 0.9, height: SCREEN_WIDTH * 0.9 }}
+            style={{
+              width: SCREEN_WIDTH * 0.9,
+              height: SCREEN_WIDTH * 0.9,
+            }}
             autoPlay
             loop
           />
         </Animated.View>
       )}
       {item.type === "animation" && (
-        <Text style={[styles.bigText, { color: item.textColor }]}>
+        <Text
+          className="text-center text-[34px] font-bold mb-2.5"
+          style={{ color: item.textColor }}
+        >
           {item.text}
         </Text>
       )}
       {item.type === "question" && (
         <>
-          <Text style={[styles.questionText, { color: item.textColor }]}>
+          <Text
+            className="text-center text-[32px] font-bold my-5"
+            style={{ color: item.textColor }}
+          >
             {item.question}
           </Text>
-          <View style={styles.answersContainer}>
+          <View className="w-full">
             {item.answers.map((answer) => {
               const isSelected =
                 selectedAnswers && selectedAnswers[item.id] === answer.id;
               return (
                 <TouchableOpacity
                   key={answer.id}
-                  style={[
-                    styles.answerButton,
-                    isSelected && styles.answerButtonSelected,
-                  ]}
+                  className={`py-4 px-5 rounded-lg border border-gray-300 my-2.5 items-center ${
+                    isSelected ? "bg-[#c24f25]" : ""
+                  }`}
                   onPress={() => {
                     onSelectAnswer?.(item.id, answer.id);
                     // Wait 300 ms for the highlight, then auto-scroll to next slide.
@@ -192,7 +201,10 @@ const RenderItem = ({
                     }, 300);
                   }}
                 >
-                  <Text style={[styles.answerText, { color: item.textColor }]}>
+                  <Text
+                    className="text-[18px]"
+                    style={{ color: item.textColor }}
+                  >
                     {answer.text}
                   </Text>
                 </TouchableOpacity>
@@ -206,66 +218,3 @@ const RenderItem = ({
 };
 
 export default RenderItem;
-
-const styles = StyleSheet.create({
-  slideContainer: {
-    flex: 1,
-    justifyContent: "space-around",
-    alignItems: "center",
-    paddingHorizontal: 20,
-  },
-  circleContainer: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  bigText: {
-    textAlign: "center",
-    fontSize: 34,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  questionText: {
-    textAlign: "center",
-    fontSize: 32,
-    fontWeight: "bold",
-    marginVertical: 20,
-  },
-  answersContainer: {
-    width: "100%",
-  },
-  answerButton: {
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    marginVertical: 10,
-    alignItems: "center",
-  },
-  answerButtonSelected: {
-    backgroundColor: "#c24f25",
-  },
-  answerText: {
-    fontSize: 18,
-  },
-  input: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  customButton: {
-    padding: 15,
-    backgroundColor: "#005b4f",
-    borderRadius: 10,
-    marginTop: 10,
-  },
-  customButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});

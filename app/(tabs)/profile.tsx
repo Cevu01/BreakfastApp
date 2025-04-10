@@ -5,7 +5,7 @@ import { useGetCurrentUserData } from "@/queries/usersQueries";
 const profile = () => {
   const { user, isGettingCurrentUser } = useGetCurrentUserData();
 
-  const userName = user?.[0].display_name?.split(" ")[0];
+  const userName = user?.[0].name;
   const userStreak = user?.[0].streak_count;
   const userDiet = user?.[0].diet_type;
 

@@ -1,10 +1,11 @@
 import {
-  StyleSheet,
   View,
   FlatList,
   ViewToken,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import React, { useState, useCallback } from "react";
 import Animated, {
@@ -151,6 +152,16 @@ const OnboardingScreen = () => {
     });
   };
 
+  // Function for going back to the previous slide
+  const handleBackPress = () => {
+    if (currentIndex > 0) {
+      flatListRef.current?.scrollToIndex({
+        index: currentIndex - 1,
+        animated: true,
+      });
+    }
+  };
+
   // Decide if we show the bottom arrow button.
   // Hide it for the input slide (ID=14) and any question slide.
   const currentSlide = data[currentIndex];
@@ -174,8 +185,21 @@ const OnboardingScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
+      {/* Render back button on question pages only */}
+      {currentSlide?.type === "question" && (
+        <View className="absolute top-[60px] left-[20px] z-10">
+          <TouchableOpacity
+            className="bg-white p-[10px] rounded-[5px]"
+            onPress={handleBackPress}
+          >
+            <Text className="text-[16px] font-bold">Back</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <Animated.FlatList
+        removeClippedSubviews={true}
         ref={flatListRef}
         data={data}
         keyExtractor={(item) => item.id.toString()}
@@ -213,7 +237,7 @@ const OnboardingScreen = () => {
       <ProgressBar dataLength={data.length} x={x} />
 
       {!shouldHideArrowButton && (
-        <View style={styles.bottomContainer}>
+        <View className="absolute bottom-[20px] left-0 right-0 flex-row justify-end items-center mx-[30px] py-[30px]">
           <CustomButton
             flatListRef={flatListRef}
             flatListIndex={flatListIndex}
@@ -228,20 +252,3 @@ const OnboardingScreen = () => {
 };
 
 export default OnboardingScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  bottomContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    marginHorizontal: 30,
-    paddingVertical: 30,
-    position: "absolute",
-    bottom: 20,
-    left: 0,
-    right: 0,
-  },
-});
