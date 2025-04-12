@@ -161,7 +161,7 @@ const RenderItem = ({
       )}
       {item.type === "animation" && (
         <Text
-          className="text-center text-[34px] font-bold mb-2.5"
+          className="text-center font-bdogroteskDemiBold text-[26px] font-bold mb-2.5"
           style={{ color: item.textColor }}
         >
           {item.text}
