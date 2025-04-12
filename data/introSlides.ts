@@ -9,21 +9,22 @@ export const introSlides: OnboardingAnimationData[] = [
     textColor: "#005b4f",
     backgroundColor: "#ffa3ce",
   },
+
   {
     id: 2,
     type: "animation",
-    animation: require("../assets/animations/Lottie2.json"),
-    text: "Skipping breakfast doesn’t help you lose weight — it can actually slow your metabolism",
-    textColor: "#1e2169",
-    backgroundColor: "#bae4fd",
+    animation: require("../assets/animations/Lottie3.json"),
+    text: "Over 75% of people skip breakfast or choose unhealthy options",
+    textColor: "#F7EE7F",
+    backgroundColor: "#F1A66A",
   },
   {
     id: 3,
     type: "animation",
-    animation: require("../assets/animations/Lottie3.json"),
-    text: "Everyone’s body is different — yet most people eat the same breakfast every day",
-    textColor: "#F7EE7F",
-    backgroundColor: "#F1A66A",
+    animation: require("../assets/animations/Lottie2.json"),
+    text: "Let’s find out what kind of breakfast works best for you.",
+    textColor: "#1e2169",
+    backgroundColor: "#bae4fd",
   },
   // etc.
 ];
