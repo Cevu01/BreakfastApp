@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 10,
-    backgroundColor: "#ccc",
+    backgroundColor: "#fff",
 
     overflow: "hidden",
   },
   progress: {
     height: "100%",
-    backgroundColor: "#F15937",
+    backgroundColor: "#b28dff",
   },
 });

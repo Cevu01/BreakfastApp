@@ -130,7 +130,7 @@ const RenderItem = ({
 
   return (
     <View
-      className="flex-1 justify-around items-center px-5"
+      className="flex-1 pt-[90px] flex-col gap-[24px] items-center px-5"
       style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
     >
       <View className="absolute inset-0 justify-end items-center">
@@ -161,7 +161,7 @@ const RenderItem = ({
       )}
       {item.type === "animation" && (
         <Text
-          className="text-center font-bdogroteskDemiBold text-[26px] font-bold mb-2.5"
+          className="text-center font-fredokaMedium text-[36px]  mb-2.5"
           style={{ color: item.textColor }}
         >
           {item.text}

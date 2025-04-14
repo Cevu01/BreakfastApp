@@ -12,7 +12,7 @@ export const badSlides: OnboardingAnimationData[] = [
   {
     id: 20,
     type: "animation",
-    animation: require("../assets/animations/Lottie1.json"),
+    animation: require("../assets/animations/Lottie6.json"),
     text: "A balanced morning routine can boost focus, mood, metabolism, and consistency",
     textColor: "#005b4f",
     backgroundColor: "#ffa3ce",

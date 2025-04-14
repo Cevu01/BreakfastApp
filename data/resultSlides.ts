@@ -4,7 +4,7 @@ export const resultSlides: OnboardingAnimationData[] = [
   {
     id: 15,
     type: "animation",
-    animation: require("../assets/animations/Lottie1.json"),
+    animation: require("../assets/animations/Lottie5.json"),
     text: "Calculating...",
     textColor: "#005b4f",
     backgroundColor: "#ffa3ce",

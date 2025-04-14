@@ -15,6 +15,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import { OnboardingScreenData } from "../../data/data";
+import RightArrow from "../../assets/svg/RightArrow";
 
 type Props = {
   dataLength: number;
@@ -80,7 +81,7 @@ const CustomButton = ({
     const backgroundColor = interpolateColor(
       x.value,
       [0, SCREEN_WIDTH, 2 * SCREEN_WIDTH],
-      ["#005b4f", "#1e2169", "#F15937"]
+      ["#3B3D00", "#034063", "#271301"]
     );
 
     return { backgroundColor: backgroundColor };
@@ -115,10 +116,9 @@ const CustomButton = ({
         <Animated.Text style={[styles.textButton, textAnimationStyle]}>
           Get Started
         </Animated.Text>
-        <Animated.Image
-          source={require("../../assets/images/Vector.png")}
-          style={[styles.arrow, arrowAnimationStyle]}
-        />
+        <Animated.View style={[styles.arrow, arrowAnimationStyle]}>
+          <RightArrow width={30} height={30} />
+        </Animated.View>
       </Animated.View>
     </TouchableWithoutFeedback>
   );

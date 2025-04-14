@@ -66,7 +66,9 @@ export default function Index() {
 
   return (
     <View className="flex-1 justify-center items-center px-4">
-      <Text className="text-5xl text-blue-600 mb-4">Welcome Vuk</Text>
+      <Text className="text-5xl text-blue-600 mb-4 font-extrabold font-fredokaLight">
+        Welcome Vuk
+      </Text>
 
       {userInfo && (
         <View className="mb-6 items-center">

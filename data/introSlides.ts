@@ -24,7 +24,7 @@ export const introSlides: OnboardingAnimationData[] = [
     type: "animation",
     animation: require("../assets/animations/Lottie2.json"),
     text: "Let’s find out what kind of breakfast works best for you",
-    textColor: "#002901",
-    backgroundColor: "#DFFFE0",
+    textColor: "#4E2603",
+    backgroundColor: "#fbc99d",
   },
 ];
