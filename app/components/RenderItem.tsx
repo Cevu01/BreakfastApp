@@ -170,7 +170,7 @@ const RenderItem = ({
       {item.type === "question" && (
         <>
           <Text
-            className="text-center text-[32px] font-bold my-5"
+            className=" text-[32px] font-bold my-5"
             style={{ color: item.textColor }}
           >
             {item.question}
@@ -182,8 +182,8 @@ const RenderItem = ({
               return (
                 <TouchableOpacity
                   key={answer.id}
-                  className={`py-4 px-5 rounded-lg border border-gray-300 my-2.5 items-center ${
-                    isSelected ? "bg-[#c24f25]" : ""
+                  className={`py-4 px-5 rounded-lg border border-gray-800 my-2.5 ${
+                    isSelected ? "bg-[#E1ADFF]" : ""
                   }`}
                   onPress={() => {
                     onSelectAnswer?.(item.id, answer.id);
