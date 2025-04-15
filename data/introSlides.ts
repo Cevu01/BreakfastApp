@@ -13,7 +13,7 @@ export const introSlides: OnboardingAnimationData[] = [
   {
     id: 2,
     type: "animation",
-    animation: require("../assets/animations/Lottie1.json"),
+    animation: require("../assets/animations/Lottie10.json"),
     text: "Over 75% of people skip breakfast or choose unhealthy options.",
     textColor: "#034063",
     backgroundColor: "#bae4fd",

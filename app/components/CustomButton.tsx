@@ -81,7 +81,7 @@ const CustomButton = ({
     const backgroundColor = interpolateColor(
       x.value,
       [0, SCREEN_WIDTH, 2 * SCREEN_WIDTH],
-      ["#3B3D00", "#034063", "#271301"]
+      ["#3B3D00", "#034063", "#063719"]
     );
 
     return { backgroundColor: backgroundColor };
