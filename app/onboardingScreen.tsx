@@ -22,6 +22,7 @@ import CustomButton from "./components/CustomButton";
 import RenderItem from "./components/RenderItem";
 import ProgressBar from "./components/ProgressBar";
 import { useUpdateDietType, useUpdateNameAndAge } from "@/queries/usersQueries";
+import BackArrow from "@/assets/svg/BackArrow";
 
 const OnboardingScreen = () => {
   const flatListRef = useAnimatedRef<FlatList<OnboardingScreenData>>();
@@ -188,12 +189,18 @@ const OnboardingScreen = () => {
     <View className="flex-1">
       {/* Render back button on question pages only */}
       {currentSlide?.type === "question" && (
-        <View className="absolute top-[60px] left-[20px] z-10">
+        <View className="absolute top-[60px] left-[16px] z-10">
           <TouchableOpacity
-            className="bg-white p-[10px] rounded-[5px]"
             onPress={handleBackPress}
+            style={{
+              shadowColor: "#000",
+              shadowOffset: { width: 1, height: 1 },
+              shadowOpacity: 0.1,
+              shadowRadius: 2,
+              elevation: 2,
+            }}
           >
-            <Text className="text-[16px] font-bold">Back</Text>
+            <BackArrow />
           </TouchableOpacity>
         </View>
       )}

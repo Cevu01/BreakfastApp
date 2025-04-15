@@ -130,7 +130,7 @@ const RenderItem = ({
 
   return (
     <View
-      className="flex-1 pt-[90px] flex-col gap-[24px] items-center px-5"
+      className="flex-1 pt-[90px] flex-col gap-[24px] items-center px-[16px]"
       style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
     >
       <View className="absolute inset-0 justify-end items-center">
@@ -170,7 +170,7 @@ const RenderItem = ({
       {item.type === "question" && (
         <>
           <Text
-            className=" text-[32px] font-bold my-5"
+            className="text-[32px] font-bold pt-[60px]  font-fredokaMedium"
             style={{ color: item.textColor }}
           >
             {item.question}
@@ -182,8 +182,8 @@ const RenderItem = ({
               return (
                 <TouchableOpacity
                   key={answer.id}
-                  className={`py-4 px-5 rounded-lg border border-gray-800 my-2.5 ${
-                    isSelected ? "bg-[#E1ADFF]" : ""
+                  className={`py-4 px-5 rounded-lg border  border-[#0A7BC2] my-2.5 ${
+                    isSelected ? "bg-[#51B6F6] " : "bg-[#D8EFFD] text-[#03334F]"
                   }`}
                   onPress={() => {
                     onSelectAnswer?.(item.id, answer.id);
@@ -202,7 +202,7 @@ const RenderItem = ({
                   }}
                 >
                   <Text
-                    className="text-[18px]"
+                    className="text-[18px] font-fredokaRegular"
                     style={{ color: item.textColor }}
                   >
                     {answer.text}
