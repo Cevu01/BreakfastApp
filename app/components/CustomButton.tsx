@@ -1,10 +1,10 @@
+import React from "react";
 import {
   FlatList,
   StyleSheet,
   TouchableWithoutFeedback,
   useWindowDimensions,
 } from "react-native";
-import React from "react";
 import Animated, {
   AnimatedRef,
   SharedValue,
@@ -12,12 +12,14 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
+  Extrapolation,
 } from "react-native-reanimated";
 import { useRouter } from "expo-router";
 import { OnboardingScreenData } from "../../data/data";
 import RightArrow from "../../assets/svg/RightArrow";
 
 type Props = {
+  data: OnboardingScreenData[]; // <-- NEW: entire slides array
   dataLength: number;
   flatListIndex: SharedValue<number>;
   flatListRef: AnimatedRef<FlatList<OnboardingScreenData>>;
@@ -26,15 +28,17 @@ type Props = {
 };
 
 const CustomButton = ({
+  data,
+  dataLength,
   flatListRef,
   flatListIndex,
-  dataLength,
   x,
   onSubmit,
 }: Props) => {
-  const { width: SCREEN_WIDTH } = useWindowDimensions();
   const router = useRouter();
+  const { width: SCREEN_WIDTH } = useWindowDimensions();
 
+  // 1) Animate button’s width for the last screen
   const buttonAnimationStyle = useAnimatedStyle(() => {
     return {
       width:
@@ -45,6 +49,7 @@ const CustomButton = ({
     };
   });
 
+  // 2) Arrow fade-out on last slide
   const arrowAnimationStyle = useAnimatedStyle(() => {
     return {
       width: 30,
@@ -62,6 +67,7 @@ const CustomButton = ({
     };
   });
 
+  // 3) "Get Started" text fade-in on last slide
   const textAnimationStyle = useAnimatedStyle(() => {
     return {
       opacity:
@@ -77,41 +83,52 @@ const CustomButton = ({
     };
   });
 
-  const animatedColor = useAnimatedStyle(() => {
+  // 4) Multi-stop color interpolation using each slide's backgroundColor
+  //    a) Build arrays for inputRange / outputRange
+  const inputRange = data.map((_, i) => i * SCREEN_WIDTH);
+  const outputRange = data.map((slide) => slide.textColor || "#FFF");
+
+  //    b) Animate background color
+  const animatedColorStyle = useAnimatedStyle(() => {
     const backgroundColor = interpolateColor(
       x.value,
-      [0, SCREEN_WIDTH, 2 * SCREEN_WIDTH],
-      ["#3B3D00", "#034063", "#063719"]
+      inputRange,
+      outputRange,
+      "RGB"
+      // omit the 5th argument, or only pass { gamma: 2.2, easing: ... } if needed
     );
-
-    return { backgroundColor: backgroundColor };
+    return { backgroundColor };
   });
 
   return (
     <TouchableWithoutFeedback
       onPress={async () => {
         if (flatListIndex.value < dataLength - 1) {
+          // not on last slide -> go to next
           flatListRef.current?.scrollToIndex({
             index: flatListIndex.value + 1,
           });
         } else {
-          // Ako postoji funkcija za slanje odgovora, prvo je izvrši
+          // on last slide -> do final submit or navigate
           if (onSubmit) {
             try {
-              await onSubmit(); // Sačekaj da se odgovori pošalju
-              router.replace("/(tabs)/home"); // Tek onda preusmeri korisnika
+              await onSubmit();
+              router.replace("/(tabs)/home");
             } catch (error) {
-              console.error("Greška pri slanju odgovora:", error);
-              // Možeš prikazati poruku korisniku ako je potrebno
+              console.error("Error submitting:", error);
             }
           } else {
-            router.replace("/(tabs)/home"); // Ako nema onSubmit, odmah navigacija
+            router.replace("/(tabs)/home");
           }
         }
       }}
     >
       <Animated.View
-        style={[styles.container, buttonAnimationStyle, animatedColor]}
+        style={[
+          styles.container,
+          buttonAnimationStyle, // width/height
+          animatedColorStyle, // backgroundColor
+        ]}
       >
         <Animated.Text style={[styles.textButton, textAnimationStyle]}>
           Get Started
@@ -128,6 +145,7 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   container: {
+    // We keep a fallback color here if you like:
     backgroundColor: "#1e2169",
     padding: 10,
     borderRadius: 100,
@@ -138,5 +156,9 @@ const styles = StyleSheet.create({
   arrow: {
     position: "absolute",
   },
-  textButton: { color: "white", fontSize: 16, position: "absolute" },
+  textButton: {
+    color: "white",
+    fontSize: 16,
+    position: "absolute",
+  },
 });

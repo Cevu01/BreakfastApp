@@ -15,8 +15,8 @@ export const introSlides: OnboardingAnimationData[] = [
     type: "animation",
     animation: require("../assets/animations/Lottie10.json"),
     text: "Over 75% of people skip breakfast or choose unhealthy options.",
-    textColor: "#034063",
-    backgroundColor: "#bae4fd",
+    textColor: "#4E2603",
+    backgroundColor: "#fbc99d",
   },
 
   {
@@ -24,7 +24,7 @@ export const introSlides: OnboardingAnimationData[] = [
     type: "animation",
     animation: require("../assets/animations/Lottie2.json"),
     text: "Let’s find out what kind of breakfast works best for you",
-    textColor: "#4E2603",
-    backgroundColor: "#fbc99d",
+    textColor: "#034063",
+    backgroundColor: "#bae4fd",
   },
 ];

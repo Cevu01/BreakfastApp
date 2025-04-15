@@ -234,14 +234,14 @@ const OnboardingScreen = () => {
         onMomentumScrollEnd={handleMomentumScrollEnd}
       />
 
-      <ProgressBar dataLength={data.length} x={x} />
-
       {!shouldHideArrowButton && (
-        <View className="absolute bottom-[20px] left-0 right-0 flex-row justify-end items-center mx-[30px] py-[30px]">
+        <View className="absolute bottom-[20px] left-0 right-0 flex-row justify-end items-center px-[30px] gap-4 py-[30px]">
+          <ProgressBar data={data} dataLength={data.length} x={x} />
           <CustomButton
+            data={data}
+            dataLength={data.length}
             flatListRef={flatListRef}
             flatListIndex={flatListIndex}
-            dataLength={data.length}
             x={x}
             onSubmit={submitAnswers}
           />
