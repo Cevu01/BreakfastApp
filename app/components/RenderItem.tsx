@@ -66,7 +66,7 @@ const RenderItem = ({
   if (item.id === 14) {
     return (
       <View
-        className="flex-1 justify-around items-center px-5"
+        className="flex-1 justify-around items-center px-[16px]"
         style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
       >
         <View className="absolute inset-0 justify-end items-center">
@@ -83,31 +83,36 @@ const RenderItem = ({
           />
         </View>
         <Text
-          className="text-center text-[34px] font-bold mb-2.5"
+          className="text-[34px] font-fredokaMedium font-bold"
           style={{ color: item.textColor }}
         >
           Finally, a little more about you:
         </Text>
-        <View className="w-4/5">
+        <View className="flex-col gap-[8px] w-full">
           <TextInput
-            className="bg-white rounded-md px-3 py-2.5 mb-2.5 text-base"
+            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4 "
             placeholder="Enter your name"
+            placeholderTextColor="#A9B2B1"
             value={name}
             onChangeText={setName}
           />
           <TextInput
-            className="bg-white rounded-md px-3 py-2.5 mb-2.5 text-base"
+            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4 "
             placeholder="Enter your age"
+            placeholderTextColor="#A9B2B1"
             keyboardType="numeric"
             value={age}
             onChangeText={setAge}
           />
         </View>
+
         <TouchableOpacity
-          className="p-4 bg-[#005b4f] rounded-lg mt-2.5"
+          className="py-[20px] w-full flex items-center justify-center bg-[#03334F] rounded-[8px] "
           onPress={onNameAgeSubmit}
         >
-          <Text className="text-white text-base font-semibold">Submit</Text>
+          <Text className="text-white font-fredokaRegular text-[18px] font-semibold">
+            Submit
+          </Text>
         </TouchableOpacity>
       </View>
     );

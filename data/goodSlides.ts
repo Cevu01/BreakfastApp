@@ -21,7 +21,7 @@ export const goodSlides: OnboardingAnimationData[] = [
   {
     id: 21,
     type: "animation",
-    animation: require("../assets/animations/Lottie1.json"),
+    animation: require("../assets/animations/Lottie12.json"),
     text: "Boosted metabolism and consistency ",
     textColor: "#102405",
     backgroundColor: "#b0ef8e",

@@ -6,7 +6,7 @@ export const inputSlides: OnboardingAnimationData[] = [
     type: "animation",
     animation: require("../assets/animations/Lottie1.json"),
     text: "Finally, little more about you: Name, Age",
-    textColor: "#005b4f",
-    backgroundColor: "#ffa3ce",
+    textColor: "#03334F",
+    backgroundColor: "#bae4fd",
   },
 ];
