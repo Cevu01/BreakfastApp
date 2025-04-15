@@ -6,6 +6,7 @@ import { resultSlides } from "./resultSlides";
 import { inputSlides } from "./inputSlides";
 import { badSlides } from "./badSlides";
 import { goodSlides } from "./goodSlides";
+import { calculatingSlides } from "./calculatingSlide";
 
 export interface OnboardingAnimationData {
   id: number;
@@ -39,6 +40,7 @@ export type OnboardingScreenData =
 export const data: OnboardingScreenData[] = [
   ...introSlides,
   ...questionSlides,
+  ...calculatingSlides,
   ...resultSlides,
   ...badSlides,
   ...goodSlides,

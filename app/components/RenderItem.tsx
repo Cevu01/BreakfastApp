@@ -160,7 +160,8 @@ const RenderItem = ({
               height: SCREEN_WIDTH * 0.9,
             }}
             autoPlay
-            loop
+            // For slide id 15, do not loop; for others, loop.
+            loop={![15, 16].includes(item.id)}
           />
         </Animated.View>
       )}
