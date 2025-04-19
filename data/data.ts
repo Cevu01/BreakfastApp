@@ -7,6 +7,7 @@ import { inputSlides } from "./inputSlides";
 import { badSlides } from "./badSlides";
 import { goodSlides } from "./goodSlides";
 import { calculatingSlides } from "./calculatingSlide";
+import { testimonialsSlides } from "./testimonialsSlides";
 
 export interface OnboardingAnimationData {
   id: number;
@@ -21,6 +22,12 @@ export interface AnswerOption {
   id: number;
   text: string;
 }
+export interface Testimonial {
+  photo: any;
+  title: string;
+  text: string;
+  name: string;
+}
 
 export interface OnboardingQuestionData {
   id: number;
@@ -32,10 +39,18 @@ export interface OnboardingQuestionData {
   textColor: string;
   backgroundColor: string;
 }
+export interface OnboardingTestimonialsData {
+  id: number;
+  type: "testimonials";
+  testimonials: Testimonial[];
+  textColor: string;
+  backgroundColor: string;
+}
 
 export type OnboardingScreenData =
   | OnboardingAnimationData
-  | OnboardingQuestionData;
+  | OnboardingQuestionData
+  | OnboardingTestimonialsData;
 
 export const data: OnboardingScreenData[] = [
   ...introSlides,
@@ -45,6 +60,7 @@ export const data: OnboardingScreenData[] = [
   ...inputSlides,
   ...badSlides,
   ...goodSlides,
+  ...testimonialsSlides,
 ];
 
 export default data;

@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  ScrollView,
+  Image,
 } from "react-native";
 import LottieView from "lottie-react-native";
 import Animated, {
@@ -14,7 +16,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { OnboardingScreenData } from "@/data/data";
+import { OnboardingScreenData, OnboardingQuestionData } from "@/data/data";
 
 type Props = {
   item: OnboardingScreenData;
@@ -31,7 +33,7 @@ type Props = {
   dataLength?: number;
 };
 
-const RenderItem = ({
+const RenderItem: React.FC<Props> = ({
   item,
   index,
   x,
@@ -44,10 +46,10 @@ const RenderItem = ({
   onNameAgeSubmit,
   flatListRef,
   dataLength,
-}: Props) => {
+}) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
 
-  // Animated style for the circular background effect.
+  // **Hook 1**: background circle animation
   const circleStyle = useAnimatedStyle(() => {
     const scale = interpolate(
       x.value,
@@ -62,17 +64,34 @@ const RenderItem = ({
     return { transform: [{ scale }] };
   });
 
-  // ----- Input Slide (ID=14) -----
+  // **Hook 2**: Lottie translateY animation
+  const lottieStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      x.value,
+      [
+        (index - 1) * SCREEN_WIDTH,
+        index * SCREEN_WIDTH,
+        (index + 1) * SCREEN_WIDTH,
+      ],
+      [200, 0, -200],
+      Extrapolation.CLAMP
+    );
+    return { transform: [{ translateY }] };
+  });
+
+  // 1) Input slide (ID=14)
   if (item.id === 14) {
-    // Validation: name must contain at least one letter and only letters/spaces
     const isNameValid = /^[A-Za-z\s]+$/.test(name);
     const isSubmitDisabled =
       name.trim().length === 0 || !isNameValid || age.trim().length === 0;
 
     return (
       <View
+        style={{
+          width: SCREEN_WIDTH,
+          backgroundColor: item.backgroundColor,
+        }}
         className="flex-1 justify-around items-center px-[16px]"
-        style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
       >
         <View className="absolute inset-0 justify-end items-center">
           <Animated.View
@@ -93,7 +112,7 @@ const RenderItem = ({
         >
           Finally, a little more about you:
         </Text>
-        <View className="flex-col gap-[8px] w-full">
+        <View className="w-full flex-col gap-[8px]">
           <TextInput
             className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4"
             placeholder="Enter your name"
@@ -115,15 +134,10 @@ const RenderItem = ({
             onChangeText={setAge}
           />
         </View>
-
         <TouchableOpacity
           disabled={isSubmitDisabled}
-          onPress={() => {
-            if (!isSubmitDisabled) {
-              onNameAgeSubmit?.();
-            }
-          }}
-          className={`py-[20px] w-full flex items-center justify-center rounded-[8px] ${
+          onPress={() => !isSubmitDisabled && onNameAgeSubmit?.()}
+          className={`py-[20px] w-full items-center justify-center rounded-[8px] ${
             isSubmitDisabled ? "bg-gray-400" : "bg-[#03334F]"
           }`}
         >
@@ -135,25 +149,89 @@ const RenderItem = ({
     );
   }
 
-  // ----- Normal Slides (Animation or Question) -----
-  const lottieStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(
-      x.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [200, 0, -200],
-      Extrapolation.CLAMP
+  // 2) Testimonials slide (vertical stack)
+  if (item.type === "testimonials") {
+    const PHOTO_SIZE = 46;
+    return (
+      <View
+        style={{
+          width: SCREEN_WIDTH,
+          backgroundColor: item.backgroundColor,
+          paddingBottom: 120,
+          paddingTop: 70,
+        }}
+        className="flex-1 px-[16px]  "
+      >
+        <Text
+          className="text-[36px] font-fredokaMedium   text-center"
+          style={{ color: item.textColor, paddingBottom: 10 }}
+        >
+          What our users say
+        </Text>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingVertical: 30, gap: 16 }}
+          className="flex-col"
+        >
+          {item.testimonials.map((t, idx) => (
+            <View
+              key={idx}
+              style={{ width: SCREEN_WIDTH * 0.9 }}
+              className="bg-[#03334F] rounded-lg p-4 self-center"
+            >
+              <View className="flex-row items-center">
+                <View
+                  style={{
+                    width: PHOTO_SIZE,
+                    height: PHOTO_SIZE,
+                    borderRadius: 100,
+                  }}
+                  className=" overflow-hidden mr-3"
+                >
+                  {typeof t.photo === "number" ? (
+                    <Image
+                      source={t.photo}
+                      style={{ width: PHOTO_SIZE, height: PHOTO_SIZE }}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <t.photo width={PHOTO_SIZE} height={PHOTO_SIZE} />
+                  )}
+                </View>
+                <Text
+                  className="flex-1 text-[18px] text-white  font-fredokaRegular font-bold"
+                  style={{ color: "#fff" }}
+                >
+                  {t.title}
+                </Text>
+              </View>
+              <Text
+                className="mt-2 text-[14px] font-fredokaRegular"
+                style={{ color: "#D8EFFD" }}
+              >
+                {t.text}
+              </Text>
+              <Text
+                className="font-fredokaLight"
+                style={{ color: "#D8EFFD", paddingTop: 8 }}
+              >
+                {t.name}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
     );
-    return { transform: [{ translateY }] };
-  });
+  }
 
+  // 3) Animation & Question slides (default)
   return (
     <View
+      style={{
+        width: SCREEN_WIDTH,
+        backgroundColor: item.backgroundColor,
+      }}
       className="flex-1 pt-[90px] flex-col gap-[24px] items-center px-[16px]"
-      style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
     >
       <View className="absolute inset-0 justify-end items-center">
         <Animated.View
@@ -168,6 +246,8 @@ const RenderItem = ({
           ]}
         />
       </View>
+
+      {/* Lottie animation */}
       {item.animation && (
         <Animated.View style={lottieStyle}>
           <LottieView
@@ -177,11 +257,11 @@ const RenderItem = ({
               height: SCREEN_WIDTH * 0.9,
             }}
             autoPlay
-            // For slide id 15, do not loop; for others, loop.
             loop={![15, 16].includes(item.id)}
           />
         </Animated.View>
       )}
+
       {item.type === "animation" && (
         <Text
           className="text-center font-fredokaMedium text-[36px] mb-2.5"
@@ -190,36 +270,33 @@ const RenderItem = ({
           {item.text}
         </Text>
       )}
+
       {item.type === "question" && (
         <>
           <Text
-            className="text-[32px] font-bold pt-[60px] font-fredokaMedium"
+            className="text-[32px] font-fredokaMedium font-bold pt-[60px]"
             style={{ color: item.textColor }}
           >
-            {item.question}
+            {(item as OnboardingQuestionData).question}
           </Text>
           <View className="w-full">
-            {item.answers.map((answer) => {
-              const isSelected =
-                selectedAnswers && selectedAnswers[item.id] === answer.id;
+            {(item as OnboardingQuestionData).answers.map((answer) => {
+              const isSelected = selectedAnswers?.[item.id] === answer.id;
               return (
                 <TouchableOpacity
                   key={answer.id}
                   className={`py-4 px-5 rounded-lg border border-[#0A7BC2] my-2.5 ${
-                    isSelected ? "bg-[#51B6F6]" : "bg-[#D8EFFD] text-[#03334F]"
+                    isSelected ? "bg-[#51B6F6]" : "bg-[#D8EFFD]"
                   }`}
                   onPress={() => {
                     onSelectAnswer?.(item.id, answer.id);
-                    // Wait 300 ms for the highlight, then auto-scroll to next slide.
                     setTimeout(() => {
-                      if (flatListRef && dataLength) {
-                        const nextIndex = index + 1;
-                        if (nextIndex < dataLength) {
-                          flatListRef.current?.scrollToIndex({
-                            index: nextIndex,
-                            animated: true,
-                          });
-                        }
+                      const next = index + 1;
+                      if (flatListRef && dataLength && next < dataLength) {
+                        flatListRef.current?.scrollToIndex({
+                          index: next,
+                          animated: true,
+                        });
                       }
                     }, 300);
                   }}
