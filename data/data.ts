@@ -42,9 +42,9 @@ export const data: OnboardingScreenData[] = [
   ...questionSlides,
   ...calculatingSlides,
   ...resultSlides,
+  ...inputSlides,
   ...badSlides,
   ...goodSlides,
-  ...inputSlides,
 ];
 
 export default data;

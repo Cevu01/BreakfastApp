@@ -37,10 +37,10 @@ const RenderItem = ({
   x,
   onSelectAnswer,
   selectedAnswers,
-  name,
-  setName,
-  age,
-  setAge,
+  name = "",
+  setName = () => {},
+  age = "",
+  setAge = () => {},
   onNameAgeSubmit,
   flatListRef,
   dataLength,
@@ -64,6 +64,11 @@ const RenderItem = ({
 
   // ----- Input Slide (ID=14) -----
   if (item.id === 14) {
+    // Validation: name must contain at least one letter and only letters/spaces
+    const isNameValid = /^[A-Za-z\s]+$/.test(name);
+    const isSubmitDisabled =
+      name.trim().length === 0 || !isNameValid || age.trim().length === 0;
+
     return (
       <View
         className="flex-1 justify-around items-center px-[16px]"
@@ -90,14 +95,19 @@ const RenderItem = ({
         </Text>
         <View className="flex-col gap-[8px] w-full">
           <TextInput
-            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4 "
+            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4"
             placeholder="Enter your name"
             placeholderTextColor="#A9B2B1"
             value={name}
             onChangeText={setName}
           />
+          {name.length > 0 && !isNameValid && (
+            <Text className="text-red-500 text-sm font-fredokaRegular mt-1">
+              Name can only contain letters and spaces.
+            </Text>
+          )}
           <TextInput
-            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4 "
+            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4"
             placeholder="Enter your age"
             placeholderTextColor="#A9B2B1"
             keyboardType="numeric"
@@ -107,8 +117,15 @@ const RenderItem = ({
         </View>
 
         <TouchableOpacity
-          className="py-[20px] w-full flex items-center justify-center bg-[#03334F] rounded-[8px] "
-          onPress={onNameAgeSubmit}
+          disabled={isSubmitDisabled}
+          onPress={() => {
+            if (!isSubmitDisabled) {
+              onNameAgeSubmit?.();
+            }
+          }}
+          className={`py-[20px] w-full flex items-center justify-center rounded-[8px] ${
+            isSubmitDisabled ? "bg-gray-400" : "bg-[#03334F]"
+          }`}
         >
           <Text className="text-white font-fredokaRegular text-[18px] font-semibold">
             Submit
@@ -167,7 +184,7 @@ const RenderItem = ({
       )}
       {item.type === "animation" && (
         <Text
-          className="text-center font-fredokaMedium text-[36px]  mb-2.5"
+          className="text-center font-fredokaMedium text-[36px] mb-2.5"
           style={{ color: item.textColor }}
         >
           {item.text}
@@ -176,7 +193,7 @@ const RenderItem = ({
       {item.type === "question" && (
         <>
           <Text
-            className="text-[32px] font-bold pt-[60px]  font-fredokaMedium"
+            className="text-[32px] font-bold pt-[60px] font-fredokaMedium"
             style={{ color: item.textColor }}
           >
             {item.question}
@@ -188,8 +205,8 @@ const RenderItem = ({
               return (
                 <TouchableOpacity
                   key={answer.id}
-                  className={`py-4 px-5 rounded-lg border  border-[#0A7BC2] my-2.5 ${
-                    isSelected ? "bg-[#51B6F6] " : "bg-[#D8EFFD] text-[#03334F]"
+                  className={`py-4 px-5 rounded-lg border border-[#0A7BC2] my-2.5 ${
+                    isSelected ? "bg-[#51B6F6]" : "bg-[#D8EFFD] text-[#03334F]"
                   }`}
                   onPress={() => {
                     onSelectAnswer?.(item.id, answer.id);

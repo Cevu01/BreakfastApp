@@ -32,7 +32,7 @@ const OnboardingScreen = () => {
 
   // Track the currently visible slide index
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const isLast = currentIndex === data.length - 1;
   // For the input slide (ID=14)
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -243,7 +243,10 @@ const OnboardingScreen = () => {
 
       {!shouldHideArrowButton && (
         <View className="absolute bottom-[20px] left-0 right-0 flex-row justify-end items-center px-[30px] gap-4 py-[30px]">
-          <ProgressBar data={data} dataLength={data.length} x={x} />
+          {/* only render the bar if NOT last */}
+          {!isLast && (
+            <ProgressBar data={data} dataLength={data.length} x={x} />
+          )}
           <CustomButton
             data={data}
             dataLength={data.length}
