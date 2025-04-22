@@ -22,7 +22,9 @@ import {
   OnboardingScreenData,
   OnboardingQuestionData,
   OnboardingIllustrationData,
+  OnboardingReferralData,
 } from "@/data/data";
+import ReferralSlide from "./ReferralSlide";
 
 type Props = {
   item: OnboardingScreenData;
@@ -37,6 +39,7 @@ type Props = {
   onNameAgeSubmit?: () => void;
   flatListRef?: React.RefObject<FlatList<OnboardingScreenData>>;
   dataLength?: number;
+  onReferralSubmit?: (code: string | null) => void;
 };
 
 const RenderItem: React.FC<Props> = ({
@@ -52,6 +55,7 @@ const RenderItem: React.FC<Props> = ({
   onNameAgeSubmit,
   flatListRef,
   dataLength,
+  onReferralSubmit,
 }) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
   // small state used only by illustration or multi-select inputs if needed
@@ -279,6 +283,22 @@ const RenderItem: React.FC<Props> = ({
         selectedAnswers={selectedAnswers}
         flatListRef={flatListRef}
         dataLength={dataLength}
+      />
+    );
+  }
+  if (item.type === "referral") {
+    return (
+      <ReferralSlide
+        item={item as OnboardingReferralData}
+        onSubmit={(code) => {
+          // 1) call the new prop
+          onReferralSubmit?.(code);
+          // 2) advance to the next slide
+          const next = index + 1;
+          if (flatListRef && dataLength && next < dataLength) {
+            flatListRef.current?.scrollToIndex({ index: next, animated: true });
+          }
+        }}
       />
     );
   }

@@ -11,12 +11,21 @@ import { testimonialsSlides } from "./testimonialsSlides";
 import { SvgProps } from "react-native-svg";
 import { benefitsSlides } from "./benefitsSlides";
 import { personalizationSlides } from "./personalizationSlides";
+import { referralSlides } from "./refferalSlides";
 
 export interface OnboardingAnimationData {
   id: number;
   type: "animation";
   animation: AnimationObject;
   text: string;
+  textColor: string;
+  backgroundColor: string;
+}
+export interface OnboardingReferralData {
+  id: number;
+  type: "referral";
+  title: string;
+  subtitle: string;
   textColor: string;
   backgroundColor: string;
 }
@@ -67,7 +76,8 @@ export type OnboardingScreenData =
   | OnboardingAnimationData
   | OnboardingQuestionData
   | OnboardingTestimonialsData
-  | OnboardingIllustrationData;
+  | OnboardingIllustrationData
+  | OnboardingReferralData;
 
 export const data: OnboardingScreenData[] = [
   ...introSlides,
@@ -78,8 +88,9 @@ export const data: OnboardingScreenData[] = [
   ...badSlides,
   ...goodSlides,
   ...testimonialsSlides,
-  ...personalizationSlides,
   ...benefitsSlides,
+  ...personalizationSlides,
+  ...referralSlides,
 ];
 
 export default data;

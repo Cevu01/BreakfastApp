@@ -171,7 +171,11 @@ const OnboardingScreen = () => {
   const currentSlide = data[currentIndex];
   let shouldHideArrowButton = false;
   if (currentSlide) {
-    if (currentSlide.id === 14 || currentSlide.type === "question") {
+    if (
+      currentSlide.id === 14 ||
+      currentSlide.type === "question" ||
+      currentSlide.type === "referral"
+    ) {
       shouldHideArrowButton = true;
     }
   }
@@ -225,6 +229,10 @@ const OnboardingScreen = () => {
             // currentIndex={currentIndex}
             onSelectAnswer={handleSelectAnswer}
             selectedAnswers={selectedAnswers}
+            onReferralSubmit={(code) => {
+              // do whatever you want with the code (save in state or send to API)
+              console.log("Referral code:", code);
+            }}
             name={name}
             setName={setName}
             age={age}
