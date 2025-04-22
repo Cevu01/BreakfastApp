@@ -4,7 +4,7 @@ import Benefits from "@/assets/svg/Benefits";
 export const benefitsSlides: OnboardingIllustrationData[] = [
   {
     id: 24,
-    type: "illustration",
+    type: "benefits",
 
     component: Benefits,
     title: "Benefits",

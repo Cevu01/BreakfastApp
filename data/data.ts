@@ -64,7 +64,7 @@ export interface OnboardingTestimonialsData {
 }
 export interface OnboardingIllustrationData {
   id: number;
-  type: "illustration";
+  type: "benefits";
   component: React.FC<SvgProps>;
   text: string;
   title: string;

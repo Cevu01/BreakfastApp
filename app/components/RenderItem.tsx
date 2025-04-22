@@ -1,8 +1,7 @@
 // File: src/components/RenderItem.tsx
 import React, { useState } from "react";
-import { Text, useWindowDimensions, View, FlatList } from "react-native";
-import LottieView from "lottie-react-native";
-import Animated, {
+import { useWindowDimensions, FlatList } from "react-native";
+import {
   Extrapolation,
   interpolate,
   SharedValue,
@@ -21,6 +20,7 @@ import ReferralSlide from "./ReferralSlide";
 import TestimonialsSlide from "./TestimonialsSlide";
 import InputSlide from "./InputSlide";
 import AnimationSlide from "./AnimationSlide";
+import BenefitsSlide from "./BenefitsSlide";
 
 type Props = {
   item: OnboardingScreenData;
@@ -94,38 +94,8 @@ const RenderItem: React.FC<Props> = ({
   }));
 
   // Illustration slides
-  if (item.type === "illustration") {
-    const slide = item as OnboardingIllustrationData;
-    return (
-      <View
-        style={{
-          width: SCREEN_WIDTH,
-          backgroundColor: slide.backgroundColor,
-          paddingTop: 34,
-          paddingBottom: 120,
-          alignItems: "center",
-          justifyContent: "space-around",
-        }}
-        className="flex-1 px-[16px]"
-      >
-        <Text
-          className="text-[36px] font-fredokaMedium"
-          style={{ color: slide.textColor, paddingBottom: 10 }}
-        >
-          {slide.title}
-        </Text>
-        <slide.component
-          width={SCREEN_WIDTH * 0.9}
-          height={SCREEN_WIDTH * 0.9}
-        />
-        <Text
-          className="text-[24px] font-fredokaMedium text-center"
-          style={{ color: slide.textColor }}
-        >
-          {slide.text}
-        </Text>
-      </View>
-    );
+  if (item.type === "benefits") {
+    return <BenefitsSlide item={item as OnboardingIllustrationData} />;
   }
 
   // Input slide (ID 14)
