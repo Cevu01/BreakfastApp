@@ -24,9 +24,11 @@ import {
   OnboardingIllustrationData,
   OnboardingReferralData,
   OnboardingTestimonialsData,
+  OnboardingAnimationData,
 } from "@/data/data";
 import ReferralSlide from "./ReferralSlide";
 import TestimonialsSlide from "./TestimonialsSlide";
+import InputSlide from "./InputSlide";
 
 type Props = {
   item: OnboardingScreenData;
@@ -136,67 +138,16 @@ const RenderItem: React.FC<Props> = ({
 
   // Input slide (ID 14)
   if (item.id === 14) {
-    const isNameValid = /^[A-Za-z\s]+$/.test(name);
-    const isSubmitDisabled =
-      name.trim().length === 0 || !isNameValid || age.trim().length === 0;
     return (
-      <View
-        style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
-        className="flex-1 justify-around items-center px-[16px]"
-      >
-        <View className="absolute inset-0 justify-end items-center">
-          <Animated.View
-            style={[
-              {
-                width: SCREEN_WIDTH,
-                height: SCREEN_WIDTH,
-                borderRadius: SCREEN_WIDTH / 2,
-                backgroundColor: item.backgroundColor,
-              },
-              circleStyle,
-            ]}
-          />
-        </View>
-        <Text
-          className="text-[34px] font-fredokaMedium font-bold"
-          style={{ color: item.textColor }}
-        >
-          Finally, a little more about you:
-        </Text>
-        <View className="w-full flex-col gap-[8px]">
-          <TextInput
-            className="bg-white text-[18px] font-fredokaRegular rounded-[14px] border border-[#0A7BC2] w-full py-[20px] px-4"
-            placeholder="Enter your name"
-            placeholderTextColor="#A9B2B1"
-            value={name}
-            onChangeText={setName}
-          />
-          {name.length > 0 && !isNameValid && (
-            <Text className="text-red-500 text-sm font-fredokaRegular mt-1">
-              Name can only contain letters and spaces.
-            </Text>
-          )}
-          <TextInput
-            className="bg-white text-[18px] font-fredokaRegular rounded-[14px] border border-[#0A7BC2] w-full py-[20px] px-4"
-            placeholder="Enter your age"
-            placeholderTextColor="#A9B2B1"
-            keyboardType="numeric"
-            value={age}
-            onChangeText={setAge}
-          />
-        </View>
-        <TouchableOpacity
-          disabled={isSubmitDisabled}
-          onPress={() => !isSubmitDisabled && onNameAgeSubmit?.()}
-          className={`py-[20px] w-full items-center justify-center rounded-[14px] ${
-            isSubmitDisabled ? "bg-gray-400" : "bg-[#03334F]"
-          }`}
-        >
-          <Text className="text-white font-fredokaRegular text-[18px] font-semibold">
-            Submit
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <InputSlide
+        item={item as OnboardingAnimationData & { id: 14 }}
+        name={name}
+        setName={setName}
+        age={age}
+        setAge={setAge}
+        onSubmit={onNameAgeSubmit!}
+        circleStyle={circleStyle}
+      />
     );
   }
 
