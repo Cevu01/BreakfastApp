@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   questionText: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: "700",
     marginBottom: 20,
   },
@@ -199,9 +199,9 @@ const styles = StyleSheet.create({
   answerButton: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 15,
+    paddingVertical: 20,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 18,
     borderWidth: 1,
     borderColor: "#0A7BC2",
     marginVertical: 8,

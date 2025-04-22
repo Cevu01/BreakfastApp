@@ -4,8 +4,8 @@ export const testimonialsSlides: OnboardingTestimonialsData[] = [
   {
     id: 23,
     type: "testimonials",
-    backgroundColor: "#bae4fd",
-    textColor: "#03334F",
+    backgroundColor: "#03334F",
+    textColor: "#bae4fd",
     testimonials: [
       {
         photo: require("../assets/images/user1.jpg"),

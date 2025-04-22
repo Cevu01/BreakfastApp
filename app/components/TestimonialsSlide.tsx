@@ -40,7 +40,7 @@ export default function TestimonialsSlide({ item }: Props) {
           <View
             key={idx}
             style={{ width: width * 0.9 }}
-            className="bg-[#03334F] rounded-[24px] p-4 self-center"
+            className="bg-[#004364] rounded-[24px] p-4 self-center"
           >
             <View className="flex-row items-center">
               <View
@@ -62,8 +62,8 @@ export default function TestimonialsSlide({ item }: Props) {
                 )}
               </View>
               <Text
-                className="flex-1 text-[18px] font-fredokaRegular font-bold"
-                style={{ color: "#fff" }}
+                className="flex-1 text-[18px] font-fredokaMedium font-bold"
+                style={{ color: "#D8EFFD" }}
               >
                 {t.title}
               </Text>

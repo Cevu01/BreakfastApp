@@ -131,8 +131,8 @@ const CustomButton = ({
         ]}
       >
         <Animated.Text
-          className="font-bdogroteskRegular"
           style={[styles.textButton, textAnimationStyle]}
+          className="font-fredokaMedium"
         >
           Get Started
         </Animated.Text>
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: "#03334F",
-    fontSize: 16,
+    fontSize: 18,
     position: "absolute",
   },
 });
