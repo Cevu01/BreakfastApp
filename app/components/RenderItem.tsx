@@ -1,15 +1,6 @@
 // File: src/components/RenderItem.tsx
 import React, { useState } from "react";
-import {
-  Text,
-  useWindowDimensions,
-  View,
-  TouchableOpacity,
-  TextInput,
-  FlatList,
-  ScrollView,
-  Image,
-} from "react-native";
+import { Text, useWindowDimensions, View, FlatList } from "react-native";
 import LottieView from "lottie-react-native";
 import Animated, {
   Extrapolation,
@@ -29,6 +20,7 @@ import {
 import ReferralSlide from "./ReferralSlide";
 import TestimonialsSlide from "./TestimonialsSlide";
 import InputSlide from "./InputSlide";
+import AnimationSlide from "./AnimationSlide";
 
 type Props = {
   item: OnboardingScreenData;
@@ -187,44 +179,14 @@ const RenderItem: React.FC<Props> = ({
   }
 
   // Default: Animation slide
-  return (
-    <View
-      style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
-      className="flex-1 pt-[90px] flex-col items-center px-[16px]"
-    >
-      <View className="absolute inset-0 justify-end items-center">
-        <Animated.View
-          style={[
-            {
-              width: SCREEN_WIDTH,
-              height: SCREEN_WIDTH,
-              borderRadius: SCREEN_WIDTH / 2,
-              backgroundColor: item.backgroundColor,
-            },
-            circleStyle,
-          ]}
-        />
-      </View>
-      {item.animation && (
-        <Animated.View style={lottieStyle}>
-          <LottieView
-            source={item.animation}
-            style={{ width: SCREEN_WIDTH * 0.9, height: SCREEN_WIDTH * 0.9 }}
-            autoPlay
-            loop={![15, 16].includes(item.id)}
-          />
-        </Animated.View>
-      )}
-      {item.type === "animation" && (
-        <Text
-          className="text-center font-fredokaMedium text-[36px] mb-2.5"
-          style={{ color: item.textColor }}
-        >
-          {item.text}
-        </Text>
-      )}
-    </View>
-  );
+  if (item.type === "animation") {
+    return (
+      <AnimationSlide
+        item={item as OnboardingAnimationData}
+        lottieStyle={lottieStyle}
+      />
+    );
+  }
 };
 
 export default RenderItem;
