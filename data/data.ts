@@ -8,6 +8,8 @@ import { badSlides } from "./badSlides";
 import { goodSlides } from "./goodSlides";
 import { calculatingSlides } from "./calculatingSlide";
 import { testimonialsSlides } from "./testimonialsSlides";
+import { SvgProps } from "react-native-svg";
+import { benefitsSlides } from "./benefitsSlides";
 
 export interface OnboardingAnimationData {
   id: number;
@@ -46,11 +48,21 @@ export interface OnboardingTestimonialsData {
   textColor: string;
   backgroundColor: string;
 }
+export interface OnboardingIllustrationData {
+  id: number;
+  type: "illustration";
+  component: React.FC<SvgProps>;
+  text: string;
+  title: string;
+  textColor: string;
+  backgroundColor: string;
+}
 
 export type OnboardingScreenData =
   | OnboardingAnimationData
   | OnboardingQuestionData
-  | OnboardingTestimonialsData;
+  | OnboardingTestimonialsData
+  | OnboardingIllustrationData;
 
 export const data: OnboardingScreenData[] = [
   ...introSlides,
@@ -61,6 +73,7 @@ export const data: OnboardingScreenData[] = [
   ...badSlides,
   ...goodSlides,
   ...testimonialsSlides,
+  ...benefitsSlides,
 ];
 
 export default data;

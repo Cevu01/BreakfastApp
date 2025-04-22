@@ -209,12 +209,17 @@ const OnboardingScreen = () => {
         removeClippedSubviews={true}
         ref={flatListRef}
         data={data}
+        windowSize={3} // number of “pages” (viewports) to keep mounted: center, +1 / –1
+        initialNumToRender={1} // start by rendering only the first
+        maxToRenderPerBatch={1} // render one new slide at a time
+        updateCellsBatchingPeriod={50}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item, index }) => (
           <RenderItem
             item={item}
             index={index}
             x={x}
+            // currentIndex={currentIndex}
             onSelectAnswer={handleSelectAnswer}
             selectedAnswers={selectedAnswers}
             name={name}

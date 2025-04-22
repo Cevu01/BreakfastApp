@@ -16,11 +16,16 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { OnboardingScreenData, OnboardingQuestionData } from "@/data/data";
+import {
+  OnboardingScreenData,
+  OnboardingQuestionData,
+  OnboardingIllustrationData,
+} from "@/data/data";
 
 type Props = {
   item: OnboardingScreenData;
   index: number;
+  // currentIndex: number;
   x: SharedValue<number>;
   onSelectAnswer?: (questionId: number, answerId: number) => void;
   selectedAnswers?: { [key: number]: number | null };
@@ -78,6 +83,48 @@ const RenderItem: React.FC<Props> = ({
     );
     return { transform: [{ translateY }] };
   });
+
+  //Benefits slide
+  if (item.type === "illustration") {
+    const slide = item as OnboardingIllustrationData;
+    return (
+      <View
+        // match your testimonials container paddings
+        style={{
+          width: SCREEN_WIDTH,
+          backgroundColor: slide.backgroundColor,
+          paddingTop: 34,
+          paddingBottom: 120,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+        className="flex-1 px-[16px]"
+      >
+        {/* Title styled like testimonials */}
+        <Text
+          className="text-[36px] font-fredokaMedium"
+          style={{ color: slide.textColor, paddingBottom: 10 }}
+        >
+          {slide.title}
+        </Text>
+        {/* actual SVG */}
+        <View>
+          <slide.component
+            width={SCREEN_WIDTH * 0.9}
+            height={SCREEN_WIDTH * 0.9}
+          />
+        </View>
+
+        <Text
+          className=" text-[24px] font-fredokaMedium text-center"
+          style={{ color: slide.textColor }}
+        >
+          {slide.text}
+        </Text>
+      </View>
+    );
+  }
 
   // 1) Input slide (ID=14)
   if (item.id === 14) {
