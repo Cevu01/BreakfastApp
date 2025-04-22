@@ -130,7 +130,10 @@ const CustomButton = ({
           animatedColorStyle, // backgroundColor
         ]}
       >
-        <Animated.Text style={[styles.textButton, textAnimationStyle]}>
+        <Animated.Text
+          className="font-bdogroteskRegular"
+          style={[styles.textButton, textAnimationStyle]}
+        >
           Get Started
         </Animated.Text>
         <Animated.View style={[styles.arrow, arrowAnimationStyle]}>
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   textButton: {
-    color: "white",
+    color: "#03334F",
     fontSize: 16,
     position: "absolute",
   },

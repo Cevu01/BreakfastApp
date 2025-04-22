@@ -12,6 +12,7 @@ import { SvgProps } from "react-native-svg";
 import { benefitsSlides } from "./benefitsSlides";
 import { personalizationSlides } from "./personalizationSlides";
 import { referralSlides } from "./refferalSlides";
+import { ratingsSlides } from "./ratingsSlides";
 
 export interface OnboardingAnimationData {
   id: number;
@@ -91,6 +92,7 @@ export const data: OnboardingScreenData[] = [
   ...benefitsSlides,
   ...personalizationSlides,
   ...referralSlides,
+  ...ratingsSlides,
 ];
 
 export default data;

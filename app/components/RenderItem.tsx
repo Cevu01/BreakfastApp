@@ -21,6 +21,7 @@ import TestimonialsSlide from "./TestimonialsSlide";
 import InputSlide from "./InputSlide";
 import AnimationSlide from "./AnimationSlide";
 import BenefitsSlide from "./BenefitsSlide";
+import RatingsSlide from "./Ratings";
 
 type Props = {
   item: OnboardingScreenData;
@@ -114,6 +115,12 @@ const RenderItem: React.FC<Props> = ({
   }
 
   // Testimonials
+  if (item.type === "testimonials" && item.id === 24) {
+    // our new “Ratings” slide
+    return <RatingsSlide item={item as OnboardingTestimonialsData} />;
+  }
+
+  // keep the old one for any other testimonial slide (e.g. id 23)
   if (item.type === "testimonials") {
     return <TestimonialsSlide item={item as OnboardingTestimonialsData} />;
   }
