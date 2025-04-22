@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     // We keep a fallback color here if you like:
     backgroundColor: "#1e2169",
     padding: 10,
-    borderRadius: 100,
+    borderRadius: 24,
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",

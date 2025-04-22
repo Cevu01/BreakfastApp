@@ -114,7 +114,7 @@ const RenderItem: React.FC<Props> = ({
         </Text>
         <View className="w-full flex-col gap-[8px]">
           <TextInput
-            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4"
+            className="bg-white text-[18px] font-fredokaRegular rounded-[14px] border border-[#0A7BC2] w-full py-[20px] px-4"
             placeholder="Enter your name"
             placeholderTextColor="#A9B2B1"
             value={name}
@@ -126,7 +126,7 @@ const RenderItem: React.FC<Props> = ({
             </Text>
           )}
           <TextInput
-            className="bg-white text-[18px] font-fredokaRegular rounded-lg border border-[#0A7BC2] w-full py-[20px] px-4"
+            className="bg-white text-[18px] font-fredokaRegular rounded-[14px] border border-[#0A7BC2] w-full py-[20px] px-4"
             placeholder="Enter your age"
             placeholderTextColor="#A9B2B1"
             keyboardType="numeric"
@@ -137,7 +137,7 @@ const RenderItem: React.FC<Props> = ({
         <TouchableOpacity
           disabled={isSubmitDisabled}
           onPress={() => !isSubmitDisabled && onNameAgeSubmit?.()}
-          className={`py-[20px] w-full items-center justify-center rounded-[8px] ${
+          className={`py-[20px] w-full items-center justify-center rounded-[14px] ${
             isSubmitDisabled ? "bg-gray-400" : "bg-[#03334F]"
           }`}
         >
@@ -163,7 +163,7 @@ const RenderItem: React.FC<Props> = ({
         className="flex-1 px-[16px]  "
       >
         <Text
-          className="text-[36px] font-fredokaMedium   text-center"
+          className="text-[36px] font-fredokaMedium"
           style={{ color: item.textColor, paddingBottom: 10 }}
         >
           What our users say
@@ -177,14 +177,14 @@ const RenderItem: React.FC<Props> = ({
             <View
               key={idx}
               style={{ width: SCREEN_WIDTH * 0.9 }}
-              className="bg-[#03334F] rounded-lg p-4 self-center"
+              className="bg-[#03334F] rounded-[24px] p-4 self-center"
             >
               <View className="flex-row items-center">
                 <View
                   style={{
                     width: PHOTO_SIZE,
                     height: PHOTO_SIZE,
-                    borderRadius: 100,
+                    borderRadius: 12,
                   }}
                   className=" overflow-hidden mr-3"
                 >
@@ -285,7 +285,7 @@ const RenderItem: React.FC<Props> = ({
               return (
                 <TouchableOpacity
                   key={answer.id}
-                  className={`py-4 px-5 rounded-lg border border-[#0A7BC2] my-2.5 ${
+                  className={`py-5 px-5 rounded-[16px] border border-[#0A7BC2] my-2.5 ${
                     isSelected ? "bg-[#51B6F6]" : "bg-[#D8EFFD]"
                   }`}
                   onPress={() => {
