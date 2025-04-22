@@ -10,6 +10,7 @@ import { calculatingSlides } from "./calculatingSlide";
 import { testimonialsSlides } from "./testimonialsSlides";
 import { SvgProps } from "react-native-svg";
 import { benefitsSlides } from "./benefitsSlides";
+import { personalizationSlides } from "./personalizationSlides";
 
 export interface OnboardingAnimationData {
   id: number;
@@ -23,6 +24,8 @@ export interface OnboardingAnimationData {
 export interface AnswerOption {
   id: number;
   text: string;
+  /** Optional SVG icon */
+  icon?: React.FC<SvgProps>;
 }
 export interface Testimonial {
   photo: any;
@@ -34,12 +37,14 @@ export interface Testimonial {
 export interface OnboardingQuestionData {
   id: number;
   type: "question";
-  // Optionally include an animation for question screens:
-  animation?: AnimationObject;
   question: string;
   answers: AnswerOption[];
   textColor: string;
   backgroundColor: string;
+  /** allow multi‑select? */
+  multiSelect?: boolean;
+  /** show an "Other..." text input */
+  showInput?: boolean;
 }
 export interface OnboardingTestimonialsData {
   id: number;
@@ -73,6 +78,7 @@ export const data: OnboardingScreenData[] = [
   ...badSlides,
   ...goodSlides,
   ...testimonialsSlides,
+  ...personalizationSlides,
   ...benefitsSlides,
 ];
 

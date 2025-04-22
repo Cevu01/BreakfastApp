@@ -39,7 +39,7 @@ const OnboardingScreen = () => {
 
   // For question slides: store selected answer for each question
   const [selectedAnswers, setSelectedAnswers] = useState<{
-    [key: number]: number | null;
+    [key: number]: number | number[] | null;
   }>({});
 
   const { updateDietType } = useUpdateDietType();
@@ -106,24 +106,27 @@ const OnboardingScreen = () => {
   };
 
   // Called when a question answer is tapped – stores the answer.
-  const handleSelectAnswer = (questionId: number, answerId: number) => {
+  const handleSelectAnswer = (
+    questionId: number,
+    answerId: number | number[]
+  ) => {
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: answerId }));
   };
 
-  // Example: updating diet type from question 11.
+  // Example: updating diet type from question 25.
   const submitAnswers = async () => {
     try {
-      const answerId = selectedAnswers[11];
+      const answerId = selectedAnswers[25];
       if (answerId === null || answerId === undefined) {
-        console.error("No answer selected for page 11.");
+        console.error("No answer selected for page 25.");
         return;
       }
       const question = data.find(
         (item): item is OnboardingQuestionData =>
-          item.id === 11 && item.type === "question"
+          item.id === 25 && item.type === "question"
       );
       if (!question) {
-        console.error("Question data for page 11 not found.");
+        console.error("Question data for page 25 not found.");
         return;
       }
       const selectedOption = question.answers.find(

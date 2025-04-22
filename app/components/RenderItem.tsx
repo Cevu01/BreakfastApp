@@ -1,4 +1,5 @@
-import React from "react";
+// File: src/components/RenderItem.tsx
+import React, { useState } from "react";
 import {
   Text,
   useWindowDimensions,
@@ -16,6 +17,7 @@ import Animated, {
   SharedValue,
   useAnimatedStyle,
 } from "react-native-reanimated";
+import QuestionSlide from "./QuestionSlide";
 import {
   OnboardingScreenData,
   OnboardingQuestionData,
@@ -25,10 +27,9 @@ import {
 type Props = {
   item: OnboardingScreenData;
   index: number;
-  // currentIndex: number;
   x: SharedValue<number>;
-  onSelectAnswer?: (questionId: number, answerId: number) => void;
-  selectedAnswers?: { [key: number]: number | null };
+  onSelectAnswer?: (questionId: number, answerId: number | number[]) => void;
+  selectedAnswers?: { [key: number]: number | number[] | null };
   name?: string;
   setName?: (val: string) => void;
   age?: string;
@@ -53,71 +54,72 @@ const RenderItem: React.FC<Props> = ({
   dataLength,
 }) => {
   const { width: SCREEN_WIDTH } = useWindowDimensions();
+  // small state used only by illustration or multi-select inputs if needed
+  const [otherText, setOtherText] = useState("");
 
-  // **Hook 1**: background circle animation
-  const circleStyle = useAnimatedStyle(() => {
-    const scale = interpolate(
-      x.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [1, 4, 4],
-      Extrapolation.CLAMP
-    );
-    return { transform: [{ scale }] };
-  });
+  // Background circle animation
+  const circleStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        scale: interpolate(
+          x.value,
+          [
+            (index - 1) * SCREEN_WIDTH,
+            index * SCREEN_WIDTH,
+            (index + 1) * SCREEN_WIDTH,
+          ],
+          [1, 4, 4],
+          Extrapolation.CLAMP
+        ),
+      },
+    ],
+  }));
 
-  // **Hook 2**: Lottie translateY animation
-  const lottieStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(
-      x.value,
-      [
-        (index - 1) * SCREEN_WIDTH,
-        index * SCREEN_WIDTH,
-        (index + 1) * SCREEN_WIDTH,
-      ],
-      [200, 0, -200],
-      Extrapolation.CLAMP
-    );
-    return { transform: [{ translateY }] };
-  });
+  // Lottie translateY animation
+  const lottieStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: interpolate(
+          x.value,
+          [
+            (index - 1) * SCREEN_WIDTH,
+            index * SCREEN_WIDTH,
+            (index + 1) * SCREEN_WIDTH,
+          ],
+          [200, 0, -200],
+          Extrapolation.CLAMP
+        ),
+      },
+    ],
+  }));
 
-  //Benefits slide
+  // Illustration slides
   if (item.type === "illustration") {
     const slide = item as OnboardingIllustrationData;
     return (
       <View
-        // match your testimonials container paddings
         style={{
           width: SCREEN_WIDTH,
           backgroundColor: slide.backgroundColor,
           paddingTop: 34,
           paddingBottom: 120,
-          display: "flex",
           alignItems: "center",
           justifyContent: "space-around",
         }}
         className="flex-1 px-[16px]"
       >
-        {/* Title styled like testimonials */}
         <Text
           className="text-[36px] font-fredokaMedium"
           style={{ color: slide.textColor, paddingBottom: 10 }}
         >
           {slide.title}
         </Text>
-        {/* actual SVG */}
-        <View>
-          <slide.component
-            width={SCREEN_WIDTH * 0.9}
-            height={SCREEN_WIDTH * 0.9}
-          />
-        </View>
-
+        <slide.component
+          width={SCREEN_WIDTH * 0.9}
+          height={SCREEN_WIDTH * 0.9}
+        />
         <Text
-          className=" text-[24px] font-fredokaMedium text-center"
+          className="text-[24px] font-fredokaMedium text-center"
           style={{ color: slide.textColor }}
         >
           {slide.text}
@@ -126,18 +128,14 @@ const RenderItem: React.FC<Props> = ({
     );
   }
 
-  // 1) Input slide (ID=14)
+  // Input slide (ID 14)
   if (item.id === 14) {
     const isNameValid = /^[A-Za-z\s]+$/.test(name);
     const isSubmitDisabled =
       name.trim().length === 0 || !isNameValid || age.trim().length === 0;
-
     return (
       <View
-        style={{
-          width: SCREEN_WIDTH,
-          backgroundColor: item.backgroundColor,
-        }}
+        style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
         className="flex-1 justify-around items-center px-[16px]"
       >
         <View className="absolute inset-0 justify-end items-center">
@@ -196,7 +194,7 @@ const RenderItem: React.FC<Props> = ({
     );
   }
 
-  // 2) Testimonials slide (vertical stack)
+  // Testimonials
   if (item.type === "testimonials") {
     const PHOTO_SIZE = 46;
     return (
@@ -207,7 +205,7 @@ const RenderItem: React.FC<Props> = ({
           paddingBottom: 120,
           paddingTop: 70,
         }}
-        className="flex-1 px-[16px]  "
+        className="flex-1 px-[16px]"
       >
         <Text
           className="text-[36px] font-fredokaMedium"
@@ -233,7 +231,7 @@ const RenderItem: React.FC<Props> = ({
                     height: PHOTO_SIZE,
                     borderRadius: 12,
                   }}
-                  className=" overflow-hidden mr-3"
+                  className="overflow-hidden mr-3"
                 >
                   {typeof t.photo === "number" ? (
                     <Image
@@ -246,7 +244,7 @@ const RenderItem: React.FC<Props> = ({
                   )}
                 </View>
                 <Text
-                  className="flex-1 text-[18px] text-white  font-fredokaRegular font-bold"
+                  className="flex-1 text-[18px] font-fredokaRegular font-bold"
                   style={{ color: "#fff" }}
                 >
                   {t.title}
@@ -271,14 +269,25 @@ const RenderItem: React.FC<Props> = ({
     );
   }
 
-  // 3) Animation & Question slides (default)
+  // Question slide forwards to the dedicated component
+  if (item.type === "question") {
+    return (
+      <QuestionSlide
+        item={item as OnboardingQuestionData}
+        index={index}
+        onSelectAnswer={onSelectAnswer}
+        selectedAnswers={selectedAnswers}
+        flatListRef={flatListRef}
+        dataLength={dataLength}
+      />
+    );
+  }
+
+  // Default: Animation slide
   return (
     <View
-      style={{
-        width: SCREEN_WIDTH,
-        backgroundColor: item.backgroundColor,
-      }}
-      className="flex-1 pt-[90px] flex-col gap-[24px] items-center px-[16px]"
+      style={{ width: SCREEN_WIDTH, backgroundColor: item.backgroundColor }}
+      className="flex-1 pt-[90px] flex-col items-center px-[16px]"
     >
       <View className="absolute inset-0 justify-end items-center">
         <Animated.View
@@ -293,22 +302,16 @@ const RenderItem: React.FC<Props> = ({
           ]}
         />
       </View>
-
-      {/* Lottie animation */}
       {item.animation && (
         <Animated.View style={lottieStyle}>
           <LottieView
             source={item.animation}
-            style={{
-              width: SCREEN_WIDTH * 0.9,
-              height: SCREEN_WIDTH * 0.9,
-            }}
+            style={{ width: SCREEN_WIDTH * 0.9, height: SCREEN_WIDTH * 0.9 }}
             autoPlay
             loop={![15, 16].includes(item.id)}
           />
         </Animated.View>
       )}
-
       {item.type === "animation" && (
         <Text
           className="text-center font-fredokaMedium text-[36px] mb-2.5"
@@ -316,49 +319,6 @@ const RenderItem: React.FC<Props> = ({
         >
           {item.text}
         </Text>
-      )}
-
-      {item.type === "question" && (
-        <>
-          <Text
-            className="text-[32px] font-fredokaMedium font-bold pt-[60px]"
-            style={{ color: item.textColor }}
-          >
-            {(item as OnboardingQuestionData).question}
-          </Text>
-          <View className="w-full">
-            {(item as OnboardingQuestionData).answers.map((answer) => {
-              const isSelected = selectedAnswers?.[item.id] === answer.id;
-              return (
-                <TouchableOpacity
-                  key={answer.id}
-                  className={`py-5 px-5 rounded-[16px] border border-[#0A7BC2] my-2.5 ${
-                    isSelected ? "bg-[#51B6F6]" : "bg-[#D8EFFD]"
-                  }`}
-                  onPress={() => {
-                    onSelectAnswer?.(item.id, answer.id);
-                    setTimeout(() => {
-                      const next = index + 1;
-                      if (flatListRef && dataLength && next < dataLength) {
-                        flatListRef.current?.scrollToIndex({
-                          index: next,
-                          animated: true,
-                        });
-                      }
-                    }, 300);
-                  }}
-                >
-                  <Text
-                    className="text-[18px] font-fredokaRegular"
-                    style={{ color: item.textColor }}
-                  >
-                    {answer.text}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-          </View>
-        </>
       )}
     </View>
   );
