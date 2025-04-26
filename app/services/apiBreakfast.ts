@@ -21,15 +21,19 @@ export async function getFilteredBreakfast() {
   const currentDay = getUserDay(start_date);
 
   // 2. Fetch all breakfasts for that diet_type sorted by day_number
-  const { data: breakfasts, error: bfError } = await supabase
+  const { data: breakfasts, error: bfErr } = await supabase
     .from("breakfasts")
-    .select("*")
+    .select(
+      `
+    *,
+    breakfast_ingredients (
+      ingredients
+    )
+  `
+    )
     .eq("diet_type", diet_type)
     .order("day_number", { ascending: true });
-
-  if (bfError || !breakfasts || breakfasts.length === 0) {
-    throw new Error("No breakfasts found");
-  }
+  if (bfErr || !breakfasts?.length) throw new Error("No breakfasts found");
 
   // 3. Fetch user's food preferences
   const { data: preferences, error: prefError } = await supabase

@@ -1,5 +1,5 @@
 // Home.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -44,6 +44,11 @@ const Home = () => {
     { Icon: Carbs, label: "Carbs", value: breakfast?.nutritions?.carbs },
     { Icon: Fat, label: "Fat", value: breakfast?.nutritions?.fat },
   ];
+  useEffect(() => {
+    if (!isBreakfastLoading && breakfast) {
+      console.log(JSON.stringify(breakfast.breakfast_ingredients, null, 2));
+    }
+  }, [isBreakfastLoading, breakfast]);
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
@@ -78,7 +83,6 @@ const Home = () => {
               name={breakfast?.name || ""}
               loading={isBreakfastLoading}
             />
-
             <View className="flex-col gap-4">
               <Text className="text-[18px] text-center font-fredokaMedium">
                 Nutritions
@@ -96,41 +100,43 @@ const Home = () => {
               </View>
             </View>
 
+            <View className="flex-row items-center gap-4">
+              <View className="bg-[rgba(213,212,212,0.815)] flex-col gap-2"></View>
+              <View></View>
+              <View></View>
+              <View></View>
+            </View>
+
             <TouchableOpacity
               onPress={() => router.push("/")}
               className="bg-black w-42 h-8 mt-6 items-center justify-center"
             >
               <Text className="text-white">Go on index</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={signOutFromGoogle}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Sign out google</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={() => handleUpdateGoal()}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Update goal</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={handleUpdateStreak}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Update streak</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={handleUpdateStartDate}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Set start date</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
               onPress={signOutFromApple}
               className="bg-black h-8 mt-4 items-center justify-center"
