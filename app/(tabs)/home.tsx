@@ -23,6 +23,7 @@ import Protein from "@/assets/svg/Protein";
 import Carbs from "@/assets/svg/Carbs";
 import Fat from "@/assets/svg/Fat";
 import Calories from "@/assets/svg/Calories";
+import NutritionItem from "../components/NutritionsItem";
 
 const Home = () => {
   const { user } = useGetCurrentUserData();
@@ -33,6 +34,16 @@ const Home = () => {
   const { updateGoal } = useUpdateGoal();
   const { updateStreak } = useUpdateUserStreak();
   const { updateStartDate } = useUpdateStartDate();
+  const nutritions = [
+    {
+      Icon: Calories,
+      label: "Calories",
+      value: breakfast?.nutritions?.calories,
+    },
+    { Icon: Protein, label: "Protein", value: breakfast?.nutritions?.protein },
+    { Icon: Carbs, label: "Carbs", value: breakfast?.nutritions?.carbs },
+    { Icon: Fat, label: "Fat", value: breakfast?.nutritions?.fat },
+  ];
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
@@ -72,45 +83,16 @@ const Home = () => {
               <Text className="text-[18px] text-center font-fredokaMedium">
                 Nutritions
               </Text>
-              <View className="flex-col gap-4">
-                <View className="flex-row items-center justify-center gap-4">
-                  <View className="flex-col gap-2 bg-[rgba(213,212,212,0.815)] rounded-[16px] py-6 px-10 min-w-[100px]">
-                    <Calories />
-                    <Text className="text-center font-fredokaRegular">
-                      Calories
-                    </Text>
-                    <Text className="text-center text-[18px]  font-fredokaMedium">
-                      {breakfast?.nutritions?.calories}
-                    </Text>
-                  </View>
-                  <View className="flex-col gap-2 bg-[rgba(213,212,212,0.815)] rounded-[16px] py-6 px-10 min-w-[100px]">
-                    <Protein />
-                    <Text className="text-center font-fredokaRegular">
-                      Protein
-                    </Text>
-                    <Text className="text-center text-[18px]  font-fredokaMedium">
-                      {breakfast?.nutritions?.protein}
-                    </Text>
-                  </View>
-                </View>
-                <View className="flex-row items-center justify-center gap-4">
-                  <View className="flex-col gap-2 bg-[rgba(213,212,212,0.815)] rounded-[16px] py-6 px-10 min-w-[100px]">
-                    <Carbs />
-                    <Text className="text-center font-fredokaRegular">
-                      Carbs
-                    </Text>
-                    <Text className="text-center text-[18px]  font-fredokaMedium">
-                      {breakfast?.nutritions?.carbs}
-                    </Text>
-                  </View>
-                  <View className="flex-col gap-2  bg-[rgba(213,212,212,0.815)] rounded-[16px] py-6 px-10 min-w-[100px]">
-                    <Fat />
-                    <Text className="text-center font-fredokaRegular">Fat</Text>
-                    <Text className="text-center text-[18px]  font-fredokaMedium">
-                      {breakfast?.nutritions?.fat}
-                    </Text>
-                  </View>
-                </View>
+
+              <View className="flex-row flex-wrap justify-center gap-4">
+                {nutritions.map((n, i) => (
+                  <NutritionItem
+                    key={i}
+                    Icon={n.Icon}
+                    label={n.label}
+                    value={n.value ?? "-"}
+                  />
+                ))}
               </View>
             </View>
 
