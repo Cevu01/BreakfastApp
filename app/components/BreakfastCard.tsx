@@ -48,18 +48,6 @@ const BreakfastCard: React.FC<BreakfastCardProps> = ({
       <View style={styles.overlay}>
         <Text style={styles.text}>{name}</Text>
       </View>
-
-      {/*
-      // — If you’d rather have a horizontal gradient:
-      <LinearGradient
-        colors={["rgba(0,0,0,0.7)", "rgba(0,0,0,0.0)"]}
-        start={{ x: 0, y: 1 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.overlay}
-      >
-        <Text style={styles.text}>{name}</Text>
-      </LinearGradient>
-      */}
     </View>
   );
 };
@@ -68,8 +56,7 @@ export default BreakfastCard;
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    height: 280,
+    height: 240,
     borderRadius: 20,
     overflow: "hidden",
     position: "relative",

@@ -5,9 +5,9 @@ import { useGetCurrentUserData } from "@/queries/usersQueries";
 const profile = () => {
   const { user, isGettingCurrentUser } = useGetCurrentUserData();
 
-  const userName = user?.[0].name;
-  const userStreak = user?.[0].streak_count;
-  const userDiet = user?.[0].diet_type;
+  const userName = user?.[0]?.name;
+  const userStreak = user?.[0]?.streak_count;
+  const userDiet = user?.[0]?.diet_type;
 
   return (
     <View className="flex-1 justify-center items-center">
