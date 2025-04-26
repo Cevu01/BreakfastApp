@@ -1,19 +1,12 @@
-// src/components/BreakfastCard.tsx
 import React, { useRef } from "react";
-import {
-  View,
-  Text,
-  Animated,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { View, Text, Animated, ActivityIndicator } from "react-native";
 
 interface BreakfastCardProps {
   uri: string;
   name: string;
   loading: boolean;
 }
+
 const BreakfastCard: React.FC<BreakfastCardProps> = ({
   uri,
   name,
@@ -30,59 +23,28 @@ const BreakfastCard: React.FC<BreakfastCardProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View className="w-full h-[240px] rounded-[20px] overflow-hidden relative">
       {loading ? (
-        <View style={styles.loader}>
+        <View className="flex-1 justify-center items-center">
           <ActivityIndicator size="small" color="#333" />
         </View>
       ) : (
         <Animated.Image
           source={{ uri }}
-          style={[styles.image, { opacity: imgOpacity }]}
+          className="w-full h-full"
+          style={{ opacity: imgOpacity }}
           resizeMode="cover"
           onLoad={onImageLoad}
         />
       )}
 
-      {/* Simple semi-opaque black bar at the bottom */}
-      <View style={styles.overlay}>
-        <Text style={styles.text}>{name}</Text>
+      <View className="absolute bottom-[10px] left-[10px] right-[10px] h-[40px] bg-[rgba(213,212,212,0.815)] justify-center px-4 rounded-[10px]">
+        <Text className="text-black text-[16px] font-fredokaMedium">
+          {name}
+        </Text>
       </View>
     </View>
   );
 };
 
 export default BreakfastCard;
-
-const styles = StyleSheet.create({
-  container: {
-    height: 240,
-    borderRadius: 20,
-    overflow: "hidden",
-    position: "relative",
-  },
-  loader: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-  overlay: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 80,
-    backgroundColor: "rgba(0,0,0,0.5)", // ← 50% black
-    justifyContent: "center",
-    paddingHorizontal: 16,
-  },
-  text: {
-    color: "#fff",
-    fontSize: 18,
-    // fontFamily: "FredokaMedium", // uncomment if you’ve loaded this font
-  },
-});
