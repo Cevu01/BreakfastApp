@@ -2,10 +2,15 @@
 import React from "react";
 import { ScrollView, View, Text } from "react-native";
 import { SvgProps } from "react-native-svg";
-import { IngredientIcons, IngredientName } from "../../assets/svg/Index";
+import {
+  IngredientIcons,
+  IngredientName,
+} from "../../assets/svg/IngredientsSvgs";
+import { findIconByName } from "../../assets/svg/IconMatchers";
 
 export interface Ingredient {
   name: string;
+  iconKey?: IngredientName;
   quantity?: number;
   unit?: string;
 }
@@ -25,26 +30,13 @@ const IngredientsSection: React.FC<IngredientsSectionProps> = ({
       contentContainerStyle={{ gap: 16 }}
     >
       {ingredients.map((ing, idx) => {
-        const nameLower = ing.name.toLowerCase().trim();
-
-        // Treat IngredientIcons as mapping to ComponentType<SvgProps>
-        const iconMap = IngredientIcons as Record<
-          string,
-          React.ComponentType<SvgProps>
-        >;
-
-        // 1) direct match
+        // 1) explicit iconKey override
         let Icon: React.ComponentType<SvgProps> | undefined =
-          iconMap[nameLower];
+          ing.iconKey && IngredientIcons[ing.iconKey];
 
-        // 2) substring fallback
+        // 2) fallback to matcher-based lookup
         if (!Icon) {
-          const entry = Object.entries(iconMap).find(([key]) =>
-            nameLower.includes(key)
-          );
-          if (entry) {
-            Icon = entry[1];
-          }
+          Icon = findIconByName(ing.name);
         }
 
         return (
