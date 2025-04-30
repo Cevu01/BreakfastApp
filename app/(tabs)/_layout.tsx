@@ -11,8 +11,8 @@ const _layout = () => {
         options={{ title: "Home", headerShown: false }}
       />
       <Tabs.Screen
-        name="progress"
-        options={{ title: "Progress", headerShown: false }}
+        name="list"
+        options={{ title: "List", headerShown: false }}
       />
       <Tabs.Screen
         name="profile"

@@ -9,7 +9,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Text, View } from "react-native";
 
-type RouteName = "home" | "progress" | "profile";
+type RouteName = "home" | "list" | "profile";
 
 const TabBarButton = ({
   onPress,
