@@ -15,34 +15,13 @@ import {
   IngredientName,
 } from "../../assets/svg/IngredientsSvgs";
 import { findIconByName } from "../../assets/svg/IconMatchers";
+import { getDisplayText } from "../../helpers/getDisplayText";
 
 export interface ShoppingItem {
   name: string;
   iconKey?: IngredientName;
   quantity?: number;
   unit?: string;
-}
-
-// helper: convert a number to a fraction or whole string (0.5 -> "1/2", 1.25 -> "1 1/4")
-function formatQuantity(q?: number): string {
-  if (q == null) return "";
-  const whole = Math.floor(q);
-  const frac = q - whole;
-  if (Math.abs(frac) < 1e-6) return `${whole}`;
-  const DEN = 100;
-  let num = Math.round(frac * DEN);
-  const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
-  const g = gcd(num, DEN);
-  num /= g;
-  const den = DEN / g;
-  return whole > 0 ? `${whole} ${num}/${den}` : `${num}/${den}`;
-}
-
-// helper: build display text: quantity (with unit if any)
-function getDisplayText(item: ShoppingItem): string {
-  const qty = formatQuantity(item.quantity);
-  if (!qty) return "";
-  return item.unit ? `${qty}${item.unit}` : `${qty}`;
 }
 
 interface ListItemProps {

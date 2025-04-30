@@ -7,7 +7,8 @@ import {
   IngredientName,
 } from "../../assets/svg/IngredientsSvgs";
 import { findIconByName } from "../../assets/svg/IconMatchers";
-
+import { getDisplayText } from "../../helpers/getDisplayText";
+import { formatQuantity } from "../../helpers/formatQuantity"; // wherever you keep your formatQuantity
 export interface Ingredient {
   name: string;
   iconKey?: IngredientName;
@@ -17,40 +18,6 @@ export interface Ingredient {
 
 interface IngredientsSectionProps {
   ingredients: Ingredient[];
-}
-
-// helper: convert a number into a whole+fraction string (e.g. 1.5 -> "1 1/2", 0.5 -> "1/2")
-function formatQuantity(q?: number): string {
-  if (q == null) return "";
-  const whole = Math.floor(q);
-  const frac = q - whole;
-  // check for near-integer
-  if (Math.abs(frac) < 1e-6) {
-    return `${whole}`;
-  }
-
-  const DEN = 100;
-  let num = Math.round(frac * DEN);
-  const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
-  const g = gcd(num, DEN);
-  num /= g;
-  const den = DEN / g;
-
-  if (whole > 0) {
-    return `${whole} ${num}/${den}`;
-  }
-  return `${num}/${den}`;
-}
-
-// helper: build the display text from quantity and unit; if no unit, just show the fraction/number
-function getDisplayText(ing: Ingredient): string {
-  const qty = formatQuantity(ing.quantity);
-  if (!qty) return "";
-  if (ing.unit) {
-    return `${qty} ${ing.unit}`;
-  }
-  // no unit? just return the quantity (e.g. "1/2")
-  return qty;
 }
 
 const IngredientsSection: React.FC<IngredientsSectionProps> = ({
