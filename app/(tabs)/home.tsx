@@ -24,6 +24,11 @@ import Carbs from "@/assets/svg/Carbs";
 import Fat from "@/assets/svg/Fat";
 import Calories from "@/assets/svg/Calories";
 import NutritionItem from "../components/NutritionsItem";
+import Potato from "@/assets/svg/Potato";
+import Pepper from "@/assets/svg/Pepper";
+import Onion from "@/assets/svg/Onion";
+import Paprika from "@/assets/svg/Paprika";
+import IngredientsSection from "../components/IngredientsSection";
 
 const Home = () => {
   const { user } = useGetCurrentUserData();
@@ -44,11 +49,7 @@ const Home = () => {
     { Icon: Carbs, label: "Carbs", value: breakfast?.nutritions?.carbs },
     { Icon: Fat, label: "Fat", value: breakfast?.nutritions?.fat },
   ];
-  useEffect(() => {
-    if (!isBreakfastLoading && breakfast) {
-      console.log(JSON.stringify(breakfast.breakfast_ingredients, null, 2));
-    }
-  }, [isBreakfastLoading, breakfast]);
+  console.log(JSON.stringify(breakfast?.breakfast_ingredients, null, 2));
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
@@ -84,9 +85,7 @@ const Home = () => {
               loading={isBreakfastLoading}
             />
             <View className="flex-col gap-4">
-              <Text className="text-[18px] text-center font-fredokaMedium">
-                Nutritions
-              </Text>
+              <Text className="text-[18px] font-fredokaMedium">Nutritions</Text>
 
               <View className="flex-row flex-wrap justify-center gap-4">
                 {nutritions.map((n, i) => (
@@ -99,14 +98,11 @@ const Home = () => {
                 ))}
               </View>
             </View>
-
-            <View className="flex-row items-center gap-4">
-              <View className="bg-[rgba(213,212,212,0.815)] flex-col gap-2"></View>
-              <View></View>
-              <View></View>
-              <View></View>
-            </View>
-
+            <IngredientsSection
+              ingredients={
+                breakfast?.breakfast_ingredients?.[0]?.ingredients || []
+              }
+            />
             <TouchableOpacity
               onPress={() => router.push("/")}
               className="bg-black w-42 h-8 mt-6 items-center justify-center"
