@@ -7,6 +7,7 @@ import {
   FlatList,
   Pressable,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 import { SvgProps } from "react-native-svg";
 import { useShoppingListQuery } from "@/queries/shoppingListQueries";
@@ -35,7 +36,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, checked, onToggle }) => {
 
   const handlePressIn = () => {
     Animated.spring(scaleAnim, {
-      toValue: 0.97,
+      toValue: 1.05,
       useNativeDriver: true,
     }).start();
   };
@@ -70,7 +71,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, checked, onToggle }) => {
         {Icon ? (
           <Icon />
         ) : (
-          <View className="w-12 h-12 bg-gray-300 rounded-full mr-2" />
+          <View className="w-12 h-12 bg-gray-300 rounded-full mr-3" />
         )}
         <Text className="text-[16px] font-fredokaRegular">
           {getDisplayText(item)}
@@ -98,10 +99,21 @@ const ShoppingListScreen: React.FC = () => {
   const items: ShoppingItem[] = Array.isArray(data) ? data : [];
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
 
-  if (isLoading)
-    return <Text className="flex-1 text-center mt-5">Loading...</Text>;
-  if (isError)
-    return <Text className="flex-1 text-center mt-5">Error loading list.</Text>;
+  if (isLoading) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text className="text-base">Error loading list.</Text>
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-white">
