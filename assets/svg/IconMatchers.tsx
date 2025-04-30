@@ -16,7 +16,10 @@ export const iconMatchers: Matcher[] = [
   { key: "potato", matchers: ["potato"] },
   { key: "onion", matchers: ["onion"] },
   { key: "chia", matchers: ["chia seeds", "chia"] },
-  { key: "almond", matchers: ["almond milk", "almond", "plant milk"] },
+  {
+    key: "almond",
+    matchers: ["almond milk", "almond", "plant milk", "plant-based milk"],
+  },
   { key: "berries", matchers: ["mixed berries", "berries"] },
   { key: "syrup", matchers: ["maple syrup", "syrup"] },
   { key: "milk", matchers: ["milk"] },
