@@ -5,6 +5,7 @@ import { MeshGradientView } from "expo-mesh-gradient";
 
 const progress = () => {
   const { data, isLoading, isError } = useShoppingListQuery();
+  console.log(data);
   return (
     <MeshGradientView
       style={{ flex: 1 }}

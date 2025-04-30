@@ -7,6 +7,9 @@ import AlmondMilk from "./AlmondMilk";
 import ChiaSeeds from "./ChiaSeeds";
 import MixedBerries from "./MixedBerries";
 import MapleSyrup from "./MapleSyrup";
+import Milk from "./Milk";
+import Banana from "./Banana";
+import CocoaPowder from "./CocoaPowder";
 
 export const IngredientIcons = {
   potato: Potato,
@@ -17,6 +20,9 @@ export const IngredientIcons = {
   chia: ChiaSeeds,
   berries: MixedBerries,
   syrup: MapleSyrup,
+  milk: Milk,
+  banana: Banana,
+  cocoa: CocoaPowder,
 } as const;
 
 // Helper type

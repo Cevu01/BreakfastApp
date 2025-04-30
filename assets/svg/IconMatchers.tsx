@@ -16,11 +16,12 @@ export const iconMatchers: Matcher[] = [
   { key: "potato", matchers: ["potato"] },
   { key: "onion", matchers: ["onion"] },
   { key: "chia", matchers: ["chia seeds", "chia"] },
-  { key: "almond", matchers: ["almond milk", "almond"] },
+  { key: "almond", matchers: ["almond milk", "almond", "plant milk"] },
   { key: "berries", matchers: ["mixed berries", "berries"] },
   { key: "syrup", matchers: ["maple syrup", "syrup"] },
-  // once you add Milk.svg, add it here:
-  // { key: "milk", matchers: ["milk"] },
+  { key: "milk", matchers: ["milk"] },
+  { key: "banana", matchers: ["banana"] },
+  { key: "cocoa", matchers: ["cocoa powder", "cocoa"] },
 ];
 
 /**
