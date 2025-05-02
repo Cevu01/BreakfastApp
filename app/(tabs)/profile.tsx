@@ -8,7 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { useGetCurrentUserData, useUpdateGoal } from "@/queries/usersQueries";
+import {
+  useGetCurrentUserData,
+  useUpdateDietType,
+  useUpdateGoal,
+} from "@/queries/usersQueries";
 import ProfileIcon from "../../assets/svg/Profile";
 import DietTypeIcon from "../../assets/svg/DietType";
 import GoalIcon from "../../assets/svg/Goal";
@@ -29,6 +33,7 @@ export default function Profile() {
   const goalSheetRef = useRef<React.ElementRef<typeof RBSheet>>(null);
 
   const { updateGoal, isUpdatingGoal } = useUpdateGoal();
+  const { updateDietType, isUpdatingDietType } = useUpdateDietType();
 
   if (isGettingCurrentUser) {
     return (
@@ -97,7 +102,7 @@ export default function Profile() {
             key={opt}
             onPress={() => {
               setSelectedDiet(opt);
-              updateGoal(opt);
+              updateDietType(opt);
               dietSheetRef.current?.close();
             }}
             className="py-3"
