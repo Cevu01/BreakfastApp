@@ -83,7 +83,7 @@ const ListItem: React.FC<ListItemProps> = ({ item, checked, onToggle }) => {
         <View
           className={
             `w-7 h-7 rounded-[8px] items-center justify-center ` +
-            (checked ? "bg-green-800" : "bg-gray-400")
+            (checked ? "bg-[#1F1F1F]" : "bg-gray-400")
           }
         >
           {checked && <View className="w-3 h-3 bg-white rounded-[4px]" />}
