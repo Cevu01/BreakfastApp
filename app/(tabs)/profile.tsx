@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { useGetCurrentUserData } from "@/queries/usersQueries";
+import { useGetCurrentUserData, useUpdateGoal } from "@/queries/usersQueries";
 import ProfileIcon from "../../assets/svg/Profile";
 import DietTypeIcon from "../../assets/svg/DietType";
 import GoalIcon from "../../assets/svg/Goal";
@@ -27,6 +27,8 @@ export default function Profile() {
 
   const dietSheetRef = useRef<React.ElementRef<typeof RBSheet>>(null);
   const goalSheetRef = useRef<React.ElementRef<typeof RBSheet>>(null);
+
+  const { updateGoal, isUpdatingGoal } = useUpdateGoal();
 
   if (isGettingCurrentUser) {
     return (
@@ -94,7 +96,8 @@ export default function Profile() {
           <TouchableOpacity
             key={opt}
             onPress={() => {
-              setSelectedDiet(opt); // immediate UI update
+              setSelectedDiet(opt);
+              updateGoal(opt);
               dietSheetRef.current?.close();
             }}
             className="py-3"
@@ -128,7 +131,7 @@ export default function Profile() {
           wrapper: { backgroundColor: "#0000004b" },
         }}
       >
-        <Text className="text-white text-[22px]  font-fredokaMedium pt-4 pb-6">
+        <Text className="text-white text-[22px] font-fredokaMedium pt-4 pb-6">
           Select Goal
         </Text>
         {GOAL_OPTIONS.map((opt) => (
@@ -136,6 +139,7 @@ export default function Profile() {
             key={opt}
             onPress={() => {
               setSelectedGoal(opt);
+              updateGoal(opt);
               goalSheetRef.current?.close();
             }}
             className="py-3"
