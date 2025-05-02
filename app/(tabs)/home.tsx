@@ -49,7 +49,7 @@ const Home = () => {
     { Icon: Carbs, label: "Carbs", value: breakfast?.nutritions?.carbs },
     { Icon: Fat, label: "Fat", value: breakfast?.nutritions?.fat },
   ];
-  // console.log(JSON.stringify(breakfast?.breakfast_ingredients, null, 2));
+  console.log(JSON.stringify(breakfast?.breakfast_ingredients, null, 2));
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");

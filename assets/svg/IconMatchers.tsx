@@ -10,7 +10,10 @@ type Matcher = {
  * Ordered from most specific → most general
  */
 export const iconMatchers: Matcher[] = [
-  { key: "pepper", matchers: ["salt & pepper", "salt and pepper"] },
+  {
+    key: "saltpepper",
+    matchers: ["salt & pepper", "salt and pepper"],
+  },
   { key: "pepper", matchers: ["pepper"] },
   { key: "paprika", matchers: ["paprika"] },
   { key: "potato", matchers: ["potato"] },

@@ -10,6 +10,7 @@ import MapleSyrup from "./MapleSyrup";
 import Milk from "./Milk";
 import Banana from "./Banana";
 import CocoaPowder from "./CocoaPowder";
+import SaltAndPepper from "./SaltAndPepper";
 
 export const IngredientIcons = {
   potato: Potato,
@@ -23,6 +24,7 @@ export const IngredientIcons = {
   milk: Milk,
   banana: Banana,
   cocoa: CocoaPowder,
+  saltpepper: SaltAndPepper,
 } as const;
 
 // Helper type
