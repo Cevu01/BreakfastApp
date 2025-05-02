@@ -1,5 +1,5 @@
 // src/screens/ShoppingListScreen.tsx
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -9,14 +9,13 @@ import {
   Animated,
   ActivityIndicator,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SvgProps } from "react-native-svg";
 import { useShoppingListQuery } from "@/queries/shoppingListQueries";
-import {
-  IngredientIcons,
-  IngredientName,
-} from "../../assets/svg/IngredientsSvgs";
-import { findIconByName } from "../../assets/svg/IconMatchers";
-import { getDisplayText } from "../../helpers/getDisplayText";
+import { useGetCurrentUserData } from "@/queries/usersQueries";
+import { IngredientIcons, IngredientName } from "@/assets/svg/IngredientsSvgs";
+import { findIconByName } from "@/assets/svg/IconMatchers";
+import { getDisplayText } from "@/helpers/getDisplayText";
 
 export interface ShoppingItem {
   name: string;
@@ -95,11 +94,38 @@ const ListItem: React.FC<ListItemProps> = ({ item, checked, onToggle }) => {
 };
 
 const ShoppingListScreen: React.FC = () => {
-  const { data, isLoading, isError } = useShoppingListQuery();
+  // get current user ID
+  const { user, isGettingCurrentUser } = useGetCurrentUserData();
+  const userId = user?.[0]?.uid;
+  const storageKey = userId ? `@shopping_checked_${userId}` : null;
+
+  // fetch shopping list items
+  const { data, isLoading: isListLoading, isError } = useShoppingListQuery();
   const items: ShoppingItem[] = Array.isArray(data) ? data : [];
+
+  // local checked state, keyed by item index
   const [checkedItems, setCheckedItems] = useState<Record<number, boolean>>({});
 
-  if (isLoading) {
+  // 1) Load persisted checked state for this user
+  useEffect(() => {
+    if (!storageKey) return;
+    AsyncStorage.getItem(storageKey)
+      .then((raw) => {
+        if (raw) setCheckedItems(JSON.parse(raw));
+      })
+      .catch(console.error);
+  }, [storageKey]);
+
+  // 2) Persist whenever checkedItems changes
+  useEffect(() => {
+    if (!storageKey) return;
+    AsyncStorage.setItem(storageKey, JSON.stringify(checkedItems)).catch(
+      console.error
+    );
+  }, [storageKey, checkedItems]);
+
+  // show loader until both user and list data are ready
+  if (isGettingCurrentUser || isListLoading) {
     return (
       <View className="flex-1 items-center justify-center">
         <ActivityIndicator size="large" />
@@ -117,7 +143,7 @@ const ShoppingListScreen: React.FC = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="px-4 pt-6 pb-10 items-center">
+      <View className="px-4 pt-6 pb-4 items-center">
         <Text className="text-[30px] font-fredokaMedium">Shopping List</Text>
       </View>
 
@@ -133,7 +159,10 @@ const ShoppingListScreen: React.FC = () => {
               item={item}
               checked={checked}
               onToggle={() =>
-                setCheckedItems((prev) => ({ ...prev, [index]: !checked }))
+                setCheckedItems((prev) => ({
+                  ...prev,
+                  [index]: !checked,
+                }))
               }
             />
           );
