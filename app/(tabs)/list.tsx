@@ -143,7 +143,7 @@ const ShoppingListScreen: React.FC = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="px-4 pt-6 pb-4 items-center">
+      <View className="px-4 pt-6 pb-8 items-center">
         <Text className="text-[30px] font-fredokaMedium">Shopping List</Text>
       </View>
 

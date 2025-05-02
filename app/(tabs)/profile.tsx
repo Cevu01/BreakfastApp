@@ -1,7 +1,7 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, SafeAreaView } from "react-native";
 import React from "react";
 import { useGetCurrentUserData } from "@/queries/usersQueries";
-
+import Profile from "../../assets/svg/Profile";
 const profile = () => {
   const { user, isGettingCurrentUser } = useGetCurrentUserData();
 
@@ -10,23 +10,19 @@ const profile = () => {
   const userDiet = user?.[0]?.diet_type;
 
   return (
-    <View className="flex-1 justify-center items-center">
-      {isGettingCurrentUser ? (
-        <ActivityIndicator size="small" color={"#333"} />
-      ) : (
-        <View className="flex-row gap-8 mt-6 items-center justify-center">
-          <Text className="mt-4 text-xl font-bdogroteskRegular">
-            Name: {userName}
-          </Text>
-          <Text className="mt-4 text-xl font-bdogroteskRegular">
-            Streak: {userStreak}
-          </Text>
-          <Text className="mt-4 text-xl font-bdogroteskRegular">
-            Diet: {userDiet}
+    <SafeAreaView className="flex-1 bg-white">
+      <View className="flex-1 px-4 pt-6">
+        <View className="pb-6">
+          <Text className="text-[30px] text-center font-fredokaMedium">
+            Account
           </Text>
         </View>
-      )}
-    </View>
+        <View className="flex-col items-center gap-2 pt-6">
+          <Profile />
+          <Text className="text-[20px] font-fredokaMedium">{userName}</Text>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
