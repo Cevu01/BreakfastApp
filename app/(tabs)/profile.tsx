@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import {
@@ -16,6 +17,8 @@ import {
 import ProfileIcon from "../../assets/svg/Profile";
 import DietTypeIcon from "../../assets/svg/DietType";
 import GoalIcon from "../../assets/svg/Goal";
+import SignOut from "../../assets/svg/SignOut";
+import { signOut } from "../services/GoogleAuth";
 
 const DIET_OPTIONS = ["Vegan", "Keto", "Paleo"];
 const GOAL_OPTIONS = ["Lose Weight", "Maintain Weight", "Gain Muscle"];
@@ -49,33 +52,43 @@ export default function Profile() {
         <Text className="text-[30px] text-center font-fredokaMedium pb-6">
           Account
         </Text>
+        <ScrollView>
+          <View className="items-center gap-2 pt-6 pb-[20px]">
+            <ProfileIcon />
+            <Text className="text-[20px] font-fredokaMedium">{userName}</Text>
+          </View>
 
-        <View className="items-center gap-2 pt-6">
-          <ProfileIcon />
-          <Text className="text-[20px] font-fredokaMedium">{userName}</Text>
-        </View>
+          <View className="pt-[40px] gap-4">
+            {/* Diet Type */}
+            <TouchableOpacity onPress={() => dietSheetRef.current?.open()}>
+              <View className="flex-row items-center gap-4 p-4 rounded-[20px] bg-[rgba(213,212,212,0.815)]">
+                <DietTypeIcon />
+                <Text className="text-[18px] font-fredokaRegular">
+                  {selectedDiet}
+                </Text>
+              </View>
+            </TouchableOpacity>
 
-        <View className="pt-[60px] gap-4">
-          {/* Diet Type */}
-          <TouchableOpacity onPress={() => dietSheetRef.current?.open()}>
-            <View className="flex-row items-center gap-4 p-4 rounded-[20px] bg-[rgba(213,212,212,0.815)]">
-              <DietTypeIcon />
-              <Text className="text-[18px] font-fredokaRegular">
-                {selectedDiet}
-              </Text>
-            </View>
-          </TouchableOpacity>
-
-          {/* Goal */}
-          <TouchableOpacity onPress={() => goalSheetRef.current?.open()}>
-            <View className="flex-row items-center gap-4 p-4 rounded-[20px] bg-[rgba(213,212,212,0.815)]">
-              <GoalIcon />
-              <Text className="text-[18px] font-fredokaRegular">
-                {selectedGoal}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+            {/* Goal */}
+            <TouchableOpacity onPress={() => goalSheetRef.current?.open()}>
+              <View className="flex-row items-center gap-4 p-4 rounded-[20px] bg-[rgba(213,212,212,0.815)]">
+                <GoalIcon />
+                <Text className="text-[18px] font-fredokaRegular">
+                  {selectedGoal}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {/* Sign Out */}
+            <TouchableOpacity onPress={signOut}>
+              <View className="flex-row items-center gap-4 p-4 rounded-[20px] bg-[rgba(213,212,212,0.815)]">
+                <SignOut />
+                <Text className="text-[18px] font-fredokaRegular">
+                  Sign Out
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
 
       {/* Diet Bottom Sheet */}

@@ -1,5 +1,5 @@
 // Home.tsx
-import React, { useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { router } from "expo-router";
-import { signOut } from "../services/GoogleAuth";
 import { useGetFilteredBreakfast } from "@/queries/breakfastQueries";
 import {
   useGetCurrentUserData,
@@ -105,12 +104,6 @@ const Home = () => {
               <Text className="text-white">Go on index</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={signOut}
-              className="bg-black h-8 mt-4 items-center justify-center"
-            >
-              <Text className="text-white">Sign out google</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
               onPress={() => handleUpdateGoal()}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
@@ -127,12 +120,6 @@ const Home = () => {
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Set start date</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={signOut}
-              className="bg-black h-8 mt-4 items-center justify-center"
-            >
-              <Text className="text-white">Sign out apple</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

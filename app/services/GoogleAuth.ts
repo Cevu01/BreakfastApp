@@ -111,36 +111,34 @@ export const signInWithGoogle = async () => {
 };
 export const signOut = async () => {
   try {
-    // 1) ensure there’s a session
-    const hasSession = await checkUserSession();
-    if (!hasSession) {
+    // 1) fetch session + user in one call
+    const {
+      data: { session },
+      error: sessionErr,
+    } = await supabase.auth.getSession();
+
+    if (sessionErr) throw sessionErr;
+    if (!session) {
       Alert.alert("No active session");
       return;
     }
 
-    // 2) figure out which provider was used
-    const {
-      data: { user },
-      error: userErr,
-    } = await supabase.auth.getUser();
-    if (userErr) throw userErr;
+    const provider = session.user.identities?.[0]?.provider;
 
-    const provider = user?.identities?.[0]?.provider; // “google” or “apple”
-
-    // 3) only sign out of Google’s native SDK if needed
+    // 2) kick off Supabase + optional Google sign-out in parallel
+    const tasks = [supabase.auth.signOut()];
     if (provider === "google") {
-      try {
-        await GoogleSignin.signOut();
-      } catch (e) {
-        console.warn("Google signOut failed:", e);
-      }
+      tasks.push(
+        GoogleSignin.signOut().catch((e: unknown) =>
+          Alert.alert("Google sign-out failed", String(e))
+        )
+      );
     }
-    // (for Apple you usually don’t need to do anything special)
 
-    // 4) always clear the Supabase session
-    await supabase.auth.signOut();
+    // 3) wait for everything (or remove await to redirect instantly)
+    await Promise.all(tasks);
 
-    // 5) navigate back to your auth screen
+    // 4) redirect to auth
     router.replace("/");
   } catch (error: any) {
     console.error("Sign out error:", error);
