@@ -49,21 +49,3 @@ export const signInWithApple = async () => {
     }
   }
 };
-
-export const signOutFromApple = async () => {
-  try {
-    const hasSession = await checkUserSession();
-
-    if (!hasSession) {
-      console.log("Nema aktivne sesije");
-      Alert.alert("Nema aktivne sesije");
-      return;
-    }
-
-    await supabase.auth.signOut();
-    console.log("✅ User signed out");
-    router.replace("/");
-  } catch (error: any) {
-    console.error("❌ Google Sign-Out Error:", error);
-  }
-};

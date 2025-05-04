@@ -109,23 +109,41 @@ export const signInWithGoogle = async () => {
     }
   }
 };
-
-/** Signs out the user from Google and Supabase */
-export const signOutFromGoogle = async () => {
+export const signOut = async () => {
   try {
+    // 1) ensure there’s a session
     const hasSession = await checkUserSession();
-
     if (!hasSession) {
-      console.log("Nema aktivne sesije");
-      Alert.alert("Nema aktivne sesije");
+      Alert.alert("No active session");
       return;
     }
 
-    await GoogleSignin.signOut();
+    // 2) figure out which provider was used
+    const {
+      data: { user },
+      error: userErr,
+    } = await supabase.auth.getUser();
+    if (userErr) throw userErr;
+
+    const provider = user?.identities?.[0]?.provider; // “google” or “apple”
+
+    // 3) only sign out of Google’s native SDK if needed
+    if (provider === "google") {
+      try {
+        await GoogleSignin.signOut();
+      } catch (e) {
+        console.warn("Google signOut failed:", e);
+      }
+    }
+    // (for Apple you usually don’t need to do anything special)
+
+    // 4) always clear the Supabase session
     await supabase.auth.signOut();
-    console.log("✅ User signed out");
+
+    // 5) navigate back to your auth screen
     router.replace("/");
   } catch (error: any) {
-    console.error("❌ Google Sign-Out Error:", error);
+    console.error("Sign out error:", error);
+    Alert.alert("Error signing out", error.message || "Unknown error");
   }
 };

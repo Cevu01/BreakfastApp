@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { router } from "expo-router";
-import { signOutFromGoogle } from "../services/GoogleAuth";
-import { signOutFromApple } from "../services/AppleAuth";
+import { signOut } from "../services/GoogleAuth";
 import { useGetFilteredBreakfast } from "@/queries/breakfastQueries";
 import {
   useGetCurrentUserData,
@@ -24,10 +23,6 @@ import Carbs from "@/assets/svg/Carbs";
 import Fat from "@/assets/svg/Fat";
 import Calories from "@/assets/svg/Calories";
 import NutritionItem from "../components/NutritionsItem";
-import Potato from "@/assets/svg/Potato";
-import Pepper from "@/assets/svg/Pepper";
-import Onion from "@/assets/svg/Onion";
-import Paprika from "@/assets/svg/Paprika";
 import IngredientsSection from "../components/IngredientsSection";
 
 const Home = () => {
@@ -110,7 +105,7 @@ const Home = () => {
               <Text className="text-white">Go on index</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={signOutFromGoogle}
+              onPress={signOut}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Sign out google</Text>
@@ -134,7 +129,7 @@ const Home = () => {
               <Text className="text-white">Set start date</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={signOutFromApple}
+              onPress={signOut}
               className="bg-black h-8 mt-4 items-center justify-center"
             >
               <Text className="text-white">Sign out apple</Text>
