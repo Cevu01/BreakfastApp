@@ -82,7 +82,7 @@ const ListItem: React.FC<ListItemProps> = React.memo(
           <View className="flex-1" />
           <View
             className={`w-7 h-7 rounded-[8px] items-center justify-center ${
-              checked ? "bg-[#1F1F1F]" : "bg-gray-400"
+              checked ? "bg-[#41a4f0]" : "bg-gray-400"
             }`}
           >
             {checked && <View className="w-3 h-3 bg-white rounded-[4px]" />}
