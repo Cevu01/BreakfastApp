@@ -9,7 +9,8 @@ export function useGetFilteredBreakfast() {
   } = useQuery({
     queryKey: ["filtered-breakfast"],
     queryFn: getFilteredBreakfast,
-    retry: false,
+    staleTime: 1000 * 60 * 20,
+    // retry: false,
   });
 
   return { breakfast, isBreakfastLoading, error };
