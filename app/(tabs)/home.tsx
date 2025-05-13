@@ -44,6 +44,7 @@ const Home = () => {
     { Icon: Fat, label: "Fat", value: breakfast?.nutritions?.fat },
   ];
   console.log(JSON.stringify(breakfast?.breakfast_ingredients, null, 2));
+  console.log(breakfast?.info);
 
   const handleUpdateGoal = () => {
     updateGoal("Sinee");
@@ -76,6 +77,7 @@ const Home = () => {
             <BreakfastCard
               uri={breakfast?.image || ""}
               name={breakfast?.name || ""}
+              time={breakfast?.info.time || ""}
               loading={isBreakfastLoading}
             />
             <View className="flex-col gap-4">
