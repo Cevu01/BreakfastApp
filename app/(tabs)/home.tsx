@@ -97,18 +97,7 @@ const Home = () => {
                 breakfast?.breakfast_ingredients?.[0]?.ingredients || []
               }
             />
-            <TouchableOpacity
-              onPress={() => router.push("/")}
-              className="bg-black w-42 h-8 mt-6 items-center justify-center"
-            >
-              <Text className="text-white">Go on index</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleUpdateGoal()}
-              className="bg-black h-8 mt-4 items-center justify-center"
-            >
-              <Text className="text-white">Update goal</Text>
-            </TouchableOpacity>
+
             <TouchableOpacity
               onPress={handleUpdateStreak}
               className="bg-black h-8 mt-4 items-center justify-center"
