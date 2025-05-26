@@ -65,7 +65,7 @@ const BreakfastCard: React.FC<BreakfastCardProps> = ({
           onLoad={onImageLoad}
         />
       )}
-      <View className="absolute top-[10px] left-[10px] h-[40px] bg-[rgba(213,212,212,0.815)] justify-center px-4 rounded-[10px]">
+      <View className="absolute top-[10px] left-[10px] h-[40px] bg-[rgba(255,255,255,0.73)] justify-center px-4 rounded-[10px]">
         <View className="flex-row items-center justify-center gap-2">
           <Time />
           <Text className="text-black text-[16px] font-fredokaMedium">
@@ -74,7 +74,7 @@ const BreakfastCard: React.FC<BreakfastCardProps> = ({
         </View>
       </View>
 
-      <View className="absolute bottom-[10px] left-[10px] right-[10px] h-[40px] bg-[rgba(213,212,212,0.815)] justify-center px-4 rounded-[10px]">
+      <View className="absolute bottom-[10px] left-[10px] right-[10px] h-[40px] bg-[rgba(255,255,255,0.73)] justify-center px-4 rounded-[10px]">
         <Text className="text-black text-[16px] font-fredokaMedium">
           {name}
         </Text>
