@@ -77,7 +77,7 @@ const Home = () => {
             <BreakfastCard
               uri={breakfast?.image || ""}
               name={breakfast?.name || ""}
-              time={breakfast?.info.time || ""}
+              time={breakfast?.info?.time || ""}
               loading={isBreakfastLoading}
             />
             <View className="flex-col gap-4">
