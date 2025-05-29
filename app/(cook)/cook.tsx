@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Animated,
@@ -19,9 +19,11 @@ import Medium from "@/assets/svg/Medium";
 import Hard from "@/assets/svg/Hard";
 import { usePulseAnimation } from "@/hooks/usePulseAnimation";
 import { useFadeIn } from "@/hooks/useFadeIn";
+import StepComponent from "../components/StepComponent";
 
 const Cook = () => {
   const { breakfast } = useGetFilteredBreakfast();
+  const [step, setStep] = useState(1);
 
   const pulseAnim = usePulseAnimation(1, 1.04, 600);
   const { opacity: imgOpacity, onLoad: onImageLoad } = useFadeIn(0, 1, 500);
@@ -109,6 +111,9 @@ const Cook = () => {
               {breakfast?.info?.servings} serv
             </Text>
           </View>
+        </View>
+        <View className="pt-[60px]">
+          <StepComponent totalSteps={4} currentStep={step} />
         </View>
       </ScrollView>
       <View className="absolute bottom-[50px] w-full px-[16px]">
