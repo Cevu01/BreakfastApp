@@ -60,13 +60,17 @@ const Cook = () => {
         </View>
       </View>
       <ScrollView className="flex-1 bg-white rounded-t-[24px] -mt-6 px-[16px] pt-[16px] ">
-        <View className="w-[40px] h-[4px] bg-[#666] mx-auto rounded-[4px]"></View>
-        <Text className="text-[30px] font-fredokaMedium  py-8">
-          {breakfast?.name}
-        </Text>
+        <View className="flex-col gap-2 pb-8">
+          <Text className="text-[30px] font-fredokaMedium pt-[12px]">
+            {breakfast?.name}
+          </Text>
+
+          <Text className="text-[16px] font-fredokaMedium leading-[20px]">
+            {breakfast?.description}
+          </Text>
+        </View>
 
         <View className="flex-row items-center justify-center gap-[18px]">
-          {/* Timer Block */}
           <View className="min-w-[100px] min-h-[120px] flex-col gap-2 items-center justify-center bg-[#C2E1FF] p-4 rounded-[18px]">
             <Timer />
             <Text className="text-[16px] text-[#004e9b] font-fredokaMedium">
@@ -112,11 +116,11 @@ const Cook = () => {
             </Text>
           </View>
         </View>
-        <View className="pt-[60px]">
+        <View className="pt-[40px]">
           <StepComponent totalSteps={4} currentStep={step} />
         </View>
       </ScrollView>
-      <View className="absolute bottom-[50px] w-full px-[16px]">
+      <View className="absolute bottom-[30px] w-full px-[16px]">
         <TouchableOpacity
           style={{ transform: [{ scale: pulseAnim }] }}
           className="bg-[#41a4f0]  rounded-[18px] p-4"
