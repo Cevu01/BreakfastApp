@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   Animated,
@@ -29,6 +29,25 @@ const Cook = () => {
       useNativeDriver: true,
     }).start();
   };
+
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.04,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, []);
 
   // show loader while fetching
   if (!breakfast) {
@@ -62,7 +81,7 @@ const Cook = () => {
           </Text>
         </View>
       </View>
-      <ScrollView className="flex-1 bg-white rounded-t-[24px] -mt-6 px-[16px] pt-4 ">
+      <ScrollView className="flex-1 bg-white rounded-t-[24px] -mt-6 px-[16px] pt-[16px] ">
         <View className="w-[40px] h-[4px] bg-[#666] mx-auto rounded-[4px]"></View>
         <Text className="text-[30px] font-fredokaMedium  py-8">
           {breakfast?.name}
@@ -116,6 +135,16 @@ const Cook = () => {
           </View>
         </View>
       </ScrollView>
+      <View className="absolute bottom-[50px] w-full px-[16px]">
+        <TouchableOpacity
+          style={{ transform: [{ scale: pulseAnim }] }}
+          className="bg-[#41a4f0]  rounded-[18px] p-4"
+        >
+          <Text className="text-white text-[20px] font-fredokaMedium text-center">
+            Start cooking
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
