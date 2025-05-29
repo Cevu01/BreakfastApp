@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import Time from "../../assets/svg/Time";
 import { router } from "expo-router";
+import { usePulseAnimation } from "@/hooks/usePulseAnimation";
+import { useFadeIn } from "@/hooks/useFadeIn";
 
 interface BreakfastCardProps {
   uri: string;
@@ -22,33 +24,8 @@ const BreakfastCard: React.FC<BreakfastCardProps> = ({
   time,
   loading,
 }) => {
-  const imgOpacity = useRef(new Animated.Value(0)).current;
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.1,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, []);
-
-  const onImageLoad = () => {
-    Animated.timing(imgOpacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  };
+  const pulseAnim = usePulseAnimation(1, 1.1, 600);
+  const { opacity: imgOpacity, onLoad: onImageLoad } = useFadeIn(0, 1, 500);
 
   return (
     <View className="w-full h-[240px] rounded-[20px] overflow-hidden relative">

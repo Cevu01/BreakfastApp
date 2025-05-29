@@ -17,39 +17,15 @@ import Easy from "@/assets/svg/Easy";
 import Servings from "@/assets/svg/Servings";
 import Medium from "@/assets/svg/Medium";
 import Hard from "@/assets/svg/Hard";
+import { usePulseAnimation } from "@/hooks/usePulseAnimation";
+import { useFadeIn } from "@/hooks/useFadeIn";
 
 const Cook = () => {
   const { breakfast } = useGetFilteredBreakfast();
-  const imgOpacity = useRef(new Animated.Value(0)).current;
 
-  const onImageLoad = () => {
-    Animated.timing(imgOpacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-  };
+  const pulseAnim = usePulseAnimation(1, 1.04, 600);
+  const { opacity: imgOpacity, onLoad: onImageLoad } = useFadeIn(0, 1, 500);
 
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.04,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 600,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-  }, []);
-
-  // show loader while fetching
   if (!breakfast) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
