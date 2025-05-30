@@ -27,7 +27,6 @@ const Cook = () => {
 
   const pulseAnim = usePulseAnimation(1, 1.04, 600);
   const { opacity: imgOpacity, onLoad: onImageLoad } = useFadeIn(0, 1, 500);
-
   if (!breakfast) {
     return (
       <View className="flex-1 justify-center items-center bg-white">

@@ -16,8 +16,8 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
   totalSteps,
   currentStep,
   activeColor = "#41a4f0",
-  inactiveColor = "#ccc",
-  lineColor = "#ccc",
+  inactiveColor = "#41a4f0",
+  lineColor = "#41a4f0",
   circleSize = 40,
   style,
 }) => (
@@ -31,7 +31,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
         <React.Fragment key={step}>
           {idx > 0 && (
             <View
-              className="flex-1 h-0.5 mx-1.5 rounded-full"
+              className="flex-1 h-[1.5px] mx-1.5 rounded-full"
               style={{ backgroundColor: isCompleted ? activeColor : lineColor }}
             />
           )}
@@ -40,7 +40,7 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({
             style={{
               width: circleSize,
               height: circleSize,
-              borderRadius: circleSize / 2,
+              borderRadius: 12,
               borderColor:
                 isActive || isCompleted ? activeColor : inactiveColor,
               backgroundColor:
