@@ -4,6 +4,7 @@ import { StatusBar } from "react-native";
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { StepProvider } from "@/context/StepContext";
 
 const queryClient = new QueryClient();
 
@@ -26,18 +27,20 @@ export default function RootLayout() {
 
   return (
     <>
-      <QueryClientProvider client={queryClient}>
-        {/* <StatusBar backgroundColor={"#fff"} /> */}
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="onboardingScreen"
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(cook)" options={{ headerShown: false }} />
-        </Stack>
-      </QueryClientProvider>
+      <StepProvider>
+        <QueryClientProvider client={queryClient}>
+          {/* <StatusBar backgroundColor={"#fff"} /> */}
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="onboardingScreen"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(cook)" options={{ headerShown: false }} />
+          </Stack>
+        </QueryClientProvider>
+      </StepProvider>
     </>
   );
 }

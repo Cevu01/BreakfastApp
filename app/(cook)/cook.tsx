@@ -20,10 +20,11 @@ import Hard from "@/assets/svg/Hard";
 import { usePulseAnimation } from "@/hooks/usePulseAnimation";
 import { useFadeIn } from "@/hooks/useFadeIn";
 import StepComponent from "../components/StepComponent";
+import { useStepContext } from "@/context/StepContext";
 
 const Cook = () => {
   const { breakfast } = useGetFilteredBreakfast();
-  const [step, setStep] = useState(1);
+  const { step } = useStepContext(); // Get step from context
 
   const pulseAnim = usePulseAnimation(1, 1.04, 600);
   const { opacity: imgOpacity, onLoad: onImageLoad } = useFadeIn(0, 1, 500);
@@ -116,16 +117,20 @@ const Cook = () => {
           </View>
         </View>
         <View className="pt-[40px]">
-          <StepComponent totalSteps={4} currentStep={step} />
+          <StepComponent
+            totalSteps={breakfast.recipe.length}
+            currentStep={step}
+          />
         </View>
       </ScrollView>
       <View className="absolute bottom-[30px] w-full px-[16px]">
         <TouchableOpacity
+          onPress={() => router.push("/(cook)/recipeSteps")}
           style={{ transform: [{ scale: pulseAnim }] }}
-          className="bg-[#41a4f0]  rounded-[18px] p-4"
+          className="bg-[#41a4f0] rounded-[18px] p-4"
         >
           <Text className="text-white text-[20px] font-fredokaMedium text-center">
-            Start cooking
+            {step > 1 ? "Continue cooking" : "Start cooking"}
           </Text>
         </TouchableOpacity>
       </View>

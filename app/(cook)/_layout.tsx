@@ -5,6 +5,12 @@ const CookLayout = () => {
   return (
     <Stack>
       <Stack.Screen name="cook" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="recipeSteps"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 };
