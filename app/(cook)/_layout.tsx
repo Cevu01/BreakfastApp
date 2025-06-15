@@ -11,6 +11,12 @@ const CookLayout = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="congrats"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 };

@@ -35,7 +35,8 @@ const RecipeSteps = () => {
       setStep(step + 1);
     } else {
       // Finish cooking
-      router.back();
+      // router.back();
+      router.replace("/(cook)/congrats"); // Navigate to congrats screen
     }
   };
 
@@ -71,7 +72,10 @@ const RecipeSteps = () => {
           <Back />
         </TouchableOpacity>
       </View>
-      <View className="pt-6 px-4">
+      <View
+        className="pt-6 px-4
+      "
+      >
         <Text className="text-center text-[24px] font-fredokaMedium">
           {currentStep.title}
         </Text>
