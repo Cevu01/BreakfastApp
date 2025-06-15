@@ -4,6 +4,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { useGetFilteredBreakfast } from "@/queries/breakfastQueries";
 import { useStepContext } from "@/context/StepContext";
@@ -57,11 +58,11 @@ const RecipeSteps = () => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="px-4 pt-6 flex-row items-center justify-between">
-        <TouchableOpacity onPress={() => router.back()} className="mb-4 p-2 ">
+        <TouchableOpacity onPress={() => router.back()} className=" p-2 ">
           <Back />
         </TouchableOpacity>
 
-        <View className="flex-row justify-between mb-6">
+        <View className="flex-row justify-between ">
           <Text className="text-lg text-center font-fredokaMedium">
             Step {step} of {recipeSteps.length}
           </Text>
@@ -70,24 +71,28 @@ const RecipeSteps = () => {
           <Back />
         </TouchableOpacity>
       </View>
-
-      <View className="px-4 flex-col gap-10  items-center justify-center">
+      <View className="pt-6 px-4">
         <Text className="text-center text-[24px] font-fredokaMedium">
           {currentStep.title}
         </Text>
-        <LottieView
-          source={animationSource}
-          autoPlay
-          loop
-          style={{ width: 300, height: 200 }}
-        />
-
-        <Text className="text-[14px] font-bdogroteskRegular">
-          {currentStep.description}
-        </Text>
       </View>
 
-      <View className="mt-auto p-4 border-t border-gray-200">
+      <ScrollView>
+        <View className="px-4 flex-col gap-10  items-center justify-center">
+          <LottieView
+            source={animationSource}
+            autoPlay
+            loop
+            style={{ width: 300, height: 300 }}
+          />
+
+          <Text className="text-[14px] font-bdogroteskRegular">
+            {currentStep.description}
+          </Text>
+        </View>
+      </ScrollView>
+
+      <View className="mt-auto p-4  border-gray-200">
         {/* Align Next to right when no Previous, else space-between */}
         <View
           className={`flex-row ${step > 1 ? "justify-between" : "justify-end"}`}
@@ -95,19 +100,19 @@ const RecipeSteps = () => {
           {step > 1 && (
             <TouchableOpacity
               onPress={handlePrev}
-              className="px-6 py-3 border border-gray-300 rounded-lg"
+              className="px-6 py-3 border  border-gray-300 rounded-[18px]"
             >
-              <Text className="text-base">Previous</Text>
+              <Text className="text-base font-fredokaMedium">Previous</Text>
             </TouchableOpacity>
           )}
 
           <TouchableOpacity
             onPress={handleNext}
-            className={`px-8 py-3 rounded-lg ${
+            className={`px-8 py-3 bordery-[#41a4f0] rounded-[18px] ${
               step === recipeSteps.length ? "bg-[#4CAF50]" : "bg-[#41a4f0]"
             }`}
           >
-            <Text className="text-white text-base">
+            <Text className="text-white text-base font-fredokaMedium">
               {step === recipeSteps.length ? "Finish" : "Next"}
             </Text>
           </TouchableOpacity>
