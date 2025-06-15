@@ -24,7 +24,7 @@ import { useStepContext } from "@/context/StepContext";
 
 const Cook = () => {
   const { breakfast } = useGetFilteredBreakfast();
-  const { step } = useStepContext(); // Get step from context
+  const { step, setStep } = useStepContext(); // Get step from context
 
   const pulseAnim = usePulseAnimation(1, 1.04, 600);
   const { opacity: imgOpacity, onLoad: onImageLoad } = useFadeIn(0, 1, 500);
@@ -125,7 +125,10 @@ const Cook = () => {
       </ScrollView>
       <View className="absolute bottom-[30px] w-full px-[16px]">
         <TouchableOpacity
-          onPress={() => router.push("/(cook)/recipeSteps")}
+          onPress={() => {
+            // setStep(1);
+            router.push("/(cook)/recipeSteps");
+          }}
           style={{ transform: [{ scale: pulseAnim }] }}
           className="bg-[#41a4f0] rounded-[18px] p-4"
         >
