@@ -26,21 +26,19 @@ export default function RootLayout() {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <StepProvider>
-        <QueryClientProvider client={queryClient}>
-          {/* <StatusBar backgroundColor={"#fff"} /> */}
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="onboardingScreen"
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="(cook)" options={{ headerShown: false }} />
-          </Stack>
-        </QueryClientProvider>
+        {/* <StatusBar backgroundColor={"#fff"} /> */}
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="onboardingScreen"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(cook)" options={{ headerShown: false }} />
+        </Stack>
       </StepProvider>
-    </>
+    </QueryClientProvider>
   );
 }

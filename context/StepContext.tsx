@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useGetCurrentUserData } from "../queries/usersQueries";
 
 interface StepContextType {
   step: number;
@@ -14,13 +15,17 @@ const StepContext = createContext<StepContextType>({
 export const StepProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { user } = useGetCurrentUserData();
+  const userId = user?.[0]?.uid;
+  const storageKey = userId ? `@currentStep_${userId}` : "@currentStep";
+
   const [step, setStepState] = useState<number>(1);
 
-  // Load persisted step on mount
+  // Load persisted step on mount, per user
   useEffect(() => {
     const loadStep = async () => {
       try {
-        const saved = await AsyncStorage.getItem("@currentStep");
+        const saved = await AsyncStorage.getItem(storageKey);
         if (saved !== null) {
           setStepState(parseInt(saved, 10));
         }
@@ -29,21 +34,20 @@ export const StepProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
     loadStep();
-  }, []);
+  }, [storageKey]);
 
   // Persist step on change
   useEffect(() => {
     const saveStep = async () => {
       try {
-        await AsyncStorage.setItem("@currentStep", step.toString());
+        await AsyncStorage.setItem(storageKey, step.toString());
       } catch (e) {
         console.warn("Failed to save step:", e);
       }
     };
     saveStep();
-  }, [step]);
+  }, [storageKey, step]);
 
-  // Exposed setter
   const setStep = (newStep: number) => {
     setStepState(newStep);
   };
