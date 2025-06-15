@@ -88,7 +88,10 @@ const RecipeSteps = () => {
       </View>
 
       <View className="mt-auto p-4 border-t border-gray-200">
-        <View className="flex-row justify-between">
+        {/* Align Next to right when no Previous, else space-between */}
+        <View
+          className={`flex-row ${step > 1 ? "justify-between" : "justify-end"}`}
+        >
           {step > 1 && (
             <TouchableOpacity
               onPress={handlePrev}
