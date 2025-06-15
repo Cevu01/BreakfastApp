@@ -12,6 +12,12 @@ const CookLayout = () => {
         }}
       />
       <Stack.Screen
+        name="timer"
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
         name="congrats"
         options={{
           headerShown: false,

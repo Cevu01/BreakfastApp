@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -15,7 +16,12 @@ import Mixing from "@/assets/animations/Mixing.json";
 import Frying from "@/assets/animations/Frying.json";
 import Serving from "@/assets/animations/Serving.json";
 
-const RecipeSteps = () => {
+interface Timer {
+  label: string;
+  durationSec: number;
+}
+
+const RecipeSteps: React.FC = () => {
   const { breakfast } = useGetFilteredBreakfast();
   const { step, setStep } = useStepContext();
 
@@ -34,9 +40,7 @@ const RecipeSteps = () => {
     if (step < recipeSteps.length) {
       setStep(step + 1);
     } else {
-      // Finish cooking
-      // router.back();
-      router.replace("/(cook)/congrats"); // Navigate to congrats screen
+      router.replace("/(cook)/congrats");
     }
   };
 
@@ -46,7 +50,14 @@ const RecipeSteps = () => {
     }
   };
 
-  // Choose the correct animation based on currentStep.animation
+  // Assemble a typed array of timers (either step.timers or a single durationSec)
+  const timers: Timer[] =
+    Array.isArray(currentStep.timers) && currentStep.timers.length > 0
+      ? (currentStep.timers as Timer[])
+      : currentStep.durationSec
+      ? [{ label: "Timer", durationSec: currentStep.durationSec }]
+      : [];
+
   const animationSource =
     currentStep.animation === "mixing"
       ? Mixing
@@ -54,35 +65,28 @@ const RecipeSteps = () => {
       ? Frying
       : currentStep.animation === "serving"
       ? Serving
-      : Mixing; // fallback
+      : Mixing;
 
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="px-4 pt-6 flex-row items-center justify-between">
-        <TouchableOpacity onPress={() => router.back()} className=" p-2 ">
+        <TouchableOpacity onPress={() => router.back()} className="p-2">
           <Back />
         </TouchableOpacity>
-
-        <View className="flex-row justify-between ">
-          <Text className="text-lg text-center font-fredokaMedium">
-            Step {step} of {recipeSteps.length}
-          </Text>
-        </View>
-        <TouchableOpacity onPress={() => router.back()} className="opacity-0">
-          <Back />
-        </TouchableOpacity>
+        <Text className="text-lg font-fredokaMedium">
+          Step {step} of {recipeSteps.length}
+        </Text>
+        <View style={{ width: 32 }} />
       </View>
-      <View
-        className="pt-6 px-4
-      "
-      >
+
+      <View className="px-4 pt-4">
         <Text className="text-center text-[24px] font-fredokaMedium">
           {currentStep.title}
         </Text>
       </View>
 
-      <ScrollView>
-        <View className="px-4 flex-col gap-10  items-center justify-center">
+      <ScrollView className="flex-1">
+        <View className="px-4 flex-col gap-10 items-center justify-center py-6">
           <LottieView
             source={animationSource}
             autoPlay
@@ -93,18 +97,39 @@ const RecipeSteps = () => {
           <Text className="text-[14px] font-bdogroteskRegular">
             {currentStep.description}
           </Text>
+
+          {timers.length > 0 && (
+            <View className="flex-row space-x-4 mt-4">
+              {timers.map((t: Timer, idx: number) => (
+                <TouchableOpacity
+                  key={idx}
+                  onPress={() =>
+                    router.push(
+                      `/timer?duration=${
+                        t.durationSec
+                      }&label=${encodeURIComponent(t.label)}`
+                    )
+                  }
+                  className="px-4 py-2 bg-[#41a4f0] rounded-lg"
+                >
+                  <Text className="text-white text-base">
+                    {`Start ${t.label}`}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
 
-      <View className="mt-auto p-4  border-gray-200">
-        {/* Align Next to right when no Previous, else space-between */}
+      <View className="p-4 border-t border-gray-200">
         <View
           className={`flex-row ${step > 1 ? "justify-between" : "justify-end"}`}
         >
           {step > 1 && (
             <TouchableOpacity
               onPress={handlePrev}
-              className="px-6 py-3 border  border-gray-300 rounded-[18px]"
+              className="px-6 py-3 border border-gray-300 rounded-[18px]"
             >
               <Text className="text-base font-fredokaMedium">Previous</Text>
             </TouchableOpacity>
@@ -112,7 +137,7 @@ const RecipeSteps = () => {
 
           <TouchableOpacity
             onPress={handleNext}
-            className={`px-8 py-3 bordery-[#41a4f0] rounded-[18px] ${
+            className={`px-8 py-3 rounded-[18px] ${
               step === recipeSteps.length ? "bg-[#4CAF50]" : "bg-[#41a4f0]"
             }`}
           >
