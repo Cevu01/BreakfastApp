@@ -7,8 +7,14 @@ import {
   Image,
 } from "react-native";
 import { router } from "expo-router";
+import { useUpdateUserStreak } from "@/queries/usersQueries";
 
 const Congrats = () => {
+  const { updateStreak } = useUpdateUserStreak();
+
+  const handleUpdateStreak = () => {
+    updateStreak();
+  };
   return (
     <SafeAreaView className="flex-1 bg-white justify-center items-center px-6">
       <Text className="text-[32px] font-fredokaMedium text-center mt-8">
@@ -27,7 +33,10 @@ const Congrats = () => {
         </Text>
 
         <TouchableOpacity
-          onPress={() => router.replace("/(tabs)/home")}
+          onPress={() => {
+            handleUpdateStreak();
+            router.replace("/(tabs)/home");
+          }}
           className=" bg-[#41a4f0] px-6 py-3 rounded-[16px]"
         >
           <Text className="text-white text-[16px] font-fredokaMedium">
