@@ -15,6 +15,7 @@ import LottieView from "lottie-react-native";
 import Mixing from "@/assets/animations/Mixing.json";
 import Frying from "@/assets/animations/Frying.json";
 import Serving from "@/assets/animations/Serving.json";
+import * as Speech from "expo-speech"; // ✅ import TTS module
 
 interface Timer {
   label: string;
@@ -50,7 +51,14 @@ const RecipeSteps: React.FC = () => {
     }
   };
 
-  // Assemble a typed array of timers (either step.timers or a single durationSec)
+  // ✅ TTS Function
+  const handleSpeak = () => {
+    if (currentStep?.description) {
+      Speech.stop();
+      Speech.speak(currentStep.description, { rate: 1.0 });
+    }
+  };
+
   const timers: Timer[] =
     Array.isArray(currentStep.timers) && currentStep.timers.length > 0
       ? (currentStep.timers as Timer[])
@@ -79,10 +87,20 @@ const RecipeSteps: React.FC = () => {
         <View style={{ width: 32 }} />
       </View>
 
-      <View className="px-4 pt-4">
+      {/* ✅ Title + Read Button */}
+      <View className="px-4 pt-4 items-center">
         <Text className="text-center text-[24px] font-fredokaMedium">
           {currentStep.title}
         </Text>
+
+        <TouchableOpacity
+          onPress={handleSpeak}
+          className="mt-2 bg-[#41a4f0] px-4 py-2 rounded-full"
+        >
+          <Text className="text-white font-fredokaMedium">
+            🔊 Read instructions
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView className="flex-1">
