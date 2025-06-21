@@ -38,6 +38,7 @@ const RecipeSteps: React.FC = () => {
   const currentStep = recipeSteps[step - 1];
 
   const handleNext = () => {
+    Speech.stop();
     if (step < recipeSteps.length) {
       setStep(step + 1);
     } else {
@@ -46,6 +47,7 @@ const RecipeSteps: React.FC = () => {
   };
 
   const handlePrev = () => {
+    Speech.stop();
     if (step > 1) {
       setStep(step - 1);
     }
