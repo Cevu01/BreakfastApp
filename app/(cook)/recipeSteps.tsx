@@ -80,7 +80,13 @@ const RecipeSteps: React.FC = () => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="px-4 pt-6 flex-row items-center justify-between">
-        <TouchableOpacity onPress={() => router.back()} className="p-2">
+        <TouchableOpacity
+          onPress={() => {
+            Speech.stop();
+            router.back();
+          }}
+          className="p-2"
+        >
           <Back />
         </TouchableOpacity>
         <Text className="text-lg font-fredokaMedium">
