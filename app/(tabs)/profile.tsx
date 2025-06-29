@@ -19,6 +19,7 @@ import DietTypeIcon from "../../assets/svg/DietType";
 import GoalIcon from "../../assets/svg/Goal";
 import SignOut from "../../assets/svg/SignOut";
 import { signOut } from "../services/GoogleAuth";
+import Delete from "../../assets/svg/Delete";
 
 const DIET_OPTIONS = ["Vegan", "Keto", "Paleo"];
 const GOAL_OPTIONS = ["Lose Weight", "Maintain Weight", "Gain Muscle"];
@@ -84,6 +85,14 @@ export default function Profile() {
                 <SignOut />
                 <Text className="text-[18px] font-fredokaRegular">
                   Sign Out
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <View className="flex-row items-center gap-4 p-4 rounded-[20px] bg-red-600">
+                <Delete />
+                <Text className="text-[18px] text-white font-fredokaRegular">
+                  Delete Account
                 </Text>
               </View>
             </TouchableOpacity>
