@@ -1,3 +1,4 @@
+// app/(cook)/RecipeSteps.tsx
 import React from "react";
 import {
   View,
@@ -7,7 +8,6 @@ import {
   ActivityIndicator,
   ScrollView,
 } from "react-native";
-import { useGetFilteredBreakfast } from "@/queries/breakfastQueries";
 import { useStepContext } from "@/context/StepContext";
 import Back from "@/assets/svg/Back";
 import { router } from "expo-router";
@@ -15,7 +15,12 @@ import LottieView from "lottie-react-native";
 import Mixing from "@/assets/animations/Mixing.json";
 import Frying from "@/assets/animations/Frying.json";
 import Serving from "@/assets/animations/Serving.json";
-import * as Speech from "expo-speech"; // ✅ import TTS module
+import * as Speech from "expo-speech";
+import {
+  useFinishBreakfast,
+  useGetBreakfastWithProgress,
+  useUpsertBreakfastProgress,
+} from "@/queries/breakfastWithProgress";
 
 interface Timer {
   label: string;
@@ -23,10 +28,15 @@ interface Timer {
 }
 
 const RecipeSteps: React.FC = () => {
-  const { breakfast } = useGetFilteredBreakfast();
-  const { step, setStep } = useStepContext();
+  const { data, isLoading } = useGetBreakfastWithProgress();
+  const breakfast = data?.breakfast;
+  const progress = data?.progress;
 
-  if (!breakfast) {
+  const { step, setStep } = useStepContext();
+  const { mutate: upsert } = useUpsertBreakfastProgress();
+  const { mutate: finish } = useFinishBreakfast();
+
+  if (isLoading || !breakfast) {
     return (
       <View className="flex-1 justify-center items-center bg-white">
         <ActivityIndicator size="large" color="#333" />
@@ -35,13 +45,18 @@ const RecipeSteps: React.FC = () => {
   }
 
   const recipeSteps = breakfast.recipe;
+  const total = recipeSteps.length;
+  const program_day: number = breakfast.day_number;
   const currentStep = recipeSteps[step - 1];
 
   const handleNext = () => {
     Speech.stop();
-    if (step < recipeSteps.length) {
-      setStep(step + 1);
+    if (step < total) {
+      const next = step + 1;
+      setStep(next);
+      upsert({ breakfast_id: breakfast.id as number, program_day, step_index: next });
     } else {
+      finish({ breakfast_id: breakfast.id as number, program_day, totalSteps: total });
       router.replace("/(cook)/congrats");
     }
   };
@@ -49,11 +64,12 @@ const RecipeSteps: React.FC = () => {
   const handlePrev = () => {
     Speech.stop();
     if (step > 1) {
-      setStep(step - 1);
+      const prev = step - 1;
+      setStep(prev);
+      upsert({ breakfast_id: breakfast.id as number, program_day, step_index: prev });
     }
   };
 
-  // ✅ TTS Function
   const handleSpeak = () => {
     if (currentStep?.description) {
       Speech.stop();
@@ -62,18 +78,18 @@ const RecipeSteps: React.FC = () => {
   };
 
   const timers: Timer[] =
-    Array.isArray(currentStep.timers) && currentStep.timers.length > 0
+    Array.isArray(currentStep?.timers) && currentStep.timers.length > 0
       ? (currentStep.timers as Timer[])
-      : currentStep.durationSec
+      : currentStep?.durationSec
       ? [{ label: "Timer", durationSec: currentStep.durationSec }]
       : [];
 
   const animationSource =
-    currentStep.animation === "mixing"
+    currentStep?.animation === "mixing"
       ? Mixing
-      : currentStep.animation === "frying"
+      : currentStep?.animation === "frying"
       ? Frying
-      : currentStep.animation === "serving"
+      : currentStep?.animation === "serving"
       ? Serving
       : Mixing;
 
@@ -90,15 +106,14 @@ const RecipeSteps: React.FC = () => {
           <Back />
         </TouchableOpacity>
         <Text className="text-lg font-fredokaMedium">
-          Step {step} of {recipeSteps.length}
+          Step {step} of {total}
         </Text>
         <View style={{ width: 32 }} />
       </View>
 
-      {/* ✅ Title + Read Button */}
       <View className="px-4 pt-4 items-center">
         <Text className="text-center text-[24px] font-fredokaMedium">
-          {currentStep.title}
+          {currentStep?.title}
         </Text>
 
         <TouchableOpacity
@@ -121,7 +136,7 @@ const RecipeSteps: React.FC = () => {
           />
 
           <Text className="text-[14px] font-bdogroteskRegular">
-            {currentStep.description}
+            {currentStep?.description}
           </Text>
 
           {timers.length > 0 && (
@@ -131,9 +146,7 @@ const RecipeSteps: React.FC = () => {
                   key={idx}
                   onPress={() =>
                     router.push(
-                      `/timer?duration=${
-                        t.durationSec
-                      }&label=${encodeURIComponent(t.label)}`
+                      `/timer?duration=${t.durationSec}&label=${encodeURIComponent(t.label)}`
                     )
                   }
                   className="px-4 py-2 bg-[#41a4f0] rounded-lg"
@@ -164,11 +177,11 @@ const RecipeSteps: React.FC = () => {
           <TouchableOpacity
             onPress={handleNext}
             className={`px-8 py-3 rounded-[18px] ${
-              step === recipeSteps.length ? "bg-[#4CAF50]" : "bg-[#41a4f0]"
+              step === total ? "bg-[#4CAF50]" : "bg-[#41a4f0]"
             }`}
           >
             <Text className="text-white text-base font-fredokaMedium">
-              {step === recipeSteps.length ? "Finish" : "Next"}
+              {step === total ? "Finish" : "Next"}
             </Text>
           </TouchableOpacity>
         </View>

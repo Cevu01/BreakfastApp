@@ -1,95 +1,61 @@
-import { getUserDay } from "@/helpers/getUserDate";
+// services/breakfast.ts
 import { supabase } from "./supabase";
 import { getAuthenticatedUser } from "@/helpers/getAuthenticatedUser";
-import { UserInterfaceIdiom } from "expo-constants";
+import { getUserDay } from "@/helpers/getUserDate";
 
-export async function getFilteredBreakfast() {
+export async function getBreakfastWithProgress() {
   const user = await getAuthenticatedUser();
 
-  // 1. Fetch diet_type & start_date
-  const { data: userData, error: userError } = await supabase
+  // 1) user meta
+  const { data: userData, error: userErr } = await supabase
     .from("users")
     .select("diet_type, start_date")
     .eq("uid", user.id)
     .single();
-
-  if (userError || !userData) {
-    throw new Error("User not found");
-  }
+  if (userErr || !userData) throw new Error("User not found");
 
   const { diet_type, start_date } = userData;
-  const currentDay = getUserDay(start_date);
+  const currentDay = getUserDay(start_date); // int
 
-  // 2. Fetch all breakfasts for that diet_type sorted by day_number
+  // 2) doručci (sa ingredientima — 1 upit)
   const { data: breakfasts, error: bfErr } = await supabase
     .from("breakfasts")
-    .select(
-      `
-    *,
-    breakfast_ingredients (
-      ingredients
-    )
-  `
-    )
+    .select(`*, breakfast_ingredients ( ingredients )`)
     .eq("diet_type", diet_type)
     .order("day_number", { ascending: true });
   if (bfErr || !breakfasts?.length) throw new Error("No breakfasts found");
 
-  // 3. Fetch user's food preferences
-  const { data: preferences, error: prefError } = await supabase
+  // 3) preferences
+  const { data: prefs, error: prefErr } = await supabase
     .from("user_preferences")
     .select("preferences")
     .eq("users_id", user.id);
+  if (prefErr) throw new Error("Unable to fetch user preferences");
+  const disliked: string[] = prefs?.flatMap(p => p.preferences) || [];
 
-  if (prefError) {
-    throw new Error("Unable to fetch user preferences");
-  }
-
-  const dislikedIngredients = preferences?.flatMap((p) => p.preferences) || [];
-
-  // 4. Filter breakfasts
-  for (const breakfast of breakfasts) {
-    const { data: ingredientsData, error: ingError } = await supabase
-      .from("breakfast_ingredients")
-      .select("ingredients")
-      .eq("breakfast_id", breakfast.id);
-
-    if (ingError || !ingredientsData || ingredientsData.length === 0) continue;
-
-    const ingredientsArray = ingredientsData[0].ingredients || [];
-
-    const hasDisliked = ingredientsArray.some((ing: any) =>
-      dislikedIngredients.some((disliked) =>
-        ing.name.toLowerCase().trim().includes(disliked.toLowerCase().trim())
+  const hasDisliked = (b: any) => {
+    const arr = b?.breakfast_ingredients?.[0]?.ingredients || [];
+    return arr.some((ing: any) =>
+      disliked.some((d) =>
+        ing.name.toLowerCase().trim().includes(d.toLowerCase().trim())
       )
     );
+  };
 
-    if (!hasDisliked && breakfast.day_number >= currentDay) {
-      return breakfast;
-    }
-  }
+  // 4) izaberi doručak za danas (>= currentDay) bez disliked; fallback prvi bez disliked
+  let chosen = breakfasts.find((b: any) => b.day_number >= currentDay && !hasDisliked(b));
+  if (!chosen) chosen = breakfasts.find((b: any) => !hasDisliked(b));
+  if (!chosen) throw new Error("No valid breakfast found for this user");
 
-  // 5. Fallback
-  for (const breakfast of breakfasts) {
-    const { data: ingredientsData, error: ingError } = await supabase
-      .from("breakfast_ingredients")
-      .select("ingredients")
-      .eq("breakfast_id", breakfast.id);
+  const program_day: number = chosen.day_number;
 
-    if (ingError || !ingredientsData || ingredientsData.length === 0) continue;
+  // 5) progres za taj program_day
+  const { data: progress } = await supabase
+    .from("breakfast_progress")
+    .select("step_index,status,program_day,breakfast_id,finished_at,updated_at")
+    .eq("user_uid", user.id)
+    .eq("program_day", program_day)
+    .maybeSingle();
 
-    const ingredientsArray = ingredientsData[0].ingredients || [];
-
-    const hasDisliked = ingredientsArray.some((ing: any) =>
-      dislikedIngredients.some((disliked) =>
-        ing.name.toLowerCase().trim().includes(disliked.toLowerCase().trim())
-      )
-    );
-
-    if (!hasDisliked) {
-      return breakfast;
-    }
-  }
-
-  throw new Error("No valid breakfast found for this user");
+  return { breakfast: chosen, progress }; // { breakfast, progress|null }
 }
